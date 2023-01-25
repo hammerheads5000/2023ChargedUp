@@ -5,6 +5,12 @@
 # Prerequisites
 *.d
 
+# Build files
+*.gradle
+gradle*
+/build
+/gradle
+
 # Compiled Object files
 *.slo
 *.lo
