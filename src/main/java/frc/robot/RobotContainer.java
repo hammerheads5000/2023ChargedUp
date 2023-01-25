@@ -45,6 +45,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
+    //This just makes the field relative setting controllable through SmartDashboard
     boolean fieldRelative;
     try
     {
@@ -58,7 +59,8 @@ public class RobotContainer {
     
     boolean openLoop = true;
     s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-
+    s_Swerve.setDefaultCommand(new MaxSpeedControllerCommand());
+    
     // Configure the button bindings
     configureButtonBindings();
   }
