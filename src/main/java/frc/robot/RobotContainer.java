@@ -74,7 +74,6 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-    //b_extendButton.whileTrue(cmd_pneumaticsCommand);
   }
 
   /**
