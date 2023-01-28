@@ -37,17 +37,17 @@ public class RobotContainer {
   private final JoystickButton b_extendButton = new JoystickButton(driver, XboxController.Button.kB.value);
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-  private final PneumaticsSubsystem sub_pneumaticsSubsystem = new PneumaticsSubsystem();
+  //private final PneumaticsSubsystem sub_pneumaticsSubsystem = new PneumaticsSubsystem();
   
   /* Commands */
-  private final PneumaticPistonCommand cmd_pneumaticsCommand = new PneumaticPistonCommand(sub_pneumaticsSubsystem);
+  //private final PneumaticPistonCommand cmd_pneumaticsCommand = new PneumaticPistonCommand(sub_pneumaticsSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
     //This just makes the field relative setting controllable through SmartDashboard
-    boolean fieldRelative;
-    try
+    boolean fieldRelative = false;
+    /*try
     {
       fieldRelative = SmartDashboard.getBoolean("Field Relative", false);
     }
@@ -56,10 +56,10 @@ public class RobotContainer {
       fieldRelative = false;
     }
     SmartDashboard.putBoolean("Field Relative", fieldRelative);
-    
+    */
     boolean openLoop = true;
     s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-    s_Swerve.setDefaultCommand(new MaxSpeedControllerCommand());
+    //s_Swerve.setDefaultCommand(new MaxSpeedControllerCommand());
     
     // Configure the button bindings
     configureButtonBindings();
@@ -74,7 +74,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-    b_extendButton.whileTrue(cmd_pneumaticsCommand);
+    //b_extendButton.whileTrue(cmd_pneumaticsCommand);
   }
 
   /**
