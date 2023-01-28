@@ -5,11 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class UICommand extends CommandBase {
+  private Subsystem uISubsystem;
   /** Creates a new UICommand. */
-  public UICommand() {
+  public UICommand(Subsystem uiSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.uISubsystem = uiSubsystem;
+    addRequirements(uiSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -18,7 +22,9 @@ public class UICommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    
+  }
 
   // Called once the command ends or is interrupted.
   @Override
