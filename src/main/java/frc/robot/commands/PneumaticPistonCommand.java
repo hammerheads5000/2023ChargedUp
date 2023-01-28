@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.PneumaticsSubsystem;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -28,11 +28,15 @@ public class PneumaticPistonCommand extends CommandBase {
   @Override
   public void initialize() {
     m_subsystem.m_extend();
+    m_subsystem.m_enableCompressor();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    SmartDashboard.putNumber("Compressor pressure", m_subsystem.currentPressure());
+    SmartDashboard.putBoolean("Compressor enabled", m_subsystem.compressorEnabled());
+  }
 
   // Called once the command ends or is interrupted.
   @Override
