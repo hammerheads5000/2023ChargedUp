@@ -9,6 +9,10 @@ import edu.wpi.first.math.util.Units;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
+
+    public static final int ENCODER_COUNTS_PER_METER = 49031;
+
+
     public static final double stickDeadband = 0.3;
 
     public static final class RegularConstants
@@ -121,7 +125,6 @@ public final class Constants {
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
-
     }
 
     public static final class AutoConstants {
@@ -130,9 +133,9 @@ public final class Constants {
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
     
-        public static final double kPXController = 1;
-        public static final double kPYController = 1;
-        public static final double kPThetaController = 1;
+        public static final double kPXController = 0.05;
+        public static final double kPYController = 0.05;
+        public static final double kPThetaController = 0.01;
     
         // Constraint for the motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =

@@ -97,7 +97,7 @@ public class SwerveModule {
     }
 
     public SwerveModulePosition getPosition() {
-        return new SwerveModulePosition(mDriveMotor.getSelectedSensorPosition(), getCanCoder());
+        return new SwerveModulePosition(mDriveMotor.getSelectedSensorPosition() / Constants.ENCODER_COUNTS_PER_METER, getCanCoder());
     }
     
 }

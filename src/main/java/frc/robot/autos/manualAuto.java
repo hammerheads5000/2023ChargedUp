@@ -1,5 +1,5 @@
  
-package frc.robot.autos;
+/*package frc.robot.autos;
 
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
@@ -52,4 +52,4 @@ public class manualAuto extends SequentialCommandGroup {
             
         );
     }
-}
+}*/

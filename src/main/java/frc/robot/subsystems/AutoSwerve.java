@@ -32,7 +32,7 @@ public class AutoSwerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public WPI_Pigeon2 gyro;
-    public Field2d m_field2d = new Field2d();
+    //public Field2d m_field2d = new Field2d();
 
     public AutoSwerve() {
         gyro = new WPI_Pigeon2(Constants.Swerve.pigeonID, "Bobby");
@@ -54,6 +54,8 @@ public class AutoSwerve extends SubsystemBase {
 
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    
+
     var swerveModuleStates =
         Constants.Swerve.swerveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -90,11 +92,13 @@ public class AutoSwerve extends SubsystemBase {
     
     public SwerveModulePosition[] getModulePositions()
     {
+
         return new SwerveModulePosition[] {
             mSwerveMods[0].getPosition(),
             mSwerveMods[1].getPosition(),
             mSwerveMods[2].getPosition(),
             mSwerveMods[3].getPosition()
+
         };
     }
 

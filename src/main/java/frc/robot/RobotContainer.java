@@ -37,6 +37,8 @@ public class RobotContainer {
   private final JoystickButton b_extendButton = new JoystickButton(driver, XboxController.Button.kB.value);
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
+  private final AutoSwerve s_AutoSwerve = new AutoSwerve();
+
   //private final PneumaticsSubsystem sub_pneumaticsSubsystem = new PneumaticsSubsystem();
   
   /* Commands */
@@ -58,8 +60,8 @@ public class RobotContainer {
     SmartDashboard.putBoolean("Field Relative", fieldRelative);
     */
     boolean openLoop = true;
-    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-    s_Swerve.setDefaultCommand(new UICommand(new UISubsystem()));    
+    //s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    //s_Swerve.setDefaultCommand(new UICommand(new UISubsystem()));    
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -82,7 +84,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new exampleAuto(s_Swerve);
+    return new exampleAuto(s_AutoSwerve);
   }
 
 
