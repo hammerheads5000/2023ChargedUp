@@ -63,10 +63,10 @@ public class AutoSwerve extends SubsystemBase {
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, Constants.Swerve.maxSpeed);
-    mSwerveMods[0].setDesiredState(swerveModuleStates[0], false);
-    mSwerveMods[1].setDesiredState(swerveModuleStates[1], false);
-    mSwerveMods[2].setDesiredState(swerveModuleStates[2], false);
-    mSwerveMods[3].setDesiredState(swerveModuleStates[3], false);
+    mSwerveMods[0].setDesiredState(swerveModuleStates[0], true);
+    mSwerveMods[1].setDesiredState(swerveModuleStates[1], true);
+    mSwerveMods[2].setDesiredState(swerveModuleStates[2], true);
+    mSwerveMods[3].setDesiredState(swerveModuleStates[3], true);
   }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -92,13 +92,16 @@ public class AutoSwerve extends SubsystemBase {
     
     public SwerveModulePosition[] getModulePositions()
     {
-
+        SmartDashboard.putString("getPosition[0]",mSwerveMods[0].getPosition().toString());
+        SmartDashboard.putString("getPosition[1]",mSwerveMods[1].getPosition().toString());
+        SmartDashboard.putString("getPosition[2]",mSwerveMods[2].getPosition().toString());
+        SmartDashboard.putString("getPosition[3]",mSwerveMods[3].getPosition().toString());
         return new SwerveModulePosition[] {
             mSwerveMods[0].getPosition(),
             mSwerveMods[1].getPosition(),
             mSwerveMods[2].getPosition(),
             mSwerveMods[3].getPosition()
-
+            
         };
     }
 
@@ -148,13 +151,21 @@ public class AutoSwerve extends SubsystemBase {
 
     @Override
     public void periodic(){
+        SmartDashboard.putNumber("getXpreUpdt",swerveOdometry.getPoseMeters().getX());
+        SmartDashboard.putNumber("getYpreUpdt",swerveOdometry.getPoseMeters().getY());
+        SmartDashboard.putNumber("getGyroAnglepreUpdt",gyro.getAngle());
         swerveOdometry.update(getYaw(), getModulePositions());  
-
+        SmartDashboard.putNumber("getXpostUpdt",swerveOdometry.getPoseMeters().getX());
+        SmartDashboard.putNumber("getYpostUpdt",swerveOdometry.getPoseMeters().getY());
+        SmartDashboard.putNumber("getGyroAnglepostUpdt",gyro.getAngle());
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
         }
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+        
+    
     }
+    
 }

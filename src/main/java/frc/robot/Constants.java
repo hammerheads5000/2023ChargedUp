@@ -10,7 +10,7 @@ import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
 
-    public static final int ENCODER_COUNTS_PER_METER = 49031;
+    public static final int ENCODER_COUNTS_PER_METER = 53091;
 
 
     public static final double stickDeadband = 0.3;
@@ -91,7 +91,7 @@ public final class Constants {
             public static final int driveMotorID = 22;
             public static final int angleMotorID = 7;
             public static final int canCoderID = 2;
-            public static final double angleOffset = 355.5;
+            public static final double angleOffset = 343.5;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -101,7 +101,7 @@ public final class Constants {
             public static final int driveMotorID = 6;
             public static final int angleMotorID = 1;
             public static final int canCoderID = 0;
-            public static final double angleOffset = 355.4;
+            public static final double angleOffset = 311.3;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -111,7 +111,7 @@ public final class Constants {
             public static final int driveMotorID = 0;
             public static final int angleMotorID = 21;
             public static final int canCoderID = 1;
-            public static final double angleOffset = 358.41;
+            public static final double angleOffset = 354.9;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -121,7 +121,7 @@ public final class Constants {
             public static final int driveMotorID = 20;
             public static final int angleMotorID = 24;
             public static final int canCoderID = 3;
-            public static final double angleOffset = 142.6;
+            public static final double angleOffset = 146.2;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -133,9 +133,9 @@ public final class Constants {
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
     
-        public static final double kPXController = 0.05;
-        public static final double kPYController = 0.05;
-        public static final double kPThetaController = 0.01;
+        public static final double kPXController = 0.2;
+        public static final double kPYController = 0.2;
+        public static final double kPThetaController = 0.0;
     
         // Constraint for the motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
