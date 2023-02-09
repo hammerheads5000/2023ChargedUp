@@ -2,7 +2,7 @@ package frc.robot.autos;
 
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.subsystems.AutoSwerve;
+import frc.robot.subsystems.Swerve;
 
 import java.util.HashMap;
 import com.pathplanner.lib.PathConstraints;
@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class exampleAuto extends SequentialCommandGroup {
-    public exampleAuto(AutoSwerve s_AutoSwerve){
+    public exampleAuto(Swerve s_AutoSwerve){
         
         PathPlannerTrajectory examplePath = PathPlanner.loadPath("maxPath", new PathConstraints(/*AutoConstants.kMaxSpeedMetersPerSecond*/0.1, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
         
@@ -47,7 +47,7 @@ public class exampleAuto extends SequentialCommandGroup {
 
 
         addCommands(
-            //new InstantCommand(() -> s_AutoSwerve.zeroGyro()),
+            new InstantCommand(() -> s_AutoSwerve.zeroGyro()),
             new InstantCommand(() -> s_AutoSwerve.resetOdometry(examplePath.getInitialPose())),
             //PPswerveControllerCommand, //commented out but maybe shouldn't be
             new InstantCommand(() -> s_AutoSwerve.drive(new Translation2d(1, 0),0,false, true)),       // Need to stop robot at end, likely different param to set FieldRelative

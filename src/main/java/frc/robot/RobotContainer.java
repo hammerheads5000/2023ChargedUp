@@ -37,7 +37,7 @@ public class RobotContainer {
   private final JoystickButton b_extendButton = new JoystickButton(driver, XboxController.Button.kB.value);
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-  private final AutoSwerve s_AutoSwerve = new AutoSwerve();
+  //private final AutoSwerve s_AutoSwerve = new AutoSwerve();
 
   //private final PneumaticsSubsystem sub_pneumaticsSubsystem = new PneumaticsSubsystem();
   
@@ -84,7 +84,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new exampleAuto(s_AutoSwerve);
+    return new manualAuto(s_Swerve);
   }
 
 
