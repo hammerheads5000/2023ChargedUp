@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.SwerveControllerCommand2;
 import frc.robot.subsystems.Swerve;
 
 
@@ -64,23 +65,27 @@ thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
 
 
-SwerveControllerCommand swerveControllerCommand =
+new SwerveControllerCommand2(
 
-    new SwerveControllerCommand(
+ 
 
-        exampleTrajectory,
+exampleTrajectory,
 
-        s_AutoSwerve::getPose, // Functional interface to feed supplier
 
-        Constants.Swerve.swerveKinematics,
+
+s_AutoSwerve::getPose, // Functional interface to feed supplier
+
+
+
+Constants.Swerve.swerveKinematics,
 
 
 
         // Position controllers
 
-        new PIDController(AutoConstants.kPXController, 0, 0),
+        new PIDController(AutoConstants.kPXController, 0.0, 0.1),
 
-        new PIDController(AutoConstants.kPYController, 0, 0),
+        new PIDController(AutoConstants.kPYController, 0.0, 0.1),
 
         thetaController,
 
@@ -102,7 +107,7 @@ SwerveControllerCommand swerveControllerCommand =
 
         new InstantCommand(() -> s_AutoSwerve.resetOdometry(exampleTrajectory.getInitialPose())),
 
-       swerveControllerCommand,
+       swerveControllerCommand2,
 
         new InstantCommand(() -> s_AutoSwerve.drive(0,0,0,false))       // Need to stop robot at end, likely different param to set FieldRelative
 
