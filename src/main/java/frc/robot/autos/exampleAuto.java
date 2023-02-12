@@ -2,6 +2,7 @@ package frc.robot.autos;
 
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.PPSwerveControllerCommand2;
 import frc.robot.subsystems.Swerve;
 
 import java.util.HashMap;
@@ -30,9 +31,9 @@ public class exampleAuto extends SequentialCommandGroup {
         HashMap<String, Command> eventMap = new HashMap<>();
         eventMap.put("marker1", new PrintCommand("Passed marker 1"));
         
-        FollowPathWithEvents PPswerveControllerCommand =
+        FollowPathWithEvents PPswerveControllerCommand2 =
         new FollowPathWithEvents(
-            new PPSwerveControllerCommand(
+            new PPSwerveControllerCommand2(
                 examplePath,
                 s_AutoSwerve::getPose,
                 Constants.Swerve.swerveKinematics,
@@ -49,9 +50,9 @@ public class exampleAuto extends SequentialCommandGroup {
         addCommands(
             new InstantCommand(() -> s_AutoSwerve.zeroGyro()),
             new InstantCommand(() -> s_AutoSwerve.resetOdometry(examplePath.getInitialPose())),
-            //PPswerveControllerCommand, //commented out but maybe shouldn't be
-            new InstantCommand(() -> s_AutoSwerve.drive(new Translation2d(1, 0),0,false, true)),       // Need to stop robot at end, likely different param to set FieldRelative
-            new WaitCommand(2),
+            PPswerveControllerCommand2, //commented out but maybe shouldn't be
+            //new InstantCommand(() -> s_AutoSwerve.drive(new Translation2d(1, 0),0,false, true)),       // Need to stop robot at end, likely different param to set FieldRelative
+            //new WaitCommand(2),
             new InstantCommand(() -> s_AutoSwerve.drive(new Translation2d(0, 0),0,false, true))      // Need to stop robot at end, likely different param to set FieldRelative
 
             
