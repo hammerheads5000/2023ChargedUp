@@ -41,7 +41,7 @@ public class manualAuto extends SequentialCommandGroup {
 
         .setKinematics(Constants.Swerve.swerveKinematics);
 
-    String trajectoryJSON = "maxPath.wpilib.json";
+    String trajectoryJSON = "rileyPath.wpilib.json";
 try{
 Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
 exampleTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
