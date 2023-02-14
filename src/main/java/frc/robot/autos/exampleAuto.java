@@ -25,8 +25,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class exampleAuto extends SequentialCommandGroup {
     public exampleAuto(Swerve s_AutoSwerve){
         
-        PathPlannerTrajectory examplePath = PathPlanner.loadPath("maxPath", new PathConstraints(/*AutoConstants.kMaxSpeedMetersPerSecond*/0.1, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
-        
+        PathPlannerTrajectory examplePath = PathPlanner.loadPath("maxPath", new PathConstraints(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
         // This is just an example event map. It would be better to have a constant, global event map - in your code that will be used by all path following commands.
         HashMap<String, Command> eventMap = new HashMap<>();
         eventMap.put("marker1", new PrintCommand("Passed marker 1"));
