@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
 
- import edu.wpi.first.math.controller.HolonomicDriveController;
+ //import edu.wpi.first.math.controller.HolonomicDriveController2;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -40,7 +40,7 @@ public class SwerveControllerCommand2 extends CommandBase {
   private final Trajectory m_trajectory;
   private final Supplier<Pose2d> m_pose;
   private final SwerveDriveKinematics m_kinematics;
-  private final HolonomicDriveController m_controller;
+  private final HolonomicDriveController2 m_controller;
   private final Consumer<SwerveModuleState[]> m_outputModuleStates;
   private final Supplier<Rotation2d> m_desiredRotation;
 
@@ -79,7 +79,7 @@ public class SwerveControllerCommand2 extends CommandBase {
         trajectory,
         pose,
         kinematics,
-        new HolonomicDriveController(
+        new HolonomicDriveController2(
             requireNonNullParam(xController, "xController", "SwerveControllerCommand"),
             requireNonNullParam(yController, "yController", "SwerveControllerCommand"),
             requireNonNullParam(thetaController, "thetaController", "SwerveControllerCommand")),
@@ -150,7 +150,7 @@ public class SwerveControllerCommand2 extends CommandBase {
    * @param pose A function that supplies the robot pose - use one of the odometry classes to
    *     provide this.
    * @param kinematics The kinematics for the robot drivetrain.
-   * @param controller The HolonomicDriveController for the drivetrain.
+   * @param controller The HolonomicDriveController2 for the drivetrain.
    * @param outputModuleStates The raw output module states from the position controllers.
    * @param requirements The subsystems to require.
    */
@@ -158,7 +158,7 @@ public class SwerveControllerCommand2 extends CommandBase {
       Trajectory trajectory,
       Supplier<Pose2d> pose,
       SwerveDriveKinematics kinematics,
-      HolonomicDriveController controller,
+      HolonomicDriveController2 controller,
       Consumer<SwerveModuleState[]> outputModuleStates,
       Subsystem... requirements) {
     this(
@@ -184,7 +184,7 @@ public class SwerveControllerCommand2 extends CommandBase {
    * @param pose A function that supplies the robot pose - use one of the odometry classes to
    *     provide this.
    * @param kinematics The kinematics for the robot drivetrain.
-   * @param controller The HolonomicDriveController for the drivetrain.
+   * @param controller The HolonomicDriveController2 for the drivetrain.
    * @param desiredRotation The angle that the drivetrain should be facing. This is sampled at each
    *     time step.
    * @param outputModuleStates The raw output module states from the position controllers.
@@ -194,7 +194,7 @@ public class SwerveControllerCommand2 extends CommandBase {
       Trajectory trajectory,
       Supplier<Pose2d> pose,
       SwerveDriveKinematics kinematics,
-      HolonomicDriveController controller,
+      HolonomicDriveController2 controller,
       Supplier<Rotation2d> desiredRotation,
       Consumer<SwerveModuleState[]> outputModuleStates,
       Subsystem... requirements) {
