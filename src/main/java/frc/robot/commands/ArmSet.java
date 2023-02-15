@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmToSetpoint;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -10,11 +11,15 @@ public class ArmSet extends CommandBase
     //Behold my variables
     private final ArmToSetpoint m_ArmToSetpoint;
     private boolean isFinished;
+    private double X;
+    private double Y;
 
-    public ArmSet(ArmToSetpoint subsystem)
+    public ArmSet(ArmToSetpoint subsystem, double XCord, double YCord)
     {
         m_ArmToSetpoint = subsystem;
         addRequirements(subsystem);
+        X = XCord;
+        Y= YCord;
     }
 
 
@@ -29,7 +34,14 @@ public class ArmSet extends CommandBase
     @Override
     public void execute() 
     {
-       //activates arm when it is farther than a degree from desired angle
+        double UpperArm = ArmConstants.UpperArmLength;
+        double LowerArm = ArmConstants.LowerArmLength;
+        double argument = Math.atan(Y/X);
+        double modulus = Math.sqrt((Y*Y)+(X*X));
+        double LowerArmTheta = Math.acos(((UpperArm*UpperArm)-(modulus*modulus)-(LowerArm*LowerArm))/(2*LowerArm*modulus)) + argument;
+        double UpperArmTheta = Math.acos(((LowerArm*LowerArm)-(modulus*modulus)-(UpperArm*UpperArm))/(2*modulus*UpperArm));
+
+        //activates arm when it is farther than a degree from desired angle
         while(Math.abs(m_ArmToSetpoint.AngleDif)>=1)
         {
             m_ArmToSetpoint.MoveArm(SmartDashboard.getNumber("Desired Angle", 0));

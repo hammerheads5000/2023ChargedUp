@@ -13,12 +13,16 @@ public final class Constants {
 
     public static final class ArmConstants
     {
-        /*Motor Arm Values */
+        /*Upper Arm Values */
+        public static final double UpperArmLength = 0.69;
         public static final double UpperArmKP = 0.08; 
         public static final double UpperArmKI = 1/15;
         public static final double UpperArmRatio = 2048*100*360*(3/5);
         public static final double UpperArmMax = .3;
         public static final double UpperArmMin = .1;
+
+        /*Upper Arm Values */
+        public static final double LowerArmLength = 4.2;
     }
     public static final class Swerve {
         public static final int pigeonID = 1;
