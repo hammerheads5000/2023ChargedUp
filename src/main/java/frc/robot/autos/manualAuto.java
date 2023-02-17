@@ -27,7 +27,7 @@ import frc.robot.subsystems.Swerve;
 public class manualAuto extends SequentialCommandGroup {
     Trajectory exampleTrajectory = new Trajectory();
 
-    public manualAuto(Swerve s_AutoSwerve){
+    public manualAuto(Swerve s_AutoSwerve, String path){
 
         TrajectoryConfig config =
 
@@ -41,7 +41,7 @@ public class manualAuto extends SequentialCommandGroup {
 
         .setKinematics(Constants.Swerve.swerveKinematics);
 
-    String trajectoryJSON = "aidanPath.wpilib.json";
+    String trajectoryJSON = path;
 try{
 Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
 exampleTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
