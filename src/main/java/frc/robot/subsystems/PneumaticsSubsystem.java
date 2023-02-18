@@ -16,7 +16,7 @@ public class PneumaticsSubsystem extends SubsystemBase {
 
   private static Compressor phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
   
-  private static DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 8, 9);
+  private static DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 9, 8);
 
   /* Creates a new Pneumatics subsystem */
   public PneumaticsSubsystem() {
@@ -53,9 +53,5 @@ public class PneumaticsSubsystem extends SubsystemBase {
    */
   public double currentPressure() {
     return phCompressor.getPressure();
-  }
-
-  public boolean compressorEnabled() {
-    return phCompressor.isEnabled();
   }
 }
