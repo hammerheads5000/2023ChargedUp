@@ -16,8 +16,8 @@ public class autoCommandGroup extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     super(
-    new manualAuto(s_AutoSwerve, "part1Path.wpilib.json"),
-    new manualAuto(s_AutoSwerve, "part2Path.wpilib.json")
+    new manualAuto(s_AutoSwerve, "seanQuinnPath.wpilib.json")
+    //new manualAuto(s_AutoSwerve, "part2Path.wpilib.json")
 
 
     );
