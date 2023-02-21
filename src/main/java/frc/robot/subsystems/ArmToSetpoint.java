@@ -38,20 +38,19 @@ public class ArmToSetpoint extends SubsystemBase {
     //Moves arm to a desired angle
     public void MoveArm (double UpperDesiredAngle, double LowerDesiredAngle)
     {
-
-    //Theres litteraly so many variables and constants like holy bejesus 
-    double Up_ArmKI = RegularConstants.UpperArmKI;
-    double Low_ArmKI = RegularConstants.LowerArmKI;
-    double Up_ArmRatio = RegularConstants.UpperArmRatio;
-    double Low_ArmRatio = RegularConstants.LowerArmRatio;
-    double Up_tempOutput;
-    double Low_tempOutput;
-    double Up_ArmMax = RegularConstants.UpperArmMax;
-    double Low_ArmMax = RegularConstants.LowerArmMax;
-    double Up_ArmMin = RegularConstants.UpperArmMin;
-    double Low_ArmMin = RegularConstants.LowerArmMin;
-    double Up_TempEncoderTicks = Up_ArmMotor.getSensorCollection().getIntegratedSensorPosition();
-    double Low_TempEncoderTicks = Low_ArmMotor.getSensorCollection().getIntegratedSensorPosition();  
+      //Theres litteraly so many variables and constants like holy bejesus 
+      double Up_ArmKI = RegularConstants.UpperArmKI;
+      double Low_ArmKI = RegularConstants.LowerArmKI;
+      double Up_ArmRatio = RegularConstants.UpperArmRatio;
+      double Low_ArmRatio = RegularConstants.LowerArmRatio;
+      double Up_tempOutput;
+      double Low_tempOutput;
+      double Up_ArmMax = RegularConstants.UpperArmMax;
+      double Low_ArmMax = RegularConstants.LowerArmMax;
+      double Up_ArmMin = RegularConstants.UpperArmMin;
+      double Low_ArmMin = RegularConstants.LowerArmMin;
+      double Up_TempEncoderTicks = Up_ArmMotor.getSensorCollection().getIntegratedSensorPosition();
+      double Low_TempEncoderTicks = Low_ArmMotor.getSensorCollection().getIntegratedSensorPosition();  
 
       //Calculates angles based on last anglse and differences in encoder ticks  
       Up_angle = -(Up_TempEncoderTicks- Up_StartEncoderTicks) / Up_ArmRatio;
