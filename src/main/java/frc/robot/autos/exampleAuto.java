@@ -25,11 +25,14 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class exampleAuto extends SequentialCommandGroup {
     public exampleAuto(Swerve s_AutoSwerve){
         
-        PathPlannerTrajectory examplePath = PathPlanner.loadPath("seanQuinnPath", new PathConstraints(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
+        PathPlannerTrajectory examplePath = PathPlanner.loadPath("kelveyPath", new PathConstraints(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
         // This is just an example event map. It would be better to have a constant, global event map - in your code that will be used by all path following commands.
         HashMap<String, Command> eventMap = new HashMap<>();
         eventMap.put("marker1", new PrintCommand("Passed marker 1"));
         
+
+        var thetaController = new PIDController(Constants.AutoConstants.kPThetaController, 0, 0);
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
         FollowPathWithEvents PPswerveControllerCommand2 =
         new FollowPathWithEvents(
             new PPSwerveControllerCommand2(
@@ -38,9 +41,9 @@ public class exampleAuto extends SequentialCommandGroup {
                 Constants.Swerve.swerveKinematics,
                 new PIDController(Constants.AutoConstants.kPXController, 0, 0),
                 new PIDController(Constants.AutoConstants.kPYController, 0, 0),
-                new PIDController(Constants.AutoConstants.kPThetaController, 0, 0), // Rotation controller
+                thetaController,
                 s_AutoSwerve::setModuleStates,
-                true,
+                false,
                 s_AutoSwerve),
             examplePath.getMarkers(),
             eventMap);        

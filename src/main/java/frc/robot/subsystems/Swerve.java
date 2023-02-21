@@ -167,5 +167,15 @@ public class Swerve extends SubsystemBase {
         
     
     }
+    public void zeroWheels()
+    {
+        for(SwerveModule modZero : mSwerveMods)
+        {
+            if(modZero.getAngle()-modZero.angleOffset)
+            {
+                modZero.setDesiredState(0,0);
+            }
+        }
+    }
     
 }

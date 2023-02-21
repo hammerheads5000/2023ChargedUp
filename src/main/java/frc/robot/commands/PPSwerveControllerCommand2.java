@@ -270,6 +270,9 @@ public class PPSwerveControllerCommand2 extends CommandBase {
     if (logSetpoint != null) {
       logSetpoint.accept(targetChassisSpeeds);
     }
+    System.out.println("currentPose"+currentPose.getX()+","+currentPose.getY()+"  desiredPose"+desiredState.poseMeters.getX()+","+desiredState.poseMeters.getY());
+
+ 
   }
 
   @Override

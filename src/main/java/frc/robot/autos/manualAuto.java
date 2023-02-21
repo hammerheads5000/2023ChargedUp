@@ -15,9 +15,11 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.SwerveControllerCommand2;
@@ -114,14 +116,17 @@ Constants.Swerve.swerveKinematics,
     addRequirements(s_AutoSwerve);
 
 
-
+    
     addCommands(
 
+        
         new InstantCommand(() -> s_AutoSwerve.resetOdometry(exampleTrajectory.getInitialPose())),
 
        //swerveControllerCommand2,
+        new InstantCommand(() -> s_AutoSwerve.drive(0,0,1,false)),       // Need to stop robot at end, likely different param to set FieldRelative
+        new WaitCommand(2.5),
+        new InstantCommand(() -> s_AutoSwerve.drive(0,0,0,false))       // Need to stop robot at end, likely different param to set FieldRelative
 
-        new InstantCommand(() -> s_AutoSwerve.drive(0,0,1,false))       // Need to stop robot at end, likely different param to set FieldRelative
 
     );
 
