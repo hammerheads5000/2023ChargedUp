@@ -91,7 +91,7 @@ public final class Constants {
             public static final int driveMotorID = 22;
             public static final int angleMotorID = 7;
             public static final int canCoderID = 2;
-            public static final double angleOffset = 343.5;
+            public static final double angleOffset = 343.0;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -101,7 +101,7 @@ public final class Constants {
             public static final int driveMotorID = 6;
             public static final int angleMotorID = 1;
             public static final int canCoderID = 0;
-            public static final double angleOffset = 311.3;
+            public static final double angleOffset = 308.3;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -111,7 +111,7 @@ public final class Constants {
             public static final int driveMotorID = 0;
             public static final int angleMotorID = 21;
             public static final int canCoderID = 1;
-            public static final double angleOffset = 354.9;
+            public static final double angleOffset = 356.9;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -121,7 +121,7 @@ public final class Constants {
             public static final int driveMotorID = 20;
             public static final int angleMotorID = 24;
             public static final int canCoderID = 3;
-            public static final double angleOffset = 146.2;
+            public static final double angleOffset = 143.2;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }

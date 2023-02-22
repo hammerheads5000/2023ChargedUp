@@ -123,8 +123,8 @@ Constants.Swerve.swerveKinematics,
         new InstantCommand(() -> s_AutoSwerve.resetOdometry(exampleTrajectory.getInitialPose())),
 
        //swerveControllerCommand2,
-        new InstantCommand(() -> s_AutoSwerve.drive(0,0,1,false)),       // Need to stop robot at end, likely different param to set FieldRelative
-        new WaitCommand(2.5),
+        new InstantCommand(() -> s_AutoSwerve.drive(1,0,0,false)),       // Need to stop robot at end, likely different param to set FieldRelative
+        new WaitCommand(1.0),
         new InstantCommand(() -> s_AutoSwerve.drive(0,0,0,false))       // Need to stop robot at end, likely different param to set FieldRelative
 
 
