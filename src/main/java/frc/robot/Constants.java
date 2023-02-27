@@ -95,6 +95,20 @@ public final class Constants {
         /* Angle Encoder Invert */
         public static final boolean canCoderInvert = false;
 
+        public static double getOffset(int modNum)
+        {
+            if(modNum==0)
+                return Constants.Swerve.Mod0.angleOffset;
+            if(modNum==1)
+                return Constants.Swerve.Mod1.angleOffset;
+            if(modNum==2)
+                return Constants.Swerve.Mod2.angleOffset;
+            if(modNum==3)
+                return Constants.Swerve.Mod3.angleOffset;
+            return 0;
+        }
+
+
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
         public static final class Mod0 {
