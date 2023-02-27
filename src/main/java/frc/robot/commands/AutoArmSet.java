@@ -2,34 +2,36 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.RegularConstants;
 import frc.robot.subsystems.ArmToSetpoint;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 /** An example command that uses an example subsystem. */
-public class ArmSet extends CommandBase 
+public class AutoArmSet extends CommandBase 
 {
     //Behold my variables
     private final ArmToSetpoint m_ArmToSetpoint;
     private boolean isFinished;
     public double LastDesiredAngle;
     public double DesiredAngle = 0;
-    private final Joystick driver = new Joystick(0);
-    private JoystickButton Increase = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-    private JoystickButton decrease = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-    private JoystickButton set = new JoystickButton(driver, XboxController.Button.kA.value);
+    Timer timer = new Timer();
     private double armMoveSpeed = 0.3;
     DigitalInput limitSwitch = new DigitalInput(5);
+    private int angle;
 
-    public ArmSet(ArmToSetpoint subsystem)
+    public AutoArmSet(ArmToSetpoint subsystem, int angle)
     {
         m_ArmToSetpoint = subsystem;
         addRequirements(subsystem);
+        this.angle = angle;
     }
+
 
 
     @Override
@@ -44,24 +46,10 @@ public class ArmSet extends CommandBase
     public void execute() 
     {
         
-        if(set.getAsBoolean() == true)
-        {
+        
             setAngle();
-        }
-        else if(Increase.getAsBoolean() == true)
-        {
-            increaseAngle();
-        }
-        else if(decrease.getAsBoolean() == true)
-        {
-            decreaseAngle();
-        }
-        else
-        {
-            m_ArmToSetpoint.stop();
-        }
-        SmartDashboard.putNumber("LastDesiredAngle", LastDesiredAngle);
-        SmartDashboard.putNumber("DesiredAngle", DesiredAngle);
+        
+        
     }
 
 
@@ -76,25 +64,20 @@ public class ArmSet extends CommandBase
     @Override
     public boolean isFinished() {
       
-        return isFinished;
+        if(timer.get() >= Constants.AutoConstants.autoArmSetTime){
+            return true;
+          }else{
+            return false;
+          }
     }   
 
     public void setAngle()
     {
-        DesiredAngle = SmartDashboard.getNumber("Desired Angle", 0);
-        Move(DesiredAngle, true);
+        Move(angle, true);
         LastDesiredAngle = DesiredAngle;
     }
     
-    public void increaseAngle()
-    {
-        m_ArmToSetpoint.moveUp(armMoveSpeed);
-    }
-
-    public void decreaseAngle()
-    {
-        m_ArmToSetpoint.moveDown(armMoveSpeed);
-    }
+   
 
     public void Move(double angle, boolean PID)
     {
@@ -127,4 +110,5 @@ public class ArmSet extends CommandBase
         }
     } 
 }
+
 

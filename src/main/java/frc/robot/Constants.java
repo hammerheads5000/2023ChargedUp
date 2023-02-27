@@ -9,12 +9,26 @@ import edu.wpi.first.math.util.Units;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
+
+    public static final int ENCODER_COUNTS_PER_METER = 53091;
+
+
     public static final double stickDeadband = 0.3;
 
     public static final class RegularConstants
     {
         /*Motor Arm Values */
-        public static final double ArmKP = 0.6; 
+        public static final double UpperArmKI = 1/15;
+        public static final double LowerArmKI = 1/15;
+        public static final double UpperArmRatio = 570 * (42/20) * (42/20);
+        public static final double LowerArmRatio = 570 * (40/24); //check this
+        public static final double UpperArmMax = .7;
+        public static final double LowerArmMax = .6; // test this value
+        public static final double UpperArmMin = .1;
+        public static final double LowerArmMin = .25; // test this value
+        public static final double UpperArmLength = 1234;
+        public static final double LowerArmLength =2345;
+
     }
     public static final class Swerve {
         public static final int pigeonID = 1;
@@ -87,7 +101,7 @@ public final class Constants {
             public static final int driveMotorID = 22;
             public static final int angleMotorID = 7;
             public static final int canCoderID = 2;
-            public static final double angleOffset = 355.5;
+            public static final double angleOffset = 352.61;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -97,7 +111,7 @@ public final class Constants {
             public static final int driveMotorID = 6;
             public static final int angleMotorID = 1;
             public static final int canCoderID = 0;
-            public static final double angleOffset = 355.4;
+            public static final double angleOffset = 308.1;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -107,7 +121,7 @@ public final class Constants {
             public static final int driveMotorID = 0;
             public static final int angleMotorID = 21;
             public static final int canCoderID = 1;
-            public static final double angleOffset = 358.41;
+            public static final double angleOffset = 354.29;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -117,27 +131,26 @@ public final class Constants {
             public static final int driveMotorID = 20;
             public static final int angleMotorID = 24;
             public static final int canCoderID = 3;
-            public static final double angleOffset = 142.6;
+            public static final double angleOffset = 145.01;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
-
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 3;
+        public static final double kMaxSpeedMetersPerSecond = 1.6;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-    
-        public static final double kPXController = 1;
-        public static final double kPYController = 1;
-        public static final double kPThetaController = 1;
-    
+    public static final int autoArmSetTime = 3;
+        public static final double kPXController = 0.4;
+        public static final double kPYController = 0.4;
+        public static final double kPThetaController = 0.1;
         // Constraint for the motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
             new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+                
       }
 
 }

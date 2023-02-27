@@ -4,26 +4,37 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Servo;
 
-public class PneumaticsSubsystem extends SubsystemBase {
+public class ClawSubsystem extends SubsystemBase {
+  private boolean isOpen = true;
 
-  private static Compressor phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
+  //private static Compressor phCompressor = new Compressor(1, PneumaticsModuleType.CTREPCM);
   
-  private static DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 8, 9);
+  private static DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
 
-  /* Creates a new Pneumatics subsystem */
-  public PneumaticsSubsystem() {
+  Servo rotationMotor = new Servo(4);
+  /** Creates a new ClawSubsystem. */
+  public ClawSubsystem() {}
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
+
+  public void rotate(int direction)
+  {
+    rotationMotor.set(direction);
   }
 
   public void m_enableCompressor() {
-    phCompressor.enableDigital();
+    //phCompressor.enableDigital();
   }
 
   public void m_initializeSolenoid() {
@@ -31,7 +42,7 @@ public class PneumaticsSubsystem extends SubsystemBase {
   }
 
   public void m_disableCompressor() {
-    phCompressor.disable();
+    //phCompressor.disable();
   }
 
   public void m_toggle() {
@@ -46,16 +57,18 @@ public class PneumaticsSubsystem extends SubsystemBase {
     doubleSolenoid.set(kReverse);
   }
 
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
   public double currentPressure() {
-    return phCompressor.getPressure();
+    //return phCompressor.getPressure();
+    return 0;
   }
 
-  public boolean compressorEnabled() {
-    return phCompressor.isEnabled();
+  public void setState(boolean set)
+  {
+    isOpen = set;
+  }
+
+  public boolean getState()
+  {
+    return isOpen;
   }
 }
