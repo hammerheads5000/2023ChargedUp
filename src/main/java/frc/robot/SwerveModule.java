@@ -60,6 +60,11 @@ public class SwerveModule {
         lastAngle = angle;
     }
 
+    public void setAngularVelocity(Double percentage)
+    {
+        mAngleMotor.set(ControlMode.PercentOutput, percentage);
+    }
+
     private void resetToAbsolute(){
         double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
         mAngleMotor.setSelectedSensorPosition(absolutePosition);
@@ -97,7 +102,16 @@ public class SwerveModule {
     }
 
     public SwerveModulePosition getPosition() {
-        return new SwerveModulePosition(mDriveMotor.getSelectedSensorPosition(), getCanCoder());
+
+        return new SwerveModulePosition(mDriveMotor.getSelectedSensorPosition() / Constants.ENCODER_COUNTS_PER_METER, getAngle());
+
     }
     
+    private Rotation2d getAngle(){
+
+        return Rotation2d.fromDegrees(Conversions.falconToDegrees(mAngleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio));
+
+    }
+
+
 }

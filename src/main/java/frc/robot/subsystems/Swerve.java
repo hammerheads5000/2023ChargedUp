@@ -32,10 +32,12 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public WPI_Pigeon2 gyro;
+    //public Field2d m_field2d = new Field2d();
 
     public Swerve() {
         gyro = new WPI_Pigeon2(Constants.Swerve.pigeonID, "Bobby");
         zeroGyro();
+    
         
         
 
@@ -47,10 +49,13 @@ public class Swerve extends SubsystemBase {
         };
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions());
+
     }
 
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    
+
     var swerveModuleStates =
         Constants.Swerve.swerveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -58,10 +63,10 @@ public class Swerve extends SubsystemBase {
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, Constants.Swerve.maxSpeed);
-    mSwerveMods[0].setDesiredState(swerveModuleStates[0], false);
-    mSwerveMods[1].setDesiredState(swerveModuleStates[1], false);
-    mSwerveMods[2].setDesiredState(swerveModuleStates[2], false);
-    mSwerveMods[3].setDesiredState(swerveModuleStates[3], false);
+    mSwerveMods[0].setDesiredState(swerveModuleStates[0], true);
+    mSwerveMods[1].setDesiredState(swerveModuleStates[1], true);
+    mSwerveMods[2].setDesiredState(swerveModuleStates[2], true);
+    mSwerveMods[3].setDesiredState(swerveModuleStates[3], true);
   }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -87,11 +92,16 @@ public class Swerve extends SubsystemBase {
     
     public SwerveModulePosition[] getModulePositions()
     {
+        SmartDashboard.putString("getPosition[0]",mSwerveMods[0].getPosition().toString());
+        SmartDashboard.putString("getPosition[1]",mSwerveMods[1].getPosition().toString());
+        SmartDashboard.putString("getPosition[2]",mSwerveMods[2].getPosition().toString());
+        SmartDashboard.putString("getPosition[3]",mSwerveMods[3].getPosition().toString());
         return new SwerveModulePosition[] {
             mSwerveMods[0].getPosition(),
             mSwerveMods[1].getPosition(),
             mSwerveMods[2].getPosition(),
             mSwerveMods[3].getPosition()
+            
         };
     }
 
@@ -100,7 +110,7 @@ public class Swerve extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed);
         
         for(SwerveModule mod : mSwerveMods){
-            mod.setDesiredState(desiredStates[mod.moduleNumber], false);
+            mod.setDesiredState(desiredStates[mod.moduleNumber], false);//true?
         }
     }    
     
@@ -141,14 +151,54 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
+        SmartDashboard.putNumber("getXpreUpdt",swerveOdometry.getPoseMeters().getX());
+        SmartDashboard.putNumber("getYpreUpdt",swerveOdometry.getPoseMeters().getY());
+        SmartDashboard.putNumber("getGyroAnglepreUpdt",gyro.getAngle());
         swerveOdometry.update(getYaw(), getModulePositions());  
-/* 
+        SmartDashboard.putNumber("getXpostUpdt",swerveOdometry.getPoseMeters().getX());
+        SmartDashboard.putNumber("getYpostUpdt",swerveOdometry.getPoseMeters().getY());
+        SmartDashboard.putNumber("getGyroAnglepostUpdt",gyro.getAngle());
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
         }
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
-        */
-    }    
+        
+    
+    }
+    
+    public void zeroWheels()
+    {
+        for(int i = 0; i<4; i++)
+        {
+            SwerveModule modZero = mSwerveMods[i];
+            double offset = Constants.Swerve.getOffset(i);
+            double percent = 0;
+            
+            while(Math.abs((modZero.getState().angle.getDegrees())-offset)>0.1)
+            {
+                if(modZero.getState().angle.getDegrees()-offset>10)
+                {
+                    percent = 1-(1/(modZero.getState().angle.getDegrees())-offset);
+                }
+                else
+                {
+                    percent = 0.1;
+                }
+                if(modZero.getState().angle.getDegrees()-offset>0)
+                {
+                    modZero.setAngularVelocity(percent);
+                }
+                else if(modZero.getState().angle.getDegrees()-offset<0.1)
+                {
+                    modZero.setAngularVelocity(percent);
+                }
+                else{break;}
+            }
+        }
+    
+    }
 }
+    
+

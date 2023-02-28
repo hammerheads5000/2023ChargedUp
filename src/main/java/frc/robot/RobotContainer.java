@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -26,6 +27,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
   /* Controllers */
   private final Joystick driver = new Joystick(0);
+  private final Joystick arm = new Joystick(1);
 
   /* Drive Controls */
   private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -33,34 +35,46 @@ public class RobotContainer {
   private final int rotationAxis = XboxController.Axis.kRightX.value;
 
   /* Driver Buttons */
-  private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-  private final JoystickButton b_extendButton = new JoystickButton(driver, XboxController.Button.kB.value);
-  private final JoystickButton CheckEncoder = new JoystickButton(driver, XboxController.Button.kA.value);
+  private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value); //Basically useless but probably works
+  private final JoystickButton intakeRaiseButton = new JoystickButton(driver, XboxController.Button.kRightBumper.value); //works
+  private final JoystickButton intakeClawButton = new JoystickButton(driver, XboxController.Button.kLeftBumper.value); ///works
+  private final JoystickButton intakeMotorButton = new JoystickButton(driver, XboxController.Button.kA.value); //works
+  private final JoystickButton zeroWheels = new JoystickButton(driver, XboxController.Button.kB.value); //?
+
+  /* Arm Buttons */
+  private final JoystickButton clawRotation = new JoystickButton(arm, XboxController.Button.kY.value); //doesn't work
+  private final JoystickButton lowerArmButton = new JoystickButton(arm, XboxController.Button.kB.value); //works
+  public final JoystickButton ArmSetButton = new JoystickButton(arm, XboxController.Button.kX.value); //works (probably)
+  public final JoystickButton clawButton = new JoystickButton(arm, XboxController.Button.kA.value); //works
+  public final JoystickButton ArmIncreaseButton = new JoystickButton(arm, XboxController.Button.kLeftBumper.value); //works
+  public final JoystickButton ArmDecreaseButton = new JoystickButton(arm, XboxController.Button.kRightBumper.value); //works
+  private final JoystickButton lowerArmIncreaseButton = new JoystickButton(arm, XboxController.Button.kBack.value); //works
+  private final JoystickButton lowerArmDecreaseButton = new JoystickButton(arm, XboxController.Button.kStart.value); //works
+  
+  // limit switches 
   
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-
-  private final PneumaticsSubsystem sub_pneumaticsSubsystem = new PneumaticsSubsystem();
+ 
   private final ArmToSetpoint sub_ArmToSetpoint = new ArmToSetpoint();
+  private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
+  private final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
+
+  private final IntakeSubsystem sub_IntakeSubsystem = new IntakeSubsystem();
+
   /* Commands */
-  private final PneumaticPistonCommand cmd_pneumaticsCommand = new PneumaticPistonCommand(sub_pneumaticsSubsystem);
   private final ArmSet cmd_ArmSet = new ArmSet(sub_ArmToSetpoint);
+  private final LowerArmCommand cmd_LowerArmCommand = new LowerArmCommand(sub_LowerArmSubsystem);
+  private final ClawCommand cmd_ClawCommand = new ClawCommand(sub_ClawSubsystem);
+  private final IntakeLiftCommand cmd_IntakeLiftCommand = new IntakeLiftCommand(sub_IntakeSubsystem);
+  private final IntakeClawCommand cmd_IntakeClawCommand = new IntakeClawCommand(sub_IntakeSubsystem);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-    boolean fieldRelative;
-    try
-    {
-      fieldRelative = SmartDashboard.getBoolean("Field Relative", false);
-    }
-    catch(Exception e)
-    {
-      fieldRelative = false;
-    }
-    SmartDashboard.putBoolean("Field Relative", fieldRelative);
-    
+    boolean fieldRelative = true;
     boolean openLoop = true;
     s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+
 
     // Configure the button bindings
     configureButtonBindings();
@@ -75,8 +89,30 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-    b_extendButton.whileTrue(cmd_pneumaticsCommand);
-    CheckEncoder.whileFalse(cmd_ArmSet);
+    zeroWheels.onTrue(new InstantCommand(() -> s_Swerve.zeroWheels()));
+    
+    ArmSetButton.whileTrue(cmd_ArmSet);
+    ArmDecreaseButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.moveUp(0.3)));
+    ArmIncreaseButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.moveDown(0.3)));
+    ArmDecreaseButton.onFalse(new InstantCommand(() -> sub_ArmToSetpoint.stop()));
+    ArmIncreaseButton.onFalse(new InstantCommand(() -> sub_ArmToSetpoint.stop()));
+    
+    lowerArmButton.onTrue(cmd_LowerArmCommand);
+
+    clawButton.onTrue(cmd_ClawCommand);
+    clawRotation.whileTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate(arm.getXChannel())));
+
+    double lowerArmMotorPercentOutput = 0.15;
+    lowerArmIncreaseButton.onTrue(new InstantCommand(() -> sub_LowerArmSubsystem.m_increaseMotor(lowerArmMotorPercentOutput)));
+    lowerArmDecreaseButton.onTrue(new InstantCommand(() -> sub_LowerArmSubsystem.m_decreaseMotor(lowerArmMotorPercentOutput)));
+    lowerArmIncreaseButton.onFalse(new InstantCommand(() -> sub_LowerArmSubsystem.m_stopMotor()));
+    lowerArmDecreaseButton.onFalse(new InstantCommand(() -> sub_LowerArmSubsystem.m_stopMotor()));
+
+    intakeRaiseButton.whileTrue(cmd_IntakeLiftCommand);
+    intakeClawButton.onTrue(new InstantCommand(() -> sub_IntakeSubsystem.m_extendGrabber()));
+    intakeClawButton.onFalse(new InstantCommand(() -> sub_IntakeSubsystem.m_contractGrabber()));
+    intakeMotorButton.whileTrue(new InstantCommand(() -> sub_IntakeSubsystem.m_activateIntakeMotor(1)));
+    intakeMotorButton.whileFalse(new InstantCommand(() -> sub_IntakeSubsystem.m_stopIntakeMotor()));
   }
 
   /**
@@ -86,7 +122,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new exampleAuto(s_Swerve);
+    return new quincyCommandGroup(sub_IntakeSubsystem);
   }
 
 
