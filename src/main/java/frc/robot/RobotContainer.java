@@ -35,19 +35,21 @@ public class RobotContainer {
   /* Driver Buttons */
   private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
   private final JoystickButton b_extendButton = new JoystickButton(driver, XboxController.Button.kB.value);
+  private final JoystickButton CheckEncoder = new JoystickButton(driver, XboxController.Button.kA.value);
+  
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-  //private final PneumaticsSubsystem sub_pneumaticsSubsystem = new PneumaticsSubsystem();
-  
-  /* Commands */
-  //private final PneumaticPistonCommand cmd_pneumaticsCommand = new PneumaticPistonCommand(sub_pneumaticsSubsystem);
 
+  private final PneumaticsSubsystem sub_pneumaticsSubsystem = new PneumaticsSubsystem();
+  private final ArmToSetpoint sub_ArmToSetpoint = new ArmToSetpoint();
+  /* Commands */
+  private final PneumaticPistonCommand cmd_pneumaticsCommand = new PneumaticPistonCommand(sub_pneumaticsSubsystem);
+  private final ArmSet cmd_ArmSet = new ArmSet(sub_ArmToSetpoint);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    //This just makes the field relative setting controllable through SmartDashboard
-    boolean fieldRelative = false;
-    /*try
+    boolean fieldRelative;
+    try
     {
       fieldRelative = SmartDashboard.getBoolean("Field Relative", false);
     }
@@ -56,10 +58,10 @@ public class RobotContainer {
       fieldRelative = false;
     }
     SmartDashboard.putBoolean("Field Relative", fieldRelative);
-    */
+    
     boolean openLoop = true;
     s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-    s_Swerve.setDefaultCommand(new UICommand(new UISubsystem()));    
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -73,6 +75,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+    b_extendButton.whileTrue(cmd_pneumaticsCommand);
+    CheckEncoder.whileFalse(cmd_ArmSet);
   }
 
   /**
