@@ -1,6 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
 
@@ -18,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Constants.RegularConstants;
+import frc.robot.Constants.RegularConstants;
 public class ArmToSetpoint extends SubsystemBase {
 
   /*Behold, My variables */
@@ -26,7 +24,7 @@ public class ArmToSetpoint extends SubsystemBase {
    public double StartEncoderTicks;
    public double AngleDif;
 
-    /* Creates a new Pneumatics subsystem */
+    /* Creates a new ArmToSetpoint subsystem */
     public ArmToSetpoint () 
     {
       ArmMotor.setNeutralMode(NeutralMode.Brake);
