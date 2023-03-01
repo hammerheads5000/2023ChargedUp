@@ -17,18 +17,19 @@ public final class Constants {
 
     public static final class RegularConstants
     {
+        
         /*Motor Arm Values */
         public static final double UpperArmKI = 1/15;
         public static final double LowerArmKI = 1/15;
         public static final double UpperArmRatio = 570 * (42/20) * (42/20);
         public static final double LowerArmRatio = 570 * (40/24); //check this
+
         public static final double UpperArmMax = .7;
         public static final double LowerArmMax = .6; // test this value
         public static final double UpperArmMin = .1;
         public static final double LowerArmMin = .25; // test this value
         public static final double UpperArmLength = 1234;
         public static final double LowerArmLength =2345;
-
     }
     public static final class Swerve {
         public static final int pigeonID = 1;
@@ -63,6 +64,7 @@ public final class Constants {
         public static final double drivePeakCurrentDuration = 0.1;
         public static final boolean driveEnableCurrentLimit = true;
 
+
         /* Angle Motor PID Values */
         public static final double angleKP = 0.45;
         public static final double angleKI = 0.0;
@@ -74,6 +76,7 @@ public final class Constants {
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
+        
 
         /* Drive Motor Characterization Values */
         public static final double driveKS = (0.667 / 12); //divide by 12 to convert from volts to percent output for CTRE
@@ -81,8 +84,8 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         /* Swerve Profiling Values */
-        public static double maxSpeed = 4.5; //meters per second
-        public static double maxAngularVelocity = 11.5;
+        public static final double maxSpeed = 4.5; //meters per second
+        public static final double maxAngularVelocity = 11.5;
 
         /* Neutral Modes */
         public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
