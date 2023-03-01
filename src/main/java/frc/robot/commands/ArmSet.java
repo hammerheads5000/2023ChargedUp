@@ -14,21 +14,18 @@ import frc.robot.RobotContainer;
 public class ArmSet extends CommandBase 
 {
     //Behold my variables
-    private final ArmToSetpoint m_ArmToSetpoint;
+    private final ArmToSetpoint m_UpperArmToSetpoint;
+    private final ArmToSetpoint m_LowerArmToSetpoint;
     private boolean isFinished;
-    public double LastDesiredAngle;
-    public double DesiredAngle = 0;
-    private final Joystick driver = new Joystick(0);
-    private JoystickButton Increase = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-    private JoystickButton decrease = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-    private JoystickButton set = new JoystickButton(driver, XboxController.Button.kA.value);
-    private double armMoveSpeed = 0.3;
     DigitalInput limitSwitch = new DigitalInput(5);
-
-    public ArmSet(ArmToSetpoint subsystem)
+    private double DesiredX;
+    private double DesiredY;
+    public ArmSet(ArmToSetpoint UpperSubsystem, ArmToSetpoint LowerSubsystem )
     {
-        m_ArmToSetpoint = subsystem;
-        addRequirements(subsystem);
+        m_UpperArmToSetpoint = UpperSubsystem;
+        addRequirements(UpperSubsystem);
+        m_LowerArmToSetpoint = LowerSubsystem;
+        addRequirements(LowerSubsystem);
     }
 
 
@@ -36,32 +33,37 @@ public class ArmSet extends CommandBase
     public void initialize() 
     {
         //puts the desired angle value on smartDashboard to be used
-        m_ArmToSetpoint.MoveArm(SmartDashboard.getNumber("Desired Angle", 0), true);
+        SmartDashboard.putNumber("XCord", 0);
+        SmartDashboard.putNumber("YCord", 0);
+        m_UpperArmToSetpoint.MoveArm(SmartDashboard.getNumber("Desired X", 0), true);
+        m_LowerArmToSetpoint.MoveArm(SmartDashboard.getNumber("Desired Y", 0), true);
     }
 
 
     @Override
     public void execute() 
     {
-        
-        if(set.getAsBoolean() == true)
-        {
-            setAngle();
-        }
-        else if(Increase.getAsBoolean() == true)
-        {
-            increaseAngle();
-        }
-        else if(decrease.getAsBoolean() == true)
-        {
-            decreaseAngle();
-        }
-        else
-        {
-            m_ArmToSetpoint.stop();
-        }
-        SmartDashboard.putNumber("LastDesiredAngle", LastDesiredAngle);
-        SmartDashboard.putNumber("DesiredAngle", DesiredAngle);
+        DesiredX = 42;
+        DesiredY = 45.5;
+        double L1 = RegularConstants.UpperArmLength;
+        double L2 = RegularConstants.LowerArmLength;
+        double x = DesiredX;
+        double y = DesiredY;
+        double modulus =  Math.sqrt((y*y)+(x*x));
+        SmartDashboard.putNumber("Modulus", modulus);
+        double argument = Math.atan(x/y);
+        SmartDashboard.putNumber("argument", argument);
+        //law of cosines
+        double angleA = Math.acos(((L2*L2)-(L1*L1)-(modulus*modulus))/(-2*modulus*L1));
+        SmartDashboard.putNumber("angleA", angleA);
+        //law of sines
+        double angleB = Math.asin((Math.sin(angleA)/L2)*modulus);
+        SmartDashboard.putNumber("angleB", angleB);
+        double LowerDesiredAngle = (angleA + argument) * 180/Math.PI; 
+        double UpperDesiredAngle = angleB *180/Math.PI ;
+        SmartDashboard.putNumber("Upper Expected angle", UpperDesiredAngle);
+        SmartDashboard.putNumber("Lower Expected Angle", LowerDesiredAngle);
+        Move(LowerDesiredAngle, UpperDesiredAngle);
     }
 
 
@@ -69,7 +71,9 @@ public class ArmSet extends CommandBase
     public void end(boolean interrupted) 
     {
         //stops the arm
-        m_ArmToSetpoint.stop();
+        m_UpperArmToSetpoint.stop();
+        m_LowerArmToSetpoint.stop();
+
     }
 
     
@@ -79,52 +83,39 @@ public class ArmSet extends CommandBase
         return isFinished;
     }   
 
-    public void setAngle()
+    public void Move(double LowerAngle, double UpperAngle)
     {
-        DesiredAngle = SmartDashboard.getNumber("Desired Angle", 0);
-        Move(DesiredAngle, true);
-        LastDesiredAngle = DesiredAngle;
-    }
-    
-    public void increaseAngle()
-    {
-        m_ArmToSetpoint.moveUp(armMoveSpeed);
-    }
+        m_LowerArmToSetpoint.MoveArm(LowerAngle, false);
+        m_LowerArmToSetpoint.MoveArm(UpperAngle, true);
 
-    public void decreaseAngle()
-    {
-        m_ArmToSetpoint.moveDown(armMoveSpeed);
-    }
 
-    public void Move(double angle, boolean PID)
-    {
-        m_ArmToSetpoint.MoveArm(angle, true);
-        while(Math.abs(m_ArmToSetpoint.AngleDif)>=1)
+        while(Math.abs(m_LowerArmToSetpoint.AngleDif)>=1 || Math.abs(m_UpperArmToSetpoint.AngleDif)>=1  )
         {
-            if(limitSwitch.get()==true)
+
+            if(Math.abs(m_LowerArmToSetpoint.AngleDif)>=1)
             {
-                DesiredAngle = 0;
-                m_ArmToSetpoint.Reset();
+                m_LowerArmToSetpoint.MoveArm(LowerAngle, false);
             }
-            else
+
+            if(Math.abs(m_UpperArmToSetpoint.AngleDif)>=1)
             {
-                m_ArmToSetpoint.MoveArm(angle, PID);
-            }
-            
+                m_UpperArmToSetpoint.MoveArm(UpperAngle, true);
+            }   
         }
-        if(Math.abs(m_ArmToSetpoint.AngleDif)>=1)
+        if(Math.abs(m_LowerArmToSetpoint.AngleDif)>=1 || Math.abs(m_UpperArmToSetpoint.AngleDif)>=1  )
         {
             isFinished = true;
-            m_ArmToSetpoint.stop();
+            m_LowerArmToSetpoint.stop();
             return;
             
         }
         else
         {
             isFinished = false;
-            m_ArmToSetpoint.stop();
+            m_LowerArmToSetpoint.stop();
             return;
         }
     } 
+
 }
 

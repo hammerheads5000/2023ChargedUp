@@ -26,8 +26,8 @@ public final class Constants {
         public static final double LowerArmMax = .6; // test this value
         public static final double UpperArmMin = .1;
         public static final double LowerArmMin = .25; // test this value
-        public static final double UpperArmLength = 1234;
-        public static final double LowerArmLength =2345;
+        public static final double UpperArmLength = 42;
+        public static final double LowerArmLength =45.5;
 
     }
     public static final class Swerve {
