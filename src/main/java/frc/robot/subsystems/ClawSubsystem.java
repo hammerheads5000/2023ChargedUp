@@ -28,7 +28,7 @@ public class ClawSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void rotate(int direction)
+  public void rotate(double direction)
   {
     rotationMotor.set(direction);
   }

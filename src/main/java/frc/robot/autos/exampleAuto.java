@@ -29,14 +29,14 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class exampleAuto extends SequentialCommandGroup {
-    public exampleAuto(Swerve s_AutoSwerve, String path, LowerArmSubsystem sub_LowerArmSubsystem, ArmToSetpoint sub_ArmToSetpoint, int angle, ClawSubsystem sub_ClawSubsystem){
+    public exampleAuto(Swerve s_AutoSwerve, String path /*LowerArmSubsystem sub_LowerArmSubsystem, ArmToSetpoint sub_ArmToSetpoint, int angle, ClawSubsystem sub_ClawSubsystem*/){
         
         PathPlannerTrajectory examplePath = PathPlanner.loadPath(path, new PathConstraints(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
         // This is just an example event map. It would be better to have a constant, global event map - in your code that will be used by all path following commands.
         HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("setPoint", new AutoArmSet(sub_ArmToSetpoint, angle));
-        eventMap.put("lowerArm", new LowerArmCommand(sub_LowerArmSubsystem));
-        eventMap.put("claw", new ClawCommand(sub_ClawSubsystem));
+        //eventMap.put("setPoint", new AutoArmSet(sub_ArmToSetpoint, angle));
+        //eventMap.put("lowerArm", new LowerArmCommand(sub_LowerArmSubsystem));
+        //eventMap.put("claw", new ClawCommand(sub_ClawSubsystem));
 
 
         

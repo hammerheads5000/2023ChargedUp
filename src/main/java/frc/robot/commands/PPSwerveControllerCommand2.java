@@ -2,7 +2,7 @@ package frc.robot.commands;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+//import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.server.PathPlannerServer;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -25,7 +25,7 @@ public class PPSwerveControllerCommand2 extends CommandBase {
   private final PathPlannerTrajectory trajectory;
   private final Supplier<Pose2d> poseSupplier;
   private final SwerveDriveKinematics kinematics;
-  private final PPHolonomicDriveController controller;
+  private final PPHolonomicDriveController2 controller;
   private final Consumer<SwerveModuleState[]> outputModuleStates;
   private final Consumer<ChassisSpeeds> outputChassisSpeeds;
   private final boolean useKinematics;
@@ -70,7 +70,7 @@ public class PPSwerveControllerCommand2 extends CommandBase {
       Subsystem... requirements) {
     this.trajectory = trajectory;
     this.poseSupplier = poseSupplier;
-    this.controller = new PPHolonomicDriveController(xController, yController, rotationController);
+    this.controller = new PPHolonomicDriveController2(xController, yController, rotationController);
     this.outputChassisSpeeds = outputChassisSpeeds;
     this.outputModuleStates = null;
     this.kinematics = null;
@@ -158,7 +158,7 @@ public class PPSwerveControllerCommand2 extends CommandBase {
     this.trajectory = trajectory;
     this.poseSupplier = poseSupplier;
     this.kinematics = kinematics;
-    this.controller = new PPHolonomicDriveController(xController, yController, rotationController);
+    this.controller = new PPHolonomicDriveController2(xController, yController, rotationController);
     this.outputModuleStates = outputModuleStates;
     this.outputChassisSpeeds = null;
     this.useKinematics = true;
