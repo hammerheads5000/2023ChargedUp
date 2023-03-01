@@ -44,7 +44,7 @@ public class RobotContainer {
   /* Arm Buttons */
   private final JoystickButton clawRotation = new JoystickButton(arm, XboxController.Button.kY.value); //doesn't work
   private final JoystickButton lowerArmButton = new JoystickButton(arm, XboxController.Button.kB.value); //works
-  public final JoystickButton ArmSetButton = new JoystickButton(arm, XboxController.Button.kX.value); //works (probably)
+  public final JoystickButton ArmSetButton = new JoystickButton(arm, XboxController.Button.kX.value); //works (sort of)
   public final JoystickButton clawButton = new JoystickButton(arm, XboxController.Button.kA.value); //works
   public final JoystickButton ArmIncreaseButton = new JoystickButton(arm, XboxController.Button.kLeftBumper.value); //works
   public final JoystickButton ArmDecreaseButton = new JoystickButton(arm, XboxController.Button.kRightBumper.value); //works
@@ -99,7 +99,7 @@ public class RobotContainer {
     lowerArmButton.onTrue(cmd_LowerArmCommand);
 
     clawButton.onTrue(cmd_ClawCommand);
-    clawRotation.whileTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate(arm.getXChannel())));
+    clawRotation.whileTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate(arm.getRawAxis(strafeAxis))));
 
     double lowerArmMotorPercentOutput = 0.15;
     lowerArmIncreaseButton.onTrue(new InstantCommand(() -> sub_LowerArmSubsystem.m_increaseMotor(lowerArmMotorPercentOutput)));
@@ -121,7 +121,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new quincyCommandGroup(sub_IntakeSubsystem);
+    return new exampleAuto(s_Swerve, "seanQuinnPath");
   }
 
 
