@@ -4,22 +4,26 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
-public class PneumaticsSubsystem extends SubsystemBase {
+public class LowerArmSubsystem extends SubsystemBase {
+  private boolean isUp = true;
 
-  private static Compressor phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
+  private static Compressor phCompressor = new Compressor(1, PneumaticsModuleType.CTREPCM);
   
-  private static DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 8, 9);
+  private static DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+  /** Creates a new LowerArmSubsystem. */
+  public LowerArmSubsystem() {}
 
-  /* Creates a new Pneumatics subsystem */
-  public PneumaticsSubsystem() {
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
   }
 
   public void m_enableCompressor() {
@@ -46,16 +50,17 @@ public class PneumaticsSubsystem extends SubsystemBase {
     doubleSolenoid.set(kReverse);
   }
 
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
   public double currentPressure() {
     return phCompressor.getPressure();
   }
 
-  public boolean compressorEnabled() {
-    return phCompressor.isEnabled();
+  public boolean checkState()
+  {
+    return isUp;
+  }
+
+  public void setIsUp(boolean set)
+  {
+    isUp = set;
   }
 }

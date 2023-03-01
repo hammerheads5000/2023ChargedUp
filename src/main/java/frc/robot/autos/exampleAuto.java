@@ -2,7 +2,13 @@ package frc.robot.autos;
 
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.AutoArmSet;
+import frc.robot.commands.ClawCommand;
+import frc.robot.commands.LowerArmCommand;
 import frc.robot.commands.PPSwerveControllerCommand2;
+import frc.robot.subsystems.ArmToSetpoint;
+import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.subsystems.LowerArmSubsystem;
 import frc.robot.subsystems.Swerve;
 
 import java.util.HashMap;
@@ -23,12 +29,20 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class exampleAuto extends SequentialCommandGroup {
-    public exampleAuto(Swerve s_AutoSwerve){
+    public exampleAuto(Swerve s_AutoSwerve, String path){
         
-        PathPlannerTrajectory examplePath = PathPlanner.loadPath("2mPath", new PathConstraints(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
+        PathPlannerTrajectory examplePath = PathPlanner.loadPath(path, new PathConstraints(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
         // This is just an example event map. It would be better to have a constant, global event map - in your code that will be used by all path following commands.
         HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("marker1", new PrintCommand("Passed marker 1"));
+        //eventMap.put("setPoint", new AutoArmSet(sub_ArmToSetpoint, angle));
+        //eventMap.put("lowerArm", new LowerArmCommand(sub_LowerArmSubsystem));
+        //eventMap.put("claw", new ClawCommand(sub_ClawSubsystem));
+
+
+        
+    
+   
+
         
 
         var thetaController = new PIDController(Constants.AutoConstants.kPThetaController, 0, 0);

@@ -54,8 +54,6 @@ public class Swerve extends SubsystemBase {
 
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    
-
     var swerveModuleStates =
         Constants.Swerve.swerveKinematics.toSwerveModuleStates(
             fieldRelative
