@@ -35,12 +35,12 @@ public class ArmToSetpoint extends SubsystemBase {
     double HomeAngle;
     double UpperAngle;
     boolean IsUpperArm;
-    DigitalInput Lower_ArmBackwardsSwitch;
-    DigitalInput Lower_ArmForwardsSwitch;
-    DigitalInput Upper_MaxWhileForwardsSwitch;
-    DigitalInput Upper_MaxWhileBackwardsSwitch;
-    DigitalInput Upper_BringArmUpSafetySwitch;
-    DigitalInput Upper_AtPostSwitch;
+    public DigitalInput Lower_ArmBackwardsSwitch;
+    public DigitalInput Lower_ArmForwardsSwitch;
+    public DigitalInput Upper_MaxWhileForwardsSwitch;
+    public DigitalInput Upper_MaxWhileBackwardsSwitch;
+    public DigitalInput Upper_BringArmUpSafetySwitch;
+    public DigitalInput Upper_AtPostSwitch;
     
 
     /* Creates a new Pneumatics subsystem */
