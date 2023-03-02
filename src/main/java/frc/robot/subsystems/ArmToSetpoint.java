@@ -85,6 +85,15 @@ public class ArmToSetpoint extends SubsystemBase {
     //Moves arm up at a given speed
     public void moveUp(double speed)
     {
+      if(safetyCheck())
+      {
+        moveDown(.3);
+        return;
+      }
+      else if(Upper_AtPostSwitch.get())
+      {
+        speed = 0.0;
+      }
       ArmMotor.set(TalonFXControlMode.PercentOutput, speed); 
     }
     //Moves arm down at a given speed
@@ -96,6 +105,7 @@ public class ArmToSetpoint extends SubsystemBase {
     //Moves arm to a desired angle
     public void MoveArm (double DesiredAngle, boolean ifIsUpperArm)
     {
+
       double tempOutput;
       if(ifIsUpperArm)
       {
@@ -172,7 +182,12 @@ public class ArmToSetpoint extends SubsystemBase {
       //safety check for upper arm
       if(IsUpperArm)
       {
-
+        return (Lower_ArmBackwardsSwitch.get()&&Upper_MaxWhileBackwardsSwitch.get())||(Lower_ArmForwardsSwitch.get()&&Upper_MaxWhileForwardsSwitch.get());
+        
+      }
+      else
+      {
+        return(Lower_ArmForwardsSwitch.get() && !Upper_BringArmUpSafetySwitch.get());
       }
     }
 }

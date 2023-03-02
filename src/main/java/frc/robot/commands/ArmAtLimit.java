@@ -41,16 +41,7 @@ public class ArmAtLimit extends CommandBase {
   @Override
   public void execute() 
   {
-    
-    if(upperLowerSwitch.get()||upperUpperSwitch.get())
-    {
-      m_UpperArmToSetpoint.Set();
-      SmartDashboard.putBoolean("Working", true);
-    }
-    if(lowerLowerSwitch.get()||lowerUpperSwitch.get())
-    {
-      m_LowerArmToSetpoint.Set();
-    }
+
   
   }
 

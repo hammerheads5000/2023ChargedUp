@@ -63,6 +63,7 @@ public class ArmSet extends CommandBase
         double UpperDesiredAngle = angleB *180/Math.PI ;
         SmartDashboard.putNumber("Upper Expected angle", UpperDesiredAngle);
         SmartDashboard.putNumber("Lower Expected Angle", LowerDesiredAngle);
+        
         Move(LowerDesiredAngle, UpperDesiredAngle);
     }
 
