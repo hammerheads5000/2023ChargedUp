@@ -17,9 +17,9 @@ public class ArmSet extends CommandBase
     private final ArmToSetpoint m_UpperArmToSetpoint;
     private final ArmToSetpoint m_LowerArmToSetpoint;
     private boolean isFinished;
-    DigitalInput limitSwitch = new DigitalInput(5);
     private double DesiredX;
     private double DesiredY;
+    
     public ArmSet(ArmToSetpoint UpperSubsystem, ArmToSetpoint LowerSubsystem )
     {
         m_UpperArmToSetpoint = UpperSubsystem;
