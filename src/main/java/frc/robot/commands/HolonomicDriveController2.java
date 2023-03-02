@@ -121,9 +121,6 @@ public class HolonomicDriveController2 {
       return ChassisSpeeds.fromFieldRelativeSpeeds(xFF, yFF, thetaFF, currentPose.getRotation());
     }
 
-
-    
-
     SmartDashboard.putNumber("PID_xPositionError",m_xController.getPositionError());
     SmartDashboard.putNumber("PID_xPeriod",m_xController.getPeriod());
     SmartDashboard.putNumber("PID_xPositionTolerance",m_xController.getPositionTolerance());
@@ -142,17 +139,6 @@ public class HolonomicDriveController2 {
     SmartDashboard.putString("PID_thetaSetpoint",m_thetaController.getSetpoint().toString());
     SmartDashboard.putString("PID_thetaGoal",m_thetaController.getGoal().toString());
 
-
-    System.out.println("PID_thetaSetpointPos"+m_thetaController.getSetpoint().position);
-    SmartDashboard.putNumber("PID_thetaSetpointPos", m_thetaController.getSetpoint().position);
-    System.out.println("PID_thetaGoalPos"+m_thetaController.getGoal().position);
-    SmartDashboard.putNumber("PID_thetaGoalPos", m_thetaController.getGoal().position);
-    System.out.println("PID_thetaSetpointVel"+m_thetaController.getSetpoint().velocity);
-    SmartDashboard.putNumber("PID_thetaSetpointVel", m_thetaController.getSetpoint().velocity);
-    System.out.println("PID_thetaGoalVel"+m_thetaController.getGoal().velocity);
-    SmartDashboard.putNumber("PID_thetaGoalVel", m_thetaController.getGoal().velocity);
-
-
     // Calculate feedback velocities (based on position error).
     double xFeedback = m_xController.calculate(currentPose.getX(), trajectoryPose.getX());
     double yFeedback = m_yController.calculate(currentPose.getY(), trajectoryPose.getY());
@@ -168,7 +154,7 @@ public class HolonomicDriveController2 {
 
     // Return next output.
     return ChassisSpeeds.fromFieldRelativeSpeeds(
-        xFF, yFF, 0, currentPose.getRotation());
+        xFF + xFeedback, yFF + yFeedback, thetaFF, currentPose.getRotation());
   }
 
   /**

@@ -87,7 +87,7 @@ public class AutoArmSet extends CommandBase
             if(limitSwitch.get()==true)
             {
                 DesiredAngle = 0;
-                m_ArmToSetpoint.Reset();
+                m_ArmToSetpoint.Set();
             }
             else
             {
