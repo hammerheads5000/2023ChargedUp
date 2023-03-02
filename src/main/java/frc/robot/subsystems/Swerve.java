@@ -168,37 +168,30 @@ public class Swerve extends SubsystemBase {
     
     }
     
-    public void zeroWheels()
+    /*public void zeroWheels()
     {
-        for(int i = 0; i<4; i++)
+        for(SwerveModule modZero : mSwerveMods)
         {
-            SwerveModule modZero = mSwerveMods[i];
-            double offset = Constants.Swerve.getOffset(i);
-            double percent = 0;
-            
-            while(Math.abs((modZero.getState().angle.getDegrees())-offset)>0.1)
+            while(Math.abs((modZero.getAngle()-modZero.angleOffset)>0.1)
             {
-                if(modZero.getState().angle.getDegrees()-offset>10)
+                SwerveModuleState desired = new SwerveModuleState(0);
+                if(modZero.getAngle()-modZero.angleOffset>0)
                 {
-                    percent = 1-(1/(modZero.getState().angle.getDegrees())-offset);
+                    modZero.setDesiredState(desired,false);
                 }
-                else
+                if(modZero.getAngle()-modZero.angleOffset)
                 {
-                    percent = 0.1;
+                    modZero.setDesiredState(desired,false);
                 }
-                if(modZero.getState().angle.getDegrees()-offset>0)
-                {
-                    modZero.setAngularVelocity(percent);
-                }
-                else if(modZero.getState().angle.getDegrees()-offset<0.1)
-                {
-                    modZero.setAngularVelocity(percent);
-                }
-                else{break;}
             }
-        }
-    
+        }*/
+        /*public void zeroWheels()
+        {
+            for(SwerveModule modZero : mSwerveMods)
+            {
+                modZero.resetToAbsolute();
+            }
+        }*/
     }
-}
     
 

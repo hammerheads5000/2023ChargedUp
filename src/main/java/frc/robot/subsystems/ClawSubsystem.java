@@ -18,19 +18,26 @@ public class ClawSubsystem extends SubsystemBase {
   //private static Compressor phCompressor = new Compressor(1, PneumaticsModuleType.CTREPCM);
   
   private static DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
-
+  private int currentAngle = 0;
   Servo rotationMotor = new Servo(4);
   /** Creates a new ClawSubsystem. */
-  public ClawSubsystem() {}
+  public ClawSubsystem() {
+    rotationMotor.setAngle(currentAngle);
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
 
-  public void rotate(int direction)
+  public void rotate()
   {
-    rotationMotor.set(direction);
+    //rotationMotor.set(direction);
+    int angle;
+    if (currentAngle == 0) {angle = 180;}
+    else {angle = 0;}
+    currentAngle = angle;
+    rotationMotor.setAngle(angle);
   }
 
   public void m_enableCompressor() {
