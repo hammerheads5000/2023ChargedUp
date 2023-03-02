@@ -28,8 +28,14 @@ public final class Constants {
         public static final double LowerArmMax = .6; // test this value
         public static final double UpperArmMin = .1;
         public static final double LowerArmMin = .25; // test this value
+<<<<<<< HEAD
         public static final double UpperArmLength = 42;
         public static final double LowerArmLength =45.5;
+
+=======
+        public static final double UpperArmLength = 1234;
+        public static final double LowerArmLength =2345;
+>>>>>>> 759a50ac7f440771e4d010ce1ba74aef5e1a38be
     }
     public static final class Swerve {
         public static final int pigeonID = 1;
