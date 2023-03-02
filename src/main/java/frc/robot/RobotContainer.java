@@ -53,10 +53,12 @@ public class RobotContainer {
   private final JoystickButton lowerArmDecreaseButton = new JoystickButton(arm, XboxController.Button.kStart.value); //works
   private final JoystickButton UselessButton = new JoystickButton(arm, 24);
   // limit switches 
-  DigitalInput UpperArmLowerSwitch = new DigitalInput(0);
-  DigitalInput UpperArmUpperSwitch = new DigitalInput(1);
-  DigitalInput LowerArmLowerSwitch = new DigitalInput(2);
-  DigitalInput LowerArmUpperSwitch = new DigitalInput(3);
+  DigitalInput Lower_ArmBackwardsSwitch = new DigitalInput(1);
+  DigitalInput Lower_ArmForwardsSwitch  = new DigitalInput(1);
+  DigitalInput Upper_MaxWhileForwardsSwitch = new DigitalInput(1);
+  DigitalInput Upper_MaxWhileBackwardsSwitch = new DigitalInput(1);
+  DigitalInput Upper_BringArmUpSafetySwitch = new DigitalInput(1);
+  DigitalInput Upper_AtPostSwitch = new DigitalInput(101);
 
   //Motors 
   TalonFX UpperMotor = new TalonFX(3, "Bobby");
@@ -64,8 +66,8 @@ public class RobotContainer {
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
  
-  private final ArmToSetpoint sub_UpperArmToSetpoint = new ArmToSetpoint(UpperMotor,UpperArmUpperSwitch,UpperArmLowerSwitch, true, LowerArmLowerSwitch);
-  private final ArmToSetpoint sub_LowerArmToSetpoint = new ArmToSetpoint(LowerMotor,LowerArmUpperSwitch,LowerArmLowerSwitch, false, LowerArmLowerSwitch);
+  private final ArmToSetpoint sub_UpperArmToSetpoint = new ArmToSetpoint(UpperMotor, true, Lower_ArmBackwardsSwitch,Lower_ArmForwardsSwitch, Upper_MaxWhileForwardsSwitch, Upper_MaxWhileBackwardsSwitch,Upper_BringArmUpSafetySwitch, Upper_AtPostSwitch);
+  private final ArmToSetpoint sub_LowerArmToSetpoint = new ArmToSetpoint(LowerMotor,false,Lower_ArmBackwardsSwitch,Lower_ArmForwardsSwitch, Upper_MaxWhileForwardsSwitch, Upper_MaxWhileBackwardsSwitch,Upper_BringArmUpSafetySwitch, Upper_AtPostSwitch);
   private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
   private final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
   private final IntakeSubsystem sub_IntakeSubsystem = new IntakeSubsystem();
@@ -76,14 +78,14 @@ public class RobotContainer {
   private final ClawCommand cmd_ClawCommand = new ClawCommand(sub_ClawSubsystem);
   private final IntakeLiftCommand cmd_IntakeLiftCommand = new IntakeLiftCommand(sub_IntakeSubsystem);
   private final IntakeClawCommand cmd_IntakeClawCommand = new IntakeClawCommand(sub_IntakeSubsystem);
-  private final ArmAtLimit cmd_ArmAtSwitch = new ArmAtLimit(sub_UpperArmToSetpoint,sub_LowerArmToSetpoint, UpperArmLowerSwitch, UpperArmUpperSwitch, LowerArmLowerSwitch, LowerArmUpperSwitch);
+  //private final ArmAtLimit cmd_ArmAtSwitch = new ArmAtLimit(sub_UpperArmToSetpoint,sub_LowerArmToSetpoint, UpperArmLowerSwitch, UpperArmUpperSwitch, LowerArmLowerSwitch, LowerArmUpperSwitch);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     boolean fieldRelative = true;
     boolean openLoop = true;
     s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-    sub_LowerArmToSetpoint.setDefaultCommand(cmd_ArmAtSwitch);
-    sub_UpperArmToSetpoint.setDefaultCommand(cmd_ArmAtSwitch);
+    //sub_LowerArmToSetpoint.setDefaultCommand(cmd_ArmAtSwitch);
+    //sub_UpperArmToSetpoint.setDefaultCommand(cmd_ArmAtSwitch);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -119,12 +121,6 @@ public class RobotContainer {
     intakeClawButton.onFalse(new InstantCommand(() -> sub_IntakeSubsystem.m_contractGrabber()));
     intakeMotorButton.whileTrue(new InstantCommand(() -> sub_IntakeSubsystem.m_activateIntakeMotor(1)));
     intakeMotorButton.whileFalse(new InstantCommand(() -> sub_IntakeSubsystem.m_stopIntakeMotor()));
-
-    if(UpperArmLowerSwitch.get()||UpperArmUpperSwitch.get()||LowerArmLowerSwitch.get()||LowerArmUpperSwitch.get())
-    {
-      UselessButton.whileFalse(cmd_ArmAtSwitch);
-      SmartDashboard.putBoolean("Semi-Working", true);
-    }
   }
 
   /**
