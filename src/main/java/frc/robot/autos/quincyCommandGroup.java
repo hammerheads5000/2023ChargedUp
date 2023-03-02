@@ -4,7 +4,6 @@
 
 package frc.robot.autos;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.IntakeClawCommand;
@@ -17,24 +16,14 @@ import frc.robot.subsystems.LowerArmSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class quincyCommandGroup extends SequentialCommandGroup {
   /** Creates a new quincyCommandGroup. */
-  public quincyCommandGroup(IntakeSubsystem intakeSubsystem) {
+  public quincyCommandGroup(IntakeSubsystem sub_IntakeSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     super(
-            new InstantCommand(() -> intakeSubsystem.m_extendLift()),
-            new WaitCommand(5),
-            new InstantCommand(() -> intakeSubsystem.m_extendGrabber())
+            new WaitCommand(20),
+    new IntakeClawCommand(sub_IntakeSubsystem)
 
 
-           
-            
-            
-            
-            
-            );
-            //new IntakeClawCommand(intakeSubsystem)
-
-
-    
+    );
   }
 }

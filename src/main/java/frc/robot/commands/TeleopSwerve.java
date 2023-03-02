@@ -63,18 +63,18 @@ public class TeleopSwerve extends CommandBase {
         d_xAxis = (Math.abs(d_xAxis) < Constants.stickDeadband) ? 0 : d_xAxis;
         d_rAxis = (Math.abs(d_rAxis) < Constants.stickDeadband) ? 0 : d_rAxis;
 
-        translation = new Translation2d(Math.signum(d_yAxis)*d_yAxis*d_yAxis, Math.signum(d_xAxis)*d_xAxis*d_xAxis).times(Constants.Swerve.maxSpeed);
+        translation = new Translation2d(d_yAxis, d_xAxis).times(Constants.Swerve.maxSpeed);
         rotation = d_rAxis * Constants.Swerve.maxAngularVelocity;
         s_Swerve.drive(translation, rotation, fieldRelative, openLoop);
         SmartDashboard.updateValues();
 
     }
-/* 
+
     public void toggleFieldRelative()
     {
         if (fieldRelative)
             fieldRelative = false;
         else
             fieldRelative = true;
-    }*/
+    }
 }

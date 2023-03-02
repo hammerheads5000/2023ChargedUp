@@ -65,7 +65,7 @@ public class ArmToSetpoint extends SubsystemBase {
 
     public void moveUp(double speed)
     {
-      if(UpperSwitch.get())
+      if(UpperSwitch.get() && IsUpperArm) 
       {
           moveDown(.3);
           return;
@@ -148,7 +148,7 @@ public class ArmToSetpoint extends SubsystemBase {
     // zeros the current angle, will be used with limit switches
     public void Set()
     {
-      if(IsUpperArm && UpperSwitch.get() && LowestSwitch.get())
+      if(IsUpperArm && UpperSwitch.get())
       {
        moveDown(.3);
       }

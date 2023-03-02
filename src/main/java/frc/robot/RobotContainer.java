@@ -64,7 +64,7 @@ public class RobotContainer {
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
  
-  private final ArmToSetpoint sub_UpperArmToSetpoint = new ArmToSetpoint(UpperMotor,UpperArmUpperSwitch,UpperArmLowerSwitch, true,LowerArmLowerSwitch);
+  private final ArmToSetpoint sub_UpperArmToSetpoint = new ArmToSetpoint(UpperMotor,UpperArmUpperSwitch,UpperArmLowerSwitch, true, LowerArmLowerSwitch);
   private final ArmToSetpoint sub_LowerArmToSetpoint = new ArmToSetpoint(LowerMotor,LowerArmUpperSwitch,LowerArmLowerSwitch, false, LowerArmLowerSwitch);
   private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
   private final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
