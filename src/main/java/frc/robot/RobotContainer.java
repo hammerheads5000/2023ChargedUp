@@ -42,7 +42,7 @@ public class RobotContainer {
   private final JoystickButton zeroWheels = new JoystickButton(driver, XboxController.Button.kB.value); //?
 
   /* Arm Buttons */
-  private final JoystickButton clawRotation = new JoystickButton(arm, XboxController.Button.kY.value); //doesn't work
+  private final JoystickButton clawRotation = new JoystickButton(arm, XboxController.Button.kY.value);
   private final JoystickButton lowerArmButton = new JoystickButton(arm, XboxController.Button.kB.value); //works
   public final JoystickButton ArmSetButton = new JoystickButton(arm, XboxController.Button.kX.value); //works (sort of)
   public final JoystickButton clawButton = new JoystickButton(arm, XboxController.Button.kA.value); //works
@@ -100,7 +100,7 @@ public class RobotContainer {
     lowerArmButton.onTrue(cmd_LowerArmCommand);
 
     clawButton.onTrue(cmd_ClawCommand);
-    clawRotation.whileTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate(arm.getRawAxis(strafeAxis))));
+    clawRotation.onTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate()));
 
     double lowerArmMotorPercentOutput = 0.15;
     lowerArmIncreaseButton.onTrue(new InstantCommand(() -> sub_LowerArmSubsystem.m_increaseMotor(lowerArmMotorPercentOutput)));
