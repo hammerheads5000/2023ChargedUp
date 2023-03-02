@@ -27,6 +27,8 @@ import frc.robot.subsystems.*;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+
   /* Controllers */
   private final Joystick driver = new Joystick(0);
   private final Joystick arm = new Joystick(1);
@@ -37,6 +39,7 @@ public class RobotContainer {
   private final int rotationAxis = XboxController.Axis.kRightX.value;
 
   /* Driver Buttons */
+  private final JoystickButton zeroWheels = new JoystickButton(driver, XboxController.Button.kB.value);
   private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value); //Basically useless but probably works
   private final JoystickButton intakeRaiseButton = new JoystickButton(driver, XboxController.Button.kRightBumper.value); //?
   private final JoystickButton intakeClawButton = new JoystickButton(driver, XboxController.Button.kLeftBumper.value); //?
@@ -99,6 +102,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+    zeroWheels.onTrue(new InstantCommand(() -> s_Swerve.zeroWheels()));
     
     ArmSetButton.whileTrue(cmd_ArmSet);
     UpperArmDecreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmToSetpoint.moveUp(0.3)));
