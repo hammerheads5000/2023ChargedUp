@@ -54,11 +54,11 @@ public class RobotContainer {
   private final JoystickButton UselessButton = new JoystickButton(arm, 24);
   // limit switches 
   DigitalInput Lower_ArmBackwardsSwitch = new DigitalInput(1);
-  DigitalInput Lower_ArmForwardsSwitch  = new DigitalInput(1);
-  DigitalInput Upper_MaxWhileForwardsSwitch = new DigitalInput(1);
-  DigitalInput Upper_MaxWhileBackwardsSwitch = new DigitalInput(1);
-  DigitalInput Upper_BringArmUpSafetySwitch = new DigitalInput(1);
-  DigitalInput Upper_AtPostSwitch = new DigitalInput(101);
+  DigitalInput Lower_ArmForwardsSwitch  = new DigitalInput(2);
+  DigitalInput Upper_MaxWhileForwardsSwitch = new DigitalInput(3);
+  DigitalInput Upper_MaxWhileBackwardsSwitch = new DigitalInput(4);
+  DigitalInput Upper_BringArmUpSafetySwitch = new DigitalInput(5);
+  DigitalInput Upper_AtPostSwitch = new DigitalInput(6);
 
   //Motors 
   TalonFX UpperMotor = new TalonFX(3, "Bobby");
@@ -71,6 +71,8 @@ public class RobotContainer {
   private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
   private final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
   private final IntakeSubsystem sub_IntakeSubsystem = new IntakeSubsystem();
+  private final UISubsystem sub_UISubsystem = new UISubsystem(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint, sub_ClawSubsystem, sub_IntakeSubsystem);
+  private final useless sub_Useless = new useless();
 
   /* Commands */
   private final ArmSet cmd_ArmSet = new ArmSet(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint);
@@ -78,12 +80,14 @@ public class RobotContainer {
   private final ClawCommand cmd_ClawCommand = new ClawCommand(sub_ClawSubsystem);
   private final IntakeLiftCommand cmd_IntakeLiftCommand = new IntakeLiftCommand(sub_IntakeSubsystem);
   private final IntakeClawCommand cmd_IntakeClawCommand = new IntakeClawCommand(sub_IntakeSubsystem);
+  private final UICommand cmd_UICommand = new UICommand(sub_UISubsystem);
   //private final ArmAtLimit cmd_ArmAtSwitch = new ArmAtLimit(sub_UpperArmToSetpoint,sub_LowerArmToSetpoint, UpperArmLowerSwitch, UpperArmUpperSwitch, LowerArmLowerSwitch, LowerArmUpperSwitch);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     boolean fieldRelative = true;
     boolean openLoop = true;
     s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    sub_UISubsystem.UpdateValues();
     //sub_LowerArmToSetpoint.setDefaultCommand(cmd_ArmAtSwitch);
     //sub_UpperArmToSetpoint.setDefaultCommand(cmd_ArmAtSwitch);
     // Configure the button bindings

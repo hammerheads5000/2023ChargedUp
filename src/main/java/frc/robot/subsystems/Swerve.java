@@ -92,10 +92,10 @@ public class Swerve extends SubsystemBase {
     
     public SwerveModulePosition[] getModulePositions()
     {
-        SmartDashboard.putString("getPosition[0]",mSwerveMods[0].getPosition().toString());
-        SmartDashboard.putString("getPosition[1]",mSwerveMods[1].getPosition().toString());
-        SmartDashboard.putString("getPosition[2]",mSwerveMods[2].getPosition().toString());
-        SmartDashboard.putString("getPosition[3]",mSwerveMods[3].getPosition().toString());
+        // SmartDashboard.putString("getPosition[0]",mSwerveMods[0].getPosition().toString());
+        // SmartDashboard.putString("getPosition[1]",mSwerveMods[1].getPosition().toString());
+        // SmartDashboard.putString("getPosition[2]",mSwerveMods[2].getPosition().toString());
+        // SmartDashboard.putString("getPosition[3]",mSwerveMods[3].getPosition().toString());
         return new SwerveModulePosition[] {
             mSwerveMods[0].getPosition(),
             mSwerveMods[1].getPosition(),
@@ -151,16 +151,16 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
-        SmartDashboard.putNumber("getXpreUpdt",swerveOdometry.getPoseMeters().getX());
-        SmartDashboard.putNumber("getYpreUpdt",swerveOdometry.getPoseMeters().getY());
-        SmartDashboard.putNumber("getGyroAnglepreUpdt",gyro.getAngle());
+        // SmartDashboard.putNumber("getXpreUpdt",swerveOdometry.getPoseMeters().getX());
+        // SmartDashboard.putNumber("getYpreUpdt",swerveOdometry.getPoseMeters().getY());
+        // SmartDashboard.putNumber("getGyroAnglepreUpdt",gyro.getAngle());
         swerveOdometry.update(getYaw(), getModulePositions());  
-        SmartDashboard.putNumber("getXpostUpdt",swerveOdometry.getPoseMeters().getX());
-        SmartDashboard.putNumber("getYpostUpdt",swerveOdometry.getPoseMeters().getY());
+        // SmartDashboard.putNumber("getXpostUpdt",swerveOdometry.getPoseMeters().getX());
+        // SmartDashboard.putNumber("getYpostUpdt",swerveOdometry.getPoseMeters().getY());
         SmartDashboard.putNumber("getGyroAnglepostUpdt",gyro.getAngle());
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
+            // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
         }
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());

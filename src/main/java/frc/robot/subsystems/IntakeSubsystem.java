@@ -28,7 +28,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private final CANSparkMax intakeMotor = new CANSparkMax(15, MotorType.kBrushless);
 
-  private boolean isGrabberOpen = true;
+  public boolean isGrabberOpen = true;
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {}
 

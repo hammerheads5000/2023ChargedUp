@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Servo;
 
 public class ClawSubsystem extends SubsystemBase {
-  private boolean isOpen = true;
+  public boolean isOpen = true;
 
   //private static Compressor phCompressor = new Compressor(1, PneumaticsModuleType.CTREPCM);
   
