@@ -55,6 +55,7 @@ public class RobotContainer {
   public final JoystickButton UpperArmDecreaseButton = new JoystickButton(arm, XboxController.Button.kRightBumper.value); //works
   private final JoystickButton lowerArmIncreaseButton = new JoystickButton(arm, XboxController.Button.kBack.value); //works
   private final JoystickButton lowerArmDecreaseButton = new JoystickButton(arm, XboxController.Button.kStart.value); //works
+  
   // limit switches 
   DigitalInput Lower_ArmBackwardsSwitch = new DigitalInput(2);
   DigitalInput Lower_ArmForwardsSwitch  = new DigitalInput(3);
@@ -68,20 +69,18 @@ public class RobotContainer {
   TalonFX LowerMotor = new TalonFX(26, "Bobby");
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
- 
-  private final ArmToSetpoint sub_UpperArmToSetpoint = new ArmToSetpoint(UpperMotor, true, Lower_ArmBackwardsSwitch,Lower_ArmForwardsSwitch, Upper_MaxWhileForwardsSwitch, Upper_MaxWhileBackwardsSwitch,Upper_BringArmUpSafetySwitch, Upper_AtStowSwitch);
-  private final ArmToSetpoint sub_LowerArmToSetpoint = new ArmToSetpoint(LowerMotor,false,Lower_ArmBackwardsSwitch,Lower_ArmForwardsSwitch, Upper_MaxWhileForwardsSwitch, Upper_MaxWhileBackwardsSwitch,Upper_BringArmUpSafetySwitch, Upper_AtStowSwitch);
+  private final UpperArmManual sub_UpperArmManual = new UpperArmManual();
   private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
   private final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
   private final IntakeSubsystem sub_IntakeSubsystem = new IntakeSubsystem();
-
+  private final EncoderCheck sub_EncoderCheck = new EncoderCheck(Lower_ArmBackwardsSwitch, Lower_ArmForwardsSwitch, Upper_MaxWhileForwardsSwitch, Upper_MaxWhileBackwardsSwitch, Upper_BringArmUpSafetySwitch, Upper_AtStowSwitch);
   /* Commands */
-  private final ArmSet cmd_ArmSet = new ArmSet(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint);
+  //private final ArmSet cmd_ArmSet = new ArmSet(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint);
   private final LowerArmCommand cmd_LowerArmCommand = new LowerArmCommand(sub_LowerArmSubsystem);
   private final ClawCommand cmd_ClawCommand = new ClawCommand(sub_ClawSubsystem);
   private final IntakeLiftCommand cmd_IntakeLiftCommand = new IntakeLiftCommand(sub_IntakeSubsystem);
   private final IntakeClawCommand cmd_IntakeClawCommand = new IntakeClawCommand(sub_IntakeSubsystem);
-  private final MoveArmManualCommand cmd_MoveArmManualCommand = new MoveArmManualCommand(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint);
+  private final MoveArmManualCommand cmd_MoveArmManualCommand = new MoveArmManualCommand(sub_UpperArmManual,sub_LowerArmSubsystem,sub_EncoderCheck);
   //private final ArmAtLimit cmd_ArmAtLimit = new ArmAtLimit(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint, Upper_BringArmUpSafetySwitch, Upper_AtStowSwitch, Lower_ArmForwardsSwitch, Lower_ArmBackwardsSwitch)
   //private final ArmAtLimit cmd_ArmAtSwitch = new ArmAtLimit(sub_UpperArmToSetpoint,sub_LowerArmToSetpoint, UpperArmLowerSwitch, UpperArmUpperSwitch, LowerArmLowerSwitch, LowerArmUpperSwitch);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -109,8 +108,8 @@ public class RobotContainer {
    // ArmSetButton.whileTrue(cmd_ArmSet);
     UpperArmDecreaseButton.onTrue(cmd_MoveArmManualCommand);
     UpperArmIncreaseButton.onTrue(cmd_MoveArmManualCommand);
-    UpperArmDecreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmToSetpoint.stop()));
-    UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmToSetpoint.stop()));
+    UpperArmDecreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
+    UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
     
     
     clawButton.onTrue(cmd_ClawCommand);

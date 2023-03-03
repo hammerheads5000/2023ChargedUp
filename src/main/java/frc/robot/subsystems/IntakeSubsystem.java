@@ -24,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
   //private static Compressor phCompressor = new Compressor(1, PneumaticsModuleType.CTREPCM);
   
   private static DoubleSolenoid lift = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 4, 5);
-  private static DoubleSolenoid grabber = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+
 
   private final CANSparkMax intakeMotor = new CANSparkMax(15, MotorType.kBrushless);
 
@@ -43,7 +43,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void m_initializeSolenoid() {
     lift.set(kReverse);
-    grabber.set(kReverse);
+  
   }
 
   public void m_disableCompressor() {
@@ -63,11 +63,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void m_extendGrabber(){
-    grabber.set(kForward);
+
   }
 
   public void m_contractGrabber(){
-    grabber.set(kReverse);
+  
   }
 
   public void m_activateIntakeMotor(double direction) {

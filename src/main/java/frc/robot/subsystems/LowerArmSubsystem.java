@@ -22,7 +22,7 @@ public class LowerArmSubsystem extends SubsystemBase {
 
   private static Compressor phCompressor = new Compressor(1, PneumaticsModuleType.CTREPCM);
   
-  private static DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 6, 7);
+  private static DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
 
   private final TalonFX lowerArmMotor = new TalonFX(26, "Bobby");
 
