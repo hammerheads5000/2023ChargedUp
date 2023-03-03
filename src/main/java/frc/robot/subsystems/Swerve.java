@@ -37,9 +37,7 @@ public class Swerve extends SubsystemBase {
     public Swerve() {
         gyro = new WPI_Pigeon2(Constants.Swerve.pigeonID, "Bobby");
         zeroGyro();
-    
-        
-        
+
 
         mSwerveMods = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.Mod0.constants),
@@ -49,7 +47,6 @@ public class Swerve extends SubsystemBase {
         };
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions());
-
     }
 
 
@@ -132,6 +129,12 @@ public class Swerve extends SubsystemBase {
 
     public void zeroGyro(){
         gyro.setYaw(0);
+    }
+
+    public void zeroWheels(){
+        for (SwerveModule mod : mSwerveMods){
+            mod.resetToZero();
+        }
     }
 
     public Rotation2d getYaw() {
