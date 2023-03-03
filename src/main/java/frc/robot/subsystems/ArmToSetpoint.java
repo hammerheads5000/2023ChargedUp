@@ -40,7 +40,7 @@ public class ArmToSetpoint extends SubsystemBase {
     DigitalInput Upper_MaxWhileForwardsSwitch;
     DigitalInput Upper_MaxWhileBackwardsSwitch;
     DigitalInput Upper_BringArmUpSafetySwitch;
-    DigitalInput Upper_AtPostSwitch;
+    DigitalInput Upper_AtStowSwitch;
     
 
     /* Creates a new Pneumatics subsystem */
@@ -53,7 +53,7 @@ public class ArmToSetpoint extends SubsystemBase {
       DigitalInput Upper_MaxWhileForwardSwitch, //switch is triggered when the upper arm is at the angle where it will break height limit if lower arm is forward
       DigitalInput Upper_MaxWhileBackwardsSwitch, //switch is triggered when the upper arm is at the point where it will break height limit if lower arm is back
       DigitalInput Upper_BringArmUpSafetySwitch, //Is triggered when upper arm is at the angle where it is safe to bring lower arm back without breaking height limit
-      DigitalInput Upper_AtPostSwitch //This switch will be triggered when the upper arm is at the angle where it will be over the goalpost if the lower arm is forward
+      DigitalInput Upper_AtStowSwitch //This switch will be triggered when the upper arm is at the angle where it will be over the goalpost if the lower arm is forward
       ) 
     {
       this.ArmMotor = ArmMotor;
@@ -63,7 +63,7 @@ public class ArmToSetpoint extends SubsystemBase {
       this.Upper_MaxWhileForwardsSwitch = Upper_MaxWhileForwardSwitch;
       this.Upper_MaxWhileBackwardsSwitch =Upper_MaxWhileBackwardsSwitch;
       this.Upper_BringArmUpSafetySwitch = Upper_BringArmUpSafetySwitch;
-      this.Upper_AtPostSwitch = Upper_AtPostSwitch;
+      this.Upper_AtStowSwitch = Upper_AtStowSwitch;
 
       ArmMotor.setNeutralMode(NeutralMode.Brake);
       
@@ -83,22 +83,60 @@ public class ArmToSetpoint extends SubsystemBase {
       } */
     }
     //Moves arm up at a given speed
-    public void moveUp(double speed)
+    public void moveUp(double speed, int temp_EncoderCheck)
     {
-      if(safetyCheck())
+      if(IsUpperArm)
       {
-        moveDown(.3);
+      if( temp_EncoderCheck== 1)
+      {
+        moveDown(.3,4);
         return;
       }
-      else if(Upper_AtPostSwitch.get())
+      else if(temp_EncoderCheck == 2)
+      {
+        speed = 0.1;
+      }
+      else if(temp_EncoderCheck == 3 && !IsUpperArm)
       {
         speed = 0.0;
       }
+    }
+    else
+    {
+      if(temp_EncoderCheck==9||temp_EncoderCheck ==7)
+      {
+        speed = 0.0;
+      }
+      
+    }
+
       ArmMotor.set(TalonFXControlMode.PercentOutput, speed); 
     }
     //Moves arm down at a given speed
-    public void moveDown(double speed)
+    public void moveDown(double speed, int temp_EncoderCheck)
     {
+      if(IsUpperArm)
+      {
+        if(temp_EncoderCheck == 2)
+        {
+          speed = 0.1;
+        }
+        else if(temp_EncoderCheck == 3)
+        {
+          speed = 0.0;
+        }
+        else if(temp_EncoderCheck == 4)
+        {
+          //proceeds
+        }
+      } 
+      else
+      {
+        if(temp_EncoderCheck==8)
+        {
+          speed = 0.0;
+        }
+      }
       ArmMotor.set(TalonFXControlMode.PercentOutput, -speed);
     }
     
@@ -177,17 +215,62 @@ public class ArmToSetpoint extends SubsystemBase {
     }
 
     //checks if moving the arm in a given direction would resulting in breaking any boundaries 
-    public boolean safetyCheck()
+    public int EncoderCheck()
     {
+      SmartDashboard.putBoolean("LowMax", Upper_MaxWhileBackwardsSwitch.get());
+      SmartDashboard.putBoolean("UpMax", Upper_MaxWhileForwardsSwitch.get());
+      SmartDashboard.putBoolean("AtPlayer", Upper_BringArmUpSafetySwitch.get());
+      SmartDashboard.putBoolean("Stow", Upper_AtStowSwitch.get());
+      SmartDashboard.putBoolean("LowerBack", Lower_ArmBackwardsSwitch.get());
+      SmartDashboard.putBoolean("LowerForward", Lower_ArmForwardsSwitch.get());
       //safety check for upper arm
       if(IsUpperArm)
       {
-        return (Lower_ArmBackwardsSwitch.get()&&Upper_MaxWhileBackwardsSwitch.get())||(Lower_ArmForwardsSwitch.get()&&Upper_MaxWhileForwardsSwitch.get());
-        
+        if((Lower_ArmBackwardsSwitch.get()&&Upper_MaxWhileBackwardsSwitch.get())||(Lower_ArmForwardsSwitch.get()&&Upper_MaxWhileForwardsSwitch.get()))
+        {
+          return 1; //makes upper arm go down 
+        }
+        else if(Upper_BringArmUpSafetySwitch.get())
+        {
+          return 2; //slows upper arm way down
+        }
+        else if(Upper_AtStowSwitch.get())
+        {
+          return 3; //stops upper arm 
+        }
+        else
+        {
+          return 4; //allows upper arm to move at requested speed
+        }
+
       }
       else
       {
-        return(Lower_ArmForwardsSwitch.get() && !Upper_BringArmUpSafetySwitch.get());
+        if(Lower_ArmForwardsSwitch.get() && Upper_AtStowSwitch.get())
+        {
+          SmartDashboard.putNumber("return", 6);
+          return 6;
+        }
+        else if(Lower_ArmForwardsSwitch.get() && !Upper_BringArmUpSafetySwitch.get())
+        {
+          SmartDashboard.putNumber("return", 7);
+          return 7; //stops lower arm
+          
+        }
+        else if(Lower_ArmForwardsSwitch.get())
+        {
+          SmartDashboard.putNumber("return", 8);
+          return 8;
+        }
+        else if(Lower_ArmBackwardsSwitch.get())
+        {
+          SmartDashboard.putNumber("return", 9);
+          return 9;
+        }
+       
+        SmartDashboard.putNumber("return", 4);
+        return 4;
+        
       }
     }
 }
