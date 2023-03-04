@@ -32,6 +32,22 @@ public final class Constants {
         public static final double AnglePIDStarts = 15.0;
 
     }
+    public static final class ArmPresets
+    {
+        public static final double RestingAngle = 20;
+        public static final double UpperPlatformAngle = 80;
+        public static final double MidPlatformAngle = 60;
+        public static final double GroundAngle = 30;
+        public static final double PortalAngle = 90;
+
+        public enum ArmPresetEnum {
+            RESTING,
+            GROUND,
+            MIDPLATFORM,
+            UPPERPLATFORM,
+            PORTAL;
+        }
+    }
     public static final class Swerve {
         public static final int pigeonID = 1;
         public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-

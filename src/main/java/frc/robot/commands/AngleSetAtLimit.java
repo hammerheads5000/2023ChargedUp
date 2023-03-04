@@ -6,12 +6,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmPresets;
+import frc.robot.subsystems.UpperArmToSetpoint;
 
 public class AngleSetAtLimit extends CommandBase {
   /** Creates a new AngleSetAtLimit. */
   DigitalInput Stow;
-  public AngleSetAtLimit(DigitalInput Upper_ArmAtStow) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  UpperArmToSetpoint sub_UpperArmToSetpoint;
+  public AngleSetAtLimit(DigitalInput Upper_ArmAtStow, UpperArmToSetpoint sub_UpperArmToSetpoint) {
+    Stow = Upper_ArmAtStow;
+    this.sub_UpperArmToSetpoint = sub_UpperArmToSetpoint;
   }
 
   // Called when the command is initially scheduled.
@@ -24,7 +28,7 @@ public class AngleSetAtLimit extends CommandBase {
   {
     if(Stow.get())
     {
-      
+      sub_UpperArmToSetpoint.AngleSet(ArmPresets.RestingAngle); // set angle at limit switch NEED TO SET CORRECTLY
     }
   }
 

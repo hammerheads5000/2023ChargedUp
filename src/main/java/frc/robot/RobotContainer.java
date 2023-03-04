@@ -53,6 +53,8 @@ public class RobotContainer {
   public final JoystickButton clawButton = new JoystickButton(arm, XboxController.Button.kA.value); //works
   public final JoystickButton UpperArmIncreaseButton = new JoystickButton(arm, XboxController.Button.kLeftBumper.value); //works
   public final JoystickButton UpperArmDecreaseButton = new JoystickButton(arm, XboxController.Button.kRightBumper.value); //works
+  public final JoystickButton UpperArmPresetIncreaseButton = new JoystickButton(arm, XboxController.Axis.kLeftTrigger.value);
+  public final JoystickButton UpperArmPresetDecreaseButton = new JoystickButton(arm, XboxController.Axis.kRightTrigger.value);
   private final JoystickButton lowerArmIncreaseButton = new JoystickButton(arm, XboxController.Button.kBack.value); //works
   private final JoystickButton lowerArmDecreaseButton = new JoystickButton(arm, XboxController.Button.kStart.value); //works
   
@@ -71,6 +73,7 @@ public class RobotContainer {
   public final Swerve s_Swerve = new Swerve();
   private final UpperArmManual sub_UpperArmManual = new UpperArmManual();
   private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
+  private final UpperArmToSetpoint sub_UpperArmToSetpoint = new UpperArmToSetpoint();
   private final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
   private final IntakeSubsystem sub_IntakeSubsystem = new IntakeSubsystem();
   private final EncoderCheck sub_EncoderCheck = new EncoderCheck(Lower_ArmBackwardsSwitch, Lower_ArmForwardsSwitch, Upper_MaxWhileForwardsSwitch, Upper_MaxWhileBackwardsSwitch, Upper_BringArmUpSafetySwitch, Upper_AtStowSwitch);
@@ -81,6 +84,8 @@ public class RobotContainer {
   private final IntakeLiftCommand cmd_IntakeLiftCommand = new IntakeLiftCommand(sub_IntakeSubsystem);
   private final IntakeClawCommand cmd_IntakeClawCommand = new IntakeClawCommand(sub_IntakeSubsystem);
   private final MoveArmManualCommand cmd_MoveArmManualCommand = new MoveArmManualCommand(sub_UpperArmManual,sub_LowerArmSubsystem,sub_EncoderCheck);
+  private final ArmPresetUp cmd_ArmUp = new ArmPresetUp(sub_UpperArmToSetpoint, sub_LowerArmSubsystem);
+  private final ArmPresetDown cmd_ArmDown = new ArmPresetDown(sub_UpperArmToSetpoint, sub_LowerArmSubsystem);
   //private final ArmAtLimit cmd_ArmAtLimit = new ArmAtLimit(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint, Upper_BringArmUpSafetySwitch, Upper_AtStowSwitch, Lower_ArmForwardsSwitch, Lower_ArmBackwardsSwitch)
   //private final ArmAtLimit cmd_ArmAtSwitch = new ArmAtLimit(sub_UpperArmToSetpoint,sub_LowerArmToSetpoint, UpperArmLowerSwitch, UpperArmUpperSwitch, LowerArmLowerSwitch, LowerArmUpperSwitch);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -111,6 +116,8 @@ public class RobotContainer {
     UpperArmDecreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
     UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
     
+    UpperArmPresetIncreaseButton.onTrue(cmd_ArmUp);
+    UpperArmPresetIncreaseButton.onTrue(cmd_ArmDown);
     
     clawButton.onTrue(cmd_ClawCommand);
     clawRotation.onTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate()));
