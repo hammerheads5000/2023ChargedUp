@@ -11,21 +11,24 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.playingwithfusion.CANVenom.BrakeCoastMode;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Constants.RegularConstants;
-import frc.robot.commands.ArmAtLimit;
-public class ArmToSetpoint extends SubsystemBase {
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+public class UpperArmManual extends SubsystemBase {
 
   /*Behold, My variables */
-    TalonFX ArmMotor;
-    public double angle = 0.0;
+    TalonFX ArmMotor = new TalonFX(3, "Bobby");
+    /*public double angle = 0.0;
     public double StartEncoderTicks;
     public double AngleDif;
     double ArmKI;
@@ -33,42 +36,13 @@ public class ArmToSetpoint extends SubsystemBase {
     double ArmMax;
     double ArmMin;
     double HomeAngle;
-    double UpperAngle;
-    boolean IsUpperArm;
-    public DigitalInput Lower_ArmBackwardsSwitch;
-    public DigitalInput Lower_ArmForwardsSwitch;
-    public DigitalInput Upper_MaxWhileForwardsSwitch;
-    public DigitalInput Upper_MaxWhileBackwardsSwitch;
-    public DigitalInput Upper_BringArmUpSafetySwitch;
-    public DigitalInput Upper_AtPostSwitch;
-    
+    double UpperAngle; */
 
     /* Creates a new Pneumatics subsystem */
-    public ArmToSetpoint 
-    (
-      TalonFX ArmMotor,
-      boolean IsUpperArm, 
-      DigitalInput Lower_ArmBackwardsSwitch,  //Switch is triggered when lower arm is back
-      DigitalInput Lower_ArmForwardSwitch,  // Switch is triggered when the lower arm is forward
-      DigitalInput Upper_MaxWhileForwardSwitch, //switch is triggered when the upper arm is at the angle where it will break height limit if lower arm is forward
-      DigitalInput Upper_MaxWhileBackwardsSwitch, //switch is triggered when the upper arm is at the point where it will break height limit if lower arm is back
-      DigitalInput Upper_BringArmUpSafetySwitch, //Is triggered when upper arm is at the angle where it is safe to bring lower arm back without breaking height limit
-      DigitalInput Upper_AtPostSwitch //This switch will be triggered when the upper arm is at the angle where it will be over the goalpost if the lower arm is forward
-      ) 
+    public UpperArmManual() 
     {
-      this.ArmMotor = ArmMotor;
-      this.IsUpperArm =IsUpperArm;
-      this.Lower_ArmBackwardsSwitch =Lower_ArmBackwardsSwitch;
-      this.Lower_ArmForwardsSwitch = Lower_ArmForwardSwitch;
-      this.Upper_MaxWhileForwardsSwitch = Upper_MaxWhileForwardSwitch;
-      this.Upper_MaxWhileBackwardsSwitch =Upper_MaxWhileBackwardsSwitch;
-      this.Upper_BringArmUpSafetySwitch = Upper_BringArmUpSafetySwitch;
-      this.Upper_AtPostSwitch = Upper_AtPostSwitch;
-
       ArmMotor.setNeutralMode(NeutralMode.Brake);
-      
-      //sets the initil position of the arm segment
-      StartEncoderTicks = ArmMotor.getSensorCollection().getIntegratedSensorPosition();
+  
 
        /*sets the preset angles depending on which arm instance it is
       if(isUpperArm)
@@ -82,27 +56,21 @@ public class ArmToSetpoint extends SubsystemBase {
         UpperAngle = 3;
       } */
     }
+
     //Moves arm up at a given speed
     public void moveUp(double speed)
     {
-      if(safetyCheck())
-      {
-        moveDown(.3);
-        return;
-      }
-      else if(Upper_AtPostSwitch.get())
-      {
-        speed = 0.0;
-      }
       ArmMotor.set(TalonFXControlMode.PercentOutput, speed); 
     }
+
     //Moves arm down at a given speed
     public void moveDown(double speed)
     {
-      ArmMotor.set(TalonFXControlMode.PercentOutput, -speed);
+        ArmMotor.set(TalonFXControlMode.PercentOutput, -speed);
     }
     
     //Moves arm to a desired angle
+    /*
     public void MoveArm (double DesiredAngle, boolean ifIsUpperArm)
     {
 
@@ -169,25 +137,11 @@ public class ArmToSetpoint extends SubsystemBase {
       SmartDashboard.putNumber("AngleDif", AngleDif);
       SmartDashboard.putNumber("Angle", angle);
     }
+    */
 
     //keeps the arm from never decelerating
     public void stop()
     {
       ArmMotor.set(TalonFXControlMode.Disabled,0);
-    }
-
-    //checks if moving the arm in a given direction would resulting in breaking any boundaries 
-    public boolean safetyCheck()
-    {
-      //safety check for upper arm
-      if(IsUpperArm)
-      {
-        return (Lower_ArmBackwardsSwitch.get()&&Upper_MaxWhileBackwardsSwitch.get())||(Lower_ArmForwardsSwitch.get()&&Upper_MaxWhileForwardsSwitch.get());
-        
-      }
-      else
-      {
-        return(Lower_ArmForwardsSwitch.get() && !Upper_BringArmUpSafetySwitch.get());
-      }
     }
 }

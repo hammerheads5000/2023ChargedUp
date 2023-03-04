@@ -18,7 +18,7 @@ public class ClawSubsystem extends SubsystemBase {
   //private static Compressor phCompressor = new Compressor(1, PneumaticsModuleType.CTREPCM);
   
   private static DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
-  private int currentAngle = 0;
+  private int currentAngle = 28;
   Servo rotationMotor = new Servo(4);
   /** Creates a new ClawSubsystem. */
   public ClawSubsystem() {
@@ -34,8 +34,8 @@ public class ClawSubsystem extends SubsystemBase {
   {
     //rotationMotor.set(direction);
     int angle;
-    if (currentAngle == 0) {angle = 180;}
-    else {angle = 0;}
+    if (currentAngle == 28) {angle = 180;}
+    else {angle = 28;}
     currentAngle = angle;
     rotationMotor.setAngle(angle);
   }

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.SPI;
 
 import frc.robot.SwerveModule;
+import frc.lib.math.Conversions;
 import frc.robot.Constants;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -37,8 +38,6 @@ public class Swerve extends SubsystemBase {
     public Swerve() {
         gyro = new WPI_Pigeon2(Constants.Swerve.pigeonID, "Bobby");
         zeroGyro();
-    
-        
         
 
         mSwerveMods = new SwerveModule[] {
@@ -48,8 +47,9 @@ public class Swerve extends SubsystemBase {
             new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
 
-        swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions());
+        zeroWheels();
 
+        swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions());
     }
 
 
@@ -134,6 +134,12 @@ public class Swerve extends SubsystemBase {
         gyro.setYaw(0);
     }
 
+    public void zeroWheels(){
+        for (SwerveModule mod : mSwerveMods){
+            mod.resetToZero();
+        }
+    }
+
     public Rotation2d getYaw() {
         double yaw = -gyro.getYaw();
         return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - yaw) : Rotation2d.fromDegrees(yaw);
@@ -162,6 +168,8 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + "Talon Angle Motor", mod.getTalonAngleMotor());
         }
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
         

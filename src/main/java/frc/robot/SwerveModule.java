@@ -21,10 +21,12 @@ public class SwerveModule {
     private TalonFX mDriveMotor;
     private CANCoder angleEncoder;
     private double lastAngle;
+    public SwerveModuleConstants moduleConstants;
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
+        this.moduleConstants = moduleConstants;
         this.moduleNumber = moduleNumber;
         angleOffset = moduleConstants.angleOffset;
         
@@ -58,6 +60,14 @@ public class SwerveModule {
         double angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed * 0.01)) ? lastAngle : desiredState.angle.getDegrees(); //Prevent rotating module if speed is less then 1%. Prevents Jittering.
         mAngleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle, Constants.Swerve.angleGearRatio)); 
         lastAngle = angle;
+    }
+
+    public void resetToZero() {
+        mAngleMotor.set(ControlMode.Position, moduleConstants.angleOffset);
+    }
+
+    public double getTalonAngleMotor(){
+        return mAngleMotor.getSelectedSensorPosition();
     }
 
     private void resetToAbsolute(){
