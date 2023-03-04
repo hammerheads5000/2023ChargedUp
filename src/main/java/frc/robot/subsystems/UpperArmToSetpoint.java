@@ -48,40 +48,18 @@ public class UpperArmToSetpoint extends SubsystemBase {
       //finds distance from current angle to desired angle
       AngleDif = angle - DesiredAngle;
       double AngleDifAbsolute = Math.abs(AngleDif);
-        //Acounts for distance
-        if(AngleDifAbsolute > 15)
-        {
-          tempOutput = ArmMax;
-        }
-        else
-        {
-          if(AngleDifAbsolute * ArmMax * ArmKI < ArmMin)
-          {
-            tempOutput = ArmMin;
-            if(AngleDifAbsolute == 0)
-            {
-              tempOutput = 0;
-            }
-          }
-          else
-          {
-            tempOutput = AngleDifAbsolute * ArmMax * ArmKI;
-          }
-        }
-  
-      //moves arm motor in the direction it should go in
-      if((AngleDif)>0)
+      //Acounts for distance
+      if(AngleDifAbsolute > RegularConstants.AnglePIDStarts)
       {
-        ArmMotor.set(TalonFXControlMode.PercentOutput, tempOutput);
-      }
-      else if (AngleDif < 0)
-      {
-        ArmMotor.set(TalonFXControlMode.PercentOutput, -tempOutput);
+        tempOutput = ArmMax;
       }
       else
       {
-        //yay
+        tempOutput = Math.max(ArmMin, AngleDifAbsolute*ArmMax*ArmKI);
       }
+  
+      //moves arm motor in the direction it should go in
+      ArmMotor.set(TalonFXControlMode.PercentOutput, tempOutput*Math.signum(AngleDif)); //optimized
       
       //Makes my variables beholdable
       SmartDashboard.putNumber("encoder Ticks", TempEncoderTicks);
