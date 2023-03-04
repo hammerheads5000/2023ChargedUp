@@ -6,13 +6,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-<<<<<<< HEAD:src/main/java/frc/robot/commands/UICommand.java
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.UISubsystem;
-=======
->>>>>>> 2c991b3833bb2c7985d3b41e6c304b3b4a6d623c:src/main/java/frc/robot/commands/AngleSetAtLimit.java
 
 public class AngleSetAtLimit extends CommandBase {
   /** Creates a new AngleSetAtLimit. */
