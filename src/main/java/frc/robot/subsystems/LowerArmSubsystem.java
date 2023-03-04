@@ -39,7 +39,7 @@ public class LowerArmSubsystem extends SubsystemBase {
   }
 
   public void m_initializeSolenoid() {
-    doubleSolenoid.set(kReverse);
+    doubleSolenoid.set(kForward);
   }
 
   public void m_disableCompressor() {

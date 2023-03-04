@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class UISubsystem extends SubsystemBase {
@@ -17,6 +18,8 @@ public class UISubsystem extends SubsystemBase {
   public UISubsystem( ClawSubsystem s_claw, IntakeSubsystem s_intake) {
     this.s_claw = s_claw;
     this.s_intake = s_intake;
+
+    //Swerve module info
   }
 
   public void UpdateValues() {
@@ -26,6 +29,7 @@ public class UISubsystem extends SubsystemBase {
 
     //Intake
     SmartDashboard.putBoolean("Intake is open", s_intake.isGrabberOpen);
+
   }
 
   @Override

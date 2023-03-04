@@ -16,6 +16,13 @@ public class EncoderCheck extends SubsystemBase {
   DigitalInput Upper_MaxWhileBackwardsSwitch;
   DigitalInput Upper_BringArmUpSafetySwitch;
   DigitalInput Upper_AtStowSwitch;
+  boolean lower_ArmBackwardsSwitch;
+  boolean lower_ArmForwardsSwitch;
+  boolean upper_MaxWhileForwardsSwitch;
+  boolean upper_MaxWhileBackwardsSwitch;
+  boolean upper_BringArmUpSafetySwitch;
+  boolean upper_AtStowSwitch;
+
 
   public EncoderCheck
   (
@@ -33,6 +40,13 @@ public class EncoderCheck extends SubsystemBase {
     this.Upper_MaxWhileBackwardsSwitch = Upper_MaxWhileBackwardsSwitch;
     this.Upper_BringArmUpSafetySwitch = Upper_BringArmUpSafetySwitch;
     this.Upper_AtStowSwitch = Upper_AtStowSwitch;
+
+    lower_ArmBackwardsSwitch = Lower_ArmBackwardsSwitch.get();
+    lower_ArmForwardsSwitch = Lower_ArmForwardsSwitch.get();
+    upper_MaxWhileForwardsSwitch = Upper_MaxWhileForwardsSwitch.get();
+    upper_MaxWhileBackwardsSwitch = Upper_MaxWhileBackwardsSwitch.get();
+    upper_BringArmUpSafetySwitch = Upper_BringArmUpSafetySwitch.get();
+    upper_AtStowSwitch = Upper_AtStowSwitch.get();
   }
 
   @Override
@@ -42,24 +56,24 @@ public class EncoderCheck extends SubsystemBase {
   }
   public int CheckEncoders(boolean IsUpperArm)
     {
-      SmartDashboard.putBoolean("LowMax", Upper_MaxWhileBackwardsSwitch.get());
-      SmartDashboard.putBoolean("UpMax", Upper_MaxWhileForwardsSwitch.get());
-      SmartDashboard.putBoolean("AtPlayer", Upper_BringArmUpSafetySwitch.get());
-      SmartDashboard.putBoolean("Stow", Upper_AtStowSwitch.get());
-      SmartDashboard.putBoolean("LowerBack", Lower_ArmBackwardsSwitch.get());
-      SmartDashboard.putBoolean("LowerForward", Lower_ArmForwardsSwitch.get());
+      SmartDashboard.putBoolean("LowMax", upper_MaxWhileBackwardsSwitch);
+      SmartDashboard.putBoolean("UpMax", upper_MaxWhileForwardsSwitch);
+      SmartDashboard.putBoolean("AtPlayer", upper_BringArmUpSafetySwitch);
+      SmartDashboard.putBoolean("Stow", upper_AtStowSwitch);
+      SmartDashboard.putBoolean("LowerBack", lower_ArmBackwardsSwitch);
+      SmartDashboard.putBoolean("LowerForward", lower_ArmForwardsSwitch);
       //safety check for upper arm
       if(IsUpperArm)
       {
-        if((Lower_ArmBackwardsSwitch.get()&&Upper_MaxWhileBackwardsSwitch.get())||(Lower_ArmForwardsSwitch.get()&&Upper_MaxWhileForwardsSwitch.get()))
+        if((lower_ArmBackwardsSwitch && upper_MaxWhileBackwardsSwitch)||(lower_ArmForwardsSwitch&&upper_MaxWhileForwardsSwitch))
         {
           return 1; //makes upper arm go down 
         }
-        else if(Upper_BringArmUpSafetySwitch.get())
+        else if(upper_BringArmUpSafetySwitch)
         {
           return 2; //slows upper arm way down
         }
-        else if(Upper_AtStowSwitch.get())
+        else if(upper_AtStowSwitch)
         {
           return 3; //stops upper arm 
         }
@@ -71,12 +85,12 @@ public class EncoderCheck extends SubsystemBase {
       }
       else
       {
-        if((Lower_ArmForwardsSwitch.get() == true) && (!Upper_BringArmUpSafetySwitch.get()))
+        if((lower_ArmForwardsSwitch == true) && (!upper_BringArmUpSafetySwitch))
         {
           SmartDashboard.putNumber("LowerReturn", 11);
           return 11;
         }
-        else if(Lower_ArmBackwardsSwitch.get())
+        else if(lower_ArmBackwardsSwitch)
         {
           SmartDashboard.putNumber("LowerReturn", 12);
           return 12; //stops lower arm

@@ -54,31 +54,31 @@ public class MoveArmManualCommand extends CommandBase {
     //Upper Arm Move Down
     if(UpperArmDecreaseButton.getAsBoolean())
     {
-      if(upperTemp_EncoderCheck==3)
+     /*  if(upperTemp_EncoderCheck==3)
       {
         return;
       }
       else if(upperTemp_EncoderCheck == 2)
       {
-        m_UpperArmManual.moveDown(.1);
+        m_UpperArmManual.moveDown(.2);
         return;
-      }
+      } */
       m_UpperArmManual.moveDown(.3);
     }
 
     //Upper Arm Move Up
     else if(UpperArmIncreaseButton.getAsBoolean())
     {
-      if(upperTemp_EncoderCheck == 1)
+     /*  if(upperTemp_EncoderCheck == 1)
       {
         m_UpperArmManual.moveDown(.2);
         return;
-      }
-      else if(upperTemp_EncoderCheck == 2)
+      } */
+     /*  else if(upperTemp_EncoderCheck == 2)
       {
         m_UpperArmManual.moveUp(.1);
         return;
-      }
+      } */
       m_UpperArmManual.moveUp(.3);
     }
 
@@ -91,14 +91,9 @@ public class MoveArmManualCommand extends CommandBase {
     //Lower Arm Move Up
     else if(lowerArmIncreaseButton.getAsBoolean())
     {
-      if(lowerTemp_EncoderCheck ==11)
-      {
-        return;
-      }
-      else
-      {
+     
         m_LowerArmSubsystem.m_extend();
-      }
+
     }
   }
 
