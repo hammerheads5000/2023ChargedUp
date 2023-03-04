@@ -4,19 +4,16 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmToSetpoint;
-import frc.robot.subsystems.ClawSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.UISubsystem;
+import frc.robot.subsystems.UpperArmToSetpoint;
 
-public class UICommand extends CommandBase {
-  UISubsystem sub_ui;
-  /** Creates a new UICommand. */
-  public UICommand(UISubsystem sub_ui) {
-    this.sub_ui = sub_ui;
+
+public class ArmPresets extends CommandBase {
+  /** Creates a new ArmPresets. */
+  UpperArmToSetpoint m_UpperArmToSetpoint;
+  public ArmPresets(UpperArmToSetpoint UpperArmToSetpoint) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    m_UpperArmToSetpoint = UpperArmToSetpoint;
   }
 
   // Called when the command is initially scheduled.
@@ -25,11 +22,11 @@ public class UICommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    sub_ui.UpdateValues();
+  public void execute() 
+  {
+    m_UpperArmToSetpoint.MoveArm(40);
   }
 
-  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}

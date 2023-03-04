@@ -21,8 +21,8 @@ boolean isFinished;
     public void initialize() 
     {
         //puts the desired angle value on smartDashboard to be used
-        SmartDashboard.putNumber("XCord", 0);
-        SmartDashboard.putNumber("YCord", 0);
+        // SmartDashboard.putNumber("XCord", 0);
+        // SmartDashboard.putNumber("YCord", 0);
        // m_UpperArmToSetpoint.MoveArm(SmartDashboard.getNumber("Desired X", 0), true);
        // m_LowerArmToSetpoint.MoveArm(SmartDashboard.getNumber("Desired Y", 0), true);
     }
