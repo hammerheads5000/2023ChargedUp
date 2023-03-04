@@ -73,14 +73,15 @@ public class EncoderCheck extends SubsystemBase {
       {
         if((Lower_ArmForwardsSwitch.get() == true) && (!Upper_BringArmUpSafetySwitch.get()))
         {
+          SmartDashboard.putNumber("LowerReturn", 11);
           return 11;
         }
         else if(Lower_ArmBackwardsSwitch.get())
         {
-          SmartDashboard.putNumber("return", 12);
+          SmartDashboard.putNumber("LowerReturn", 12);
           return 12; //stops lower arm
         }
-        SmartDashboard.putNumber("return", 13);
+        SmartDashboard.putNumber("LowerReturn", 13);
         return 13;
       }
     }

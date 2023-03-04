@@ -21,7 +21,7 @@ public class SwerveModule {
     private TalonFX mDriveMotor;
     private CANCoder angleEncoder;
     private double lastAngle;
-    private SwerveModuleConstants moduleConstants;
+    public SwerveModuleConstants moduleConstants;
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
@@ -63,7 +63,7 @@ public class SwerveModule {
     }
 
     public void resetToZero() {
-        mAngleMotor.set(ControlMode.Position, moduleConstants.zeroValue);
+        mAngleMotor.set(ControlMode.Position, moduleConstants.angleOffset);
     }
 
     public double getTalonAngleMotor(){

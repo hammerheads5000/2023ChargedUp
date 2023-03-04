@@ -68,7 +68,7 @@ public class RobotContainer {
   TalonFX UpperMotor = new TalonFX(3, "Bobby");
   TalonFX LowerMotor = new TalonFX(26, "Bobby");
   /* Subsystems */
-  private final Swerve s_Swerve = new Swerve();
+  public final Swerve s_Swerve = new Swerve();
   private final UpperArmManual sub_UpperArmManual = new UpperArmManual();
   private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
   private final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
