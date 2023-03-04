@@ -136,7 +136,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new quincyCommandGroup(sub_IntakeSubsystem);
+    return new MaxCommandGroup(s_Swerve);
   }
 
 
