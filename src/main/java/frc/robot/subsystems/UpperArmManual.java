@@ -28,15 +28,7 @@ public class UpperArmManual extends SubsystemBase {
 
   /*Behold, My variables */
     TalonFX ArmMotor = new TalonFX(3, "Bobby");
-    /*public double angle = 0.0;
-    public double StartEncoderTicks;
-    public double AngleDif;
-    double ArmKI;
-    double ArmRatio;
-    double ArmMax;
-    double ArmMin;
-    double HomeAngle;
-    double UpperAngle; */
+    
 
     /* Creates a new Pneumatics subsystem */
     public UpperArmManual() 
@@ -69,75 +61,6 @@ public class UpperArmManual extends SubsystemBase {
         ArmMotor.set(TalonFXControlMode.PercentOutput, -speed);
     }
     
-    //Moves arm to a desired angle
-    /*
-    public void MoveArm (double DesiredAngle, boolean ifIsUpperArm)
-    {
-
-      double tempOutput;
-      if(ifIsUpperArm)
-      {
-        ArmKI = RegularConstants.UpperArmKI;
-        ArmRatio = RegularConstants.UpperArmRatio;
-        ArmMax = RegularConstants.UpperArmMax;
-        ArmMin = RegularConstants.UpperArmMin;
-      }
-      else
-      {
-        ArmKI = RegularConstants.LowerArmKI;
-        ArmRatio = RegularConstants.LowerArmRatio;
-        ArmMax = RegularConstants.LowerArmMax;
-        ArmMin = RegularConstants.LowerArmMin;
-      }
-      double TempEncoderTicks = ArmMotor.getSensorCollection().getIntegratedSensorPosition();
-      
-      //Calculates angle based on last angle and difference in encoder ticks  
-      angle = -(TempEncoderTicks- StartEncoderTicks) / ArmRatio;
-
-      //finds distance from current angle to desired angle
-      AngleDif = angle - DesiredAngle;
-      double AngleDifAbsolute = Math.abs(AngleDif);
-        //Acounts for distance
-        if(AngleDifAbsolute > 15)
-        {
-          tempOutput = ArmMax;
-        }
-        else
-        {
-          if(AngleDifAbsolute * ArmMax * ArmKI < ArmMin)
-          {
-            tempOutput = ArmMin;
-            if(AngleDifAbsolute == 0)
-            {
-              tempOutput = 0;
-            }
-          }
-          else
-          {
-            tempOutput = AngleDifAbsolute * ArmMax * ArmKI;
-          }
-        }
-  
-      //moves arm motor in the direction it should go in
-      if((AngleDif)>0)
-      {
-        ArmMotor.set(TalonFXControlMode.PercentOutput, tempOutput);
-      }
-      else if (AngleDif < 0)
-      {
-        ArmMotor.set(TalonFXControlMode.PercentOutput, -tempOutput);
-      }
-      else
-      {
-        //yay
-      }
-      
-      //Makes my variables beholdable
-      SmartDashboard.putNumber("encoder Ticks", TempEncoderTicks);
-      SmartDashboard.putNumber("AngleDif", AngleDif);
-      SmartDashboard.putNumber("Angle", angle);
-    }
-    */
 
     //keeps the arm from never decelerating
     public void stop()
