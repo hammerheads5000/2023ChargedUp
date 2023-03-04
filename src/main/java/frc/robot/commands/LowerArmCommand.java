@@ -29,7 +29,6 @@ public class LowerArmCommand extends CommandBase {
   @Override
   public void execute() {
     boolean isUp = lowerArmSubsystem.checkState();
-    SmartDashboard.putBoolean("isUp", isUp);
     
     if (isUp)
     {

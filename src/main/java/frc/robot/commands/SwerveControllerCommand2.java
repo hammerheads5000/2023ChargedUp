@@ -223,9 +223,9 @@ public class SwerveControllerCommand2 extends CommandBase {
     double curTime = m_timer.get();
     var desiredState = m_trajectory.sample(curTime);
 
-    SmartDashboard.putNumber("SCmd_currentPoseX",m_pose.get().getX());
-    SmartDashboard.putNumber("SCmd_currentPoseY",m_pose.get().getY());
-    SmartDashboard.putString("SCmd_desiredPose",desiredState.toString());
+    // SmartDashboard.putNumber("SCmd_currentPoseX",m_pose.get().getX());
+    // SmartDashboard.putNumber("SCmd_currentPoseY",m_pose.get().getY());
+    // SmartDashboard.putString("SCmd_desiredPose",desiredState.toString());
 
     System.out.println("desiredPose"+desiredState.toString());
 
