@@ -16,7 +16,7 @@ public class UpperArmToSetpoint extends SubsystemBase {
   /** Creates a new UpperSrmToSetpoint. */
   TalonFX ArmMotor = new TalonFX(3, "Bobby");
   Encoder encoder = new Encoder(0, 1); // placeholder
-    public double angle = 0.0;
+    public double angle = RegularConstants.ArmAngleOffset;
     public double StartEncoderTicks;
     public double AngleDif;
     double ArmKI;
@@ -43,7 +43,7 @@ public class UpperArmToSetpoint extends SubsystemBase {
         ArmMax = RegularConstants.UpperArmMax;
         ArmMin = RegularConstants.UpperArmMin;
 
-      angle = encoder.getDistance();
+      angle = encoder.getDistance() + RegularConstants.ArmAngleOffset;
       
       //finds distance from current angle to desired angle
       AngleDif = angle - DesiredAngle;
@@ -69,7 +69,6 @@ public class UpperArmToSetpoint extends SubsystemBase {
 
     public void AngleSet(double angle)
     {
-      this.angle = angle;
-      StartEncoderTicks = angle * RegularConstants.EncoderTicksPerDegree;
+      encoder.reset();
     } 
 }
