@@ -70,5 +70,6 @@ public class UpperArmToSetpoint extends SubsystemBase {
     public void AngleSet(double angle)
     {
       this.angle = angle;
+      StartEncoderTicks = angle * RegularConstants.EncoderTicksPerDegree;
     } 
 }
