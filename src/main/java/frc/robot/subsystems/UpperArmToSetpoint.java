@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RegularConstants;
@@ -14,6 +15,7 @@ import frc.robot.Constants.RegularConstants;
 public class UpperArmToSetpoint extends SubsystemBase {
   /** Creates a new UpperSrmToSetpoint. */
   TalonFX ArmMotor = new TalonFX(3, "Bobby");
+  Encoder encoder = new Encoder(0, 1); // placeholder
     public double angle = 0.0;
     public double StartEncoderTicks;
     public double AngleDif;
@@ -23,7 +25,9 @@ public class UpperArmToSetpoint extends SubsystemBase {
     double ArmMin;
     double HomeAngle;
     double UpperAngle; 
-  public UpperArmToSetpoint() {}
+  public UpperArmToSetpoint() {
+    encoder.setDistancePerPulse(4.0/256.0); // placeholder
+  }
 
   @Override
   public void periodic() {
@@ -33,18 +37,14 @@ public class UpperArmToSetpoint extends SubsystemBase {
     
     public void MoveArm (double DesiredAngle)
     {
-
       double tempOutput;
         ArmKI = RegularConstants.UpperArmKI;
         ArmRatio = RegularConstants.UpperArmRatio;
         ArmMax = RegularConstants.UpperArmMax;
         ArmMin = RegularConstants.UpperArmMin;
 
-      double TempEncoderTicks = ArmMotor.getSensorCollection().getIntegratedSensorPosition();
+      angle = encoder.getDistance();
       
-      //Calculates angle based on last angle and difference in encoder ticks  
-      angle = -(TempEncoderTicks- StartEncoderTicks) / ArmRatio;
-
       //finds distance from current angle to desired angle
       AngleDif = angle - DesiredAngle;
       double AngleDifAbsolute = Math.abs(AngleDif);
@@ -62,7 +62,7 @@ public class UpperArmToSetpoint extends SubsystemBase {
       ArmMotor.set(TalonFXControlMode.PercentOutput, tempOutput*Math.signum(AngleDif)); //optimized
       
       //Makes my variables beholdable
-      SmartDashboard.putNumber("encoder Ticks", TempEncoderTicks);
+      // SmartDashboard.putNumber("encoder Ticks", TempEncoderTicks);
       SmartDashboard.putNumber("AngleDif", AngleDif);
       SmartDashboard.putNumber("Angle", angle);
     }
