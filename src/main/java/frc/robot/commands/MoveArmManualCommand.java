@@ -69,16 +69,11 @@ public class MoveArmManualCommand extends CommandBase {
     //Upper Arm Move Up
     else if(UpperArmIncreaseButton.getAsBoolean())
     {
-     /*  if(upperTemp_EncoderCheck == 1)
+       if(upperTemp_EncoderCheck == 1)
       {
-        m_UpperArmManual.moveDown(.2);
+        m_UpperArmManual.moveDown(.0);
         return;
       }
-      else if(upperTemp_EncoderCheck == 2)
-      {
-        m_UpperArmManual.moveUp(.1);
-        return;
-      } */
       m_UpperArmManual.moveUp(.3);
     }
 

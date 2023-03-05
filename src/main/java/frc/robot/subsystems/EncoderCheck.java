@@ -40,13 +40,6 @@ public class EncoderCheck extends SubsystemBase {
     this.Upper_MaxWhileBackwardsSwitch = Upper_MaxWhileBackwardsSwitch;
     this.Upper_BringArmUpSafetySwitch = Upper_BringArmUpSafetySwitch;
     this.Upper_AtStowSwitch = Upper_AtStowSwitch;
-
-    lower_ArmBackwardsSwitch = Lower_ArmBackwardsSwitch.get();
-    lower_ArmForwardsSwitch = Lower_ArmForwardsSwitch.get();
-    upper_MaxWhileForwardsSwitch = Upper_MaxWhileForwardsSwitch.get();
-    upper_MaxWhileBackwardsSwitch = Upper_MaxWhileBackwardsSwitch.get();
-    upper_BringArmUpSafetySwitch = Upper_BringArmUpSafetySwitch.get();
-    upper_AtStowSwitch = Upper_AtStowSwitch.get();
   }
 
   @Override
@@ -56,44 +49,28 @@ public class EncoderCheck extends SubsystemBase {
   }
   public int CheckEncoders(boolean IsUpperArm)
     {
-      SmartDashboard.putBoolean("LowMax", upper_MaxWhileBackwardsSwitch);
+      lower_ArmBackwardsSwitch = !Lower_ArmBackwardsSwitch.get();
+      lower_ArmForwardsSwitch = !Lower_ArmForwardsSwitch.get();
+      upper_MaxWhileForwardsSwitch = !Upper_MaxWhileForwardsSwitch.get();
+      upper_MaxWhileBackwardsSwitch = !Upper_MaxWhileBackwardsSwitch.get();
+      upper_BringArmUpSafetySwitch = !Upper_BringArmUpSafetySwitch.get();
+      upper_AtStowSwitch = !Upper_AtStowSwitch.get(); 
+      SmartDashboard.putBoolean("LowMax", lower_ArmForwardsSwitch);
       SmartDashboard.putBoolean("UpMax", upper_MaxWhileForwardsSwitch);
       SmartDashboard.putBoolean("AtPlayer", upper_BringArmUpSafetySwitch);
       SmartDashboard.putBoolean("Stow", upper_AtStowSwitch);
       SmartDashboard.putBoolean("LowerBack", lower_ArmBackwardsSwitch);
       SmartDashboard.putBoolean("LowerForward", lower_ArmForwardsSwitch);
       //safety check for upper arm
-      if(IsUpperArm)
-      {
-        if((lower_ArmBackwardsSwitch && upper_MaxWhileBackwardsSwitch)||(lower_ArmForwardsSwitch&&upper_MaxWhileForwardsSwitch))
+  
+      
+        if((lower_ArmBackwardsSwitch && upper_MaxWhileForwardsSwitch)||(lower_ArmForwardsSwitch&&upper_BringArmUpSafetySwitch))
         {
           return 1; //makes upper arm go down 
         }
-        else if(upper_BringArmUpSafetySwitch)
+        else 
         {
-          return 2; //slows upper arm way down
+          return 4; //slows upper arm way down
         }
-        else if(upper_AtStowSwitch)
-        {
-          return 3; //stops upper arm 
-        }
-        else
-        {
-          return 4; //allows upper arm to move at requested speed
-        }
-
-      }
-      else
-      {
-        if((lower_ArmForwardsSwitch == true) && (!upper_BringArmUpSafetySwitch))
-        {
-          return 11;
-        }
-        else if(lower_ArmBackwardsSwitch)
-        {
-          return 12; //stops lower arm
-        }
-        return 13;
-      }
     }
 }
