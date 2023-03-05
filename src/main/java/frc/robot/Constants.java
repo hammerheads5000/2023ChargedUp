@@ -145,6 +145,20 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
+        /*
+         *public static final double kMaxSpeedMetersPerSecond = 1.6;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+        public static final double kPXController = 0.4;
+        public static final double kPYController = 0.4;
+        public static final double kPThetaController = 0.1;
+        // Constraint for the motion profilied robot angle controller
+        public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
+            new TrapezoidProfile.Constraints(
+                kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+         */
+
         public static final SwerveModuleState[] driveModuleStates = 
             Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(2.0, 0.0, 0.0));
         public static final SwerveModuleState[] stopModuleStates  = 

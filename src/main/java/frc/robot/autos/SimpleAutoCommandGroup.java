@@ -4,6 +4,7 @@
 
 package frc.robot.autos;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -18,13 +19,23 @@ import frc.robot.subsystems.Swerve;
 public class SimpleAutoCommandGroup extends SequentialCommandGroup {
   /** Creates a new SimpleAutoCommandGroup. */
   public SimpleAutoCommandGroup(Swerve s_swerve) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+    /*
+     *var thetaController =
+
+        new ProfiledPIDController(
+
+        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+
+      thetaController.enableContinuousInput(-Math.PI, Math.PI);
+     */
+    
+
     addCommands(
+      new InstantCommand(() -> s_swerve.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))),
       // drive forward @ 2 m/s for 2 seconds then stop
-      new InstantCommand(() -> s_swerve.setModuleStates(AutoConstants.driveModuleStates)),
+      new InstantCommand(() -> s_swerve.drive(2.0, 0.0, 0.0, false)),
       new WaitCommand(2.0),
-      new InstantCommand(() -> s_swerve.setModuleStates(AutoConstants.stopModuleStates))
+      new InstantCommand(() -> s_swerve.drive(0.1, 0.0, 0.0, false))
     );
   }
 }
