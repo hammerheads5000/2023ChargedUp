@@ -24,9 +24,10 @@ public class BalanceAutoCommandGroup extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> s_swerve.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))),
-      // drive forward @ 2 m/s for 2 seconds then stop
-      new InstantCommand(() -> s_swerve.drive(2.0, 0.0, 0.0, false)),
+      // drive forward @ 1 m/s for 2 seconds then stop and start autobalancing
+      new InstantCommand(() -> s_swerve.drive(1.0, 0.0, 0.0, false)),
       new WaitCommand(2.0),
+      new InstantCommand(() -> s_swerve.drive(0, 0, 0, true)),
       cmd_autoBalance
     );
   }
