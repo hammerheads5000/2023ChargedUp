@@ -136,7 +136,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new MaxCommandGroup(s_Swerve);
+    return new manualAuto(s_Swerve, "2mPath.wpilib.json");
   }
 
 

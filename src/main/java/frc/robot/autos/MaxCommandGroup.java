@@ -4,6 +4,7 @@
 
 package frc.robot.autos;
 
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -22,9 +23,11 @@ public class MaxCommandGroup extends SequentialCommandGroup {
 
       //new InstantCommand(() -> s_AutoSwerve.resetOdometry(exampleTrajectory.getInitialPose())),
 
-        new InstantCommand(() -> s_AutoSwerve.drive(1,0,0,false)),       // Need to stop robot at end, likely different param to set FieldRelative
-        new WaitCommand(2.0),
-        new InstantCommand(() -> s_AutoSwerve.drive(0,0,0,false))   
+         new InstantCommand(() -> s_AutoSwerve.drive(2,0,0,true)),       // Need to stop robot at end, likely different param to set FieldRelative
+         new WaitCommand(2.0),
+         new InstantCommand(() -> s_AutoSwerve.drive(0,0,0,true))
+        //SwerveModuleState state = new SwerveModuleState(2.0, 0);
+        //new InstantCommand(() -> s_AutoSwerve.setModuleStates({new SwerveModuleState(2., ))});)   
     );
   }
 }

@@ -29,7 +29,7 @@ import frc.robot.subsystems.Swerve;
 public class manualAuto extends SequentialCommandGroup {
     Trajectory exampleTrajectory = new Trajectory();
 
-    public manualAuto(Swerve s_AutoSwerve, String path){
+    public manualAuto(Swerve s_swerve, String path){
 
         TrajectoryConfig config =
 
@@ -87,7 +87,7 @@ exampleTrajectory,
 
 
 
-s_AutoSwerve::getPose, // Functional interface to feed supplier
+s_swerve::getPose, // Functional interface to feed supplier
 
 
 
@@ -103,9 +103,9 @@ Constants.Swerve.swerveKinematics,
 
         thetaController,
 
-        s_AutoSwerve::setModuleStates,
+        s_swerve::setModuleStates,
 
-        s_AutoSwerve);
+        s_swerve);
 
 
 
@@ -113,19 +113,19 @@ Constants.Swerve.swerveKinematics,
 
 
 
-    addRequirements(s_AutoSwerve);
+    addRequirements(s_swerve);
 
 
     
     addCommands(
 
         
-        new InstantCommand(() -> s_AutoSwerve.resetOdometry(exampleTrajectory.getInitialPose())),
+        new InstantCommand(() -> s_swerve.resetOdometry(exampleTrajectory.getInitialPose())),
 
        //swerveControllerCommand2,
-        new InstantCommand(() -> s_AutoSwerve.drive(1,0,0,false)),       // Need to stop robot at end, likely different param to set FieldRelative
-        new WaitCommand(1.0),
-        new InstantCommand(() -> s_AutoSwerve.drive(0,0,0,false))       // Need to stop robot at end, likely different param to set FieldRelative
+        new InstantCommand(() -> s_swerve.drive(1,0,0,false)),       // Need to stop robot at end, likely different param to set FieldRelative
+        new WaitCommand(3.0),
+        new InstantCommand(() -> s_swerve.drive(0,0,0,false))       // Need to stop robot at end, likely different param to set FieldRelative
 
 
     );
