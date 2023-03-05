@@ -5,7 +5,7 @@ public class SwerveModuleConstants {
     public final int angleMotorID;
     public final int cancoderID;
     public final double angleOffset;
-    public final double zeroValue;
+    public  double zeroValue;
 
     /**
      * Swerve Module Constants to be used when creating swerve modules.
