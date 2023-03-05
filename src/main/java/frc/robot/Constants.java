@@ -158,7 +158,9 @@ public final class Constants {
             new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
          */
-
+        public static final double balanceSensitivity = 0.1;
+        public static final double balanceToleranceDegrees = 5;
+        public static final double maxBalanceSpeed = 3;
         public static final SwerveModuleState[] driveModuleStates = 
             Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(2.0, 0.0, 0.0));
         public static final SwerveModuleState[] stopModuleStates  = 

@@ -81,6 +81,7 @@ public class RobotContainer {
   private final IntakeLiftCommand cmd_IntakeLiftCommand = new IntakeLiftCommand(sub_IntakeSubsystem);
   private final IntakeClawCommand cmd_IntakeClawCommand = new IntakeClawCommand(sub_IntakeSubsystem);
   private final MoveArmManualCommand cmd_MoveArmManualCommand = new MoveArmManualCommand(sub_UpperArmManual,sub_LowerArmSubsystem,sub_EncoderCheck);
+  private final AutoBalanceCommand cmd_AutoBalanceCommand = new AutoBalanceCommand(s_Swerve, s_Swerve.gyro);
   //private final ArmAtLimit cmd_ArmAtLimit = new ArmAtLimit(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint, Upper_BringArmUpSafetySwitch, Upper_AtStowSwitch, Lower_ArmForwardsSwitch, Lower_ArmBackwardsSwitch)
   //private final ArmAtLimit cmd_ArmAtSwitch = new ArmAtLimit(sub_UpperArmToSetpoint,sub_LowerArmToSetpoint, UpperArmLowerSwitch, UpperArmUpperSwitch, LowerArmLowerSwitch, LowerArmUpperSwitch);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -136,7 +137,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new SimpleAutoCommandGroup(s_Swerve);
+    return new BalanceAutoCommandGroup(s_Swerve, cmd_AutoBalanceCommand);
   }
 
 
