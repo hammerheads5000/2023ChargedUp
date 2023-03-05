@@ -4,27 +4,27 @@
 
 package frc.robot.autos;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.Swerve;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class MaxCommandGroup extends SequentialCommandGroup {
-  /** Creates a new MaxCommandGroup. */
-  public MaxCommandGroup(Swerve s_AutoSwerve) {
+public class SimpleAutoCommandGroup extends SequentialCommandGroup {
+  /** Creates a new SimpleAutoCommandGroup. */
+  public SimpleAutoCommandGroup(Swerve s_swerve) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    super(
-      //    Trajectory exampleTrajectory = new Trajectory();
-
-      //new InstantCommand(() -> s_AutoSwerve.resetOdometry(exampleTrajectory.getInitialPose())),
-
-        new InstantCommand(() -> s_AutoSwerve.drive(1,0,0,false)),       // Need to stop robot at end, likely different param to set FieldRelative
-        new WaitCommand(2.0),
-        new InstantCommand(() -> s_AutoSwerve.drive(0,0,0,false))   
+    addCommands(
+      // drive forward @ 2 m/s for 2 seconds then stop
+      new InstantCommand(() -> s_swerve.setModuleStates(AutoConstants.driveModuleStates)),
+      new WaitCommand(2.0),
+      new InstantCommand(() -> s_swerve.setModuleStates(AutoConstants.stopModuleStates))
     );
   }
 }

@@ -3,9 +3,11 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -143,19 +145,13 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 1.6;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-    public static final int autoArmSetTime = 3;
-        public static final double kPXController = 0.4;
-        public static final double kPYController = 0.4;
-        public static final double kPThetaController = 0.1;
-        // Constraint for the motion profilied robot angle controller
-        public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
-            new TrapezoidProfile.Constraints(
-                kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
-                
-      }
+        public static final SwerveModuleState[] driveModuleStates = 
+            Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(2.0, 0.0, 0.0));
+        public static final SwerveModuleState[] stopModuleStates  = 
+            Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0.0, 0.0, 0.0));
+        public static final SwerveModuleState[] rotateModuleStates = 
+            Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0.0, 0.0, Math.PI)); // half rotation every second
+        public static final double upparArmPlacementAngle = 135.0;
+    }
 
 }
