@@ -6,6 +6,7 @@ package frc.robot.autos;
 
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.Swerve;
@@ -14,10 +15,12 @@ public class AutoBalanceCommand extends CommandBase {
   /** Creates a new AutoBalanceCommand. */
   Swerve s_swerve;
   WPI_Pigeon2 pigeon;
+  Timer timer;
 
   public AutoBalanceCommand(Swerve s_swerve, WPI_Pigeon2 pigeon) {
     this.s_swerve = s_swerve;
     this.pigeon = pigeon;
+    timer = new Timer();
   }
 
   // Called when the command is initially scheduled.
@@ -30,9 +33,13 @@ public class AutoBalanceCommand extends CommandBase {
   public void execute() {
     double yaw = pigeon.getYaw();
     if (Math.abs(yaw) > AutoConstants.balanceToleranceDegrees){
-      double speed = -yaw*AutoConstants.balanceSensitivity;
-      speed = Math.min(Math.abs(speed), AutoConstants.maxBalanceSpeed) * Math.signum(speed); // cap speed at max speed
+      double speed = -Math.signum(yaw)*AutoConstants.balanceSensitivity*AutoConstants.balanceSpeed;
       s_swerve.drive(speed, 0, 0, true);
+      timer.stop();
+      timer.reset();
+    }
+    else {
+      timer.start();
     }
   }
 
@@ -43,6 +50,6 @@ public class AutoBalanceCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return timer.hasElapsed(AutoConstants.balanceTime);
   }
 }
