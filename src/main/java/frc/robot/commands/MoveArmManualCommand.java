@@ -6,10 +6,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.EncoderCheck;
 import frc.robot.subsystems.LowerArmSubsystem;
 import frc.robot.subsystems.UpperArmManual;
 
@@ -23,13 +21,12 @@ public class MoveArmManualCommand extends CommandBase {
   private final JoystickButton lowerArmDecreaseButton = new JoystickButton(arm, XboxController.Button.kStart.value); //works
   private final UpperArmManual m_UpperArmManual;
   private final LowerArmSubsystem m_LowerArmSubsystem;
-  private final EncoderCheck m_EncoderCheck;
-  public MoveArmManualCommand(UpperArmManual upperArmManual, LowerArmSubsystem lowerArmSubsystem,EncoderCheck encoderCheck) {
+ 
+  public MoveArmManualCommand(UpperArmManual upperArmManual, LowerArmSubsystem lowerArmSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
  
     m_UpperArmManual = upperArmManual;
     m_LowerArmSubsystem = lowerArmSubsystem;
-    m_EncoderCheck = encoderCheck;
     addRequirements(upperArmManual);
     addRequirements(upperArmManual);
     addRequirements(lowerArmSubsystem);
@@ -48,37 +45,16 @@ public class MoveArmManualCommand extends CommandBase {
   @Override
   public void execute() 
   {
-    int upperTemp_EncoderCheck = m_EncoderCheck.CheckEncoders(true);
-    int lowerTemp_EncoderCheck = m_EncoderCheck.CheckEncoders(false);
 
     //Upper Arm Move Down
     if(UpperArmDecreaseButton.getAsBoolean())
     {
-      /*if(upperTemp_EncoderCheck==3)
-      {
-        return;
-      }
-      else if(upperTemp_EncoderCheck == 2)
-      {
-        m_UpperArmManual.moveDown(.2);
-        return;
-      } */
       m_UpperArmManual.moveDown(.3);
     }
 
     //Upper Arm Move Up
     else if(UpperArmIncreaseButton.getAsBoolean())
     {
-     /*  if(upperTemp_EncoderCheck == 1)
-      {
-        m_UpperArmManual.moveDown(.2);
-        return;
-      }
-      else if(upperTemp_EncoderCheck == 2)
-      {
-        m_UpperArmManual.moveUp(.1);
-        return;
-      } */
       m_UpperArmManual.moveUp(.3);
     }
 
@@ -91,9 +67,7 @@ public class MoveArmManualCommand extends CommandBase {
     //Lower Arm Move Up
     else if(lowerArmIncreaseButton.getAsBoolean())
     {
-     
-        m_LowerArmSubsystem.m_extend();
-
+      m_LowerArmSubsystem.m_extend();
     }
   }
 
