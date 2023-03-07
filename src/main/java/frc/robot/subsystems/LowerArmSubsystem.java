@@ -24,8 +24,6 @@ public class LowerArmSubsystem extends SubsystemBase {
   
   private static DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 0);
 
-  private final TalonFX lowerArmMotor = new TalonFX(26, "Bobby");
-
   /** Creates a new LowerArmSubsystem. */
   public LowerArmSubsystem() {}
 
@@ -60,21 +58,6 @@ public class LowerArmSubsystem extends SubsystemBase {
 
   public double currentPressure() {
     return phCompressor.getPressure();
-  }
-
-  public void m_increaseMotor(double percentOutput)
-  {
-    lowerArmMotor.set(TalonFXControlMode.PercentOutput, percentOutput);
-  }
-
-  public void m_decreaseMotor(double percentOutput)
-  {
-    m_increaseMotor(-percentOutput);
-  }
-
-  public void m_stopMotor()
-  {
-    lowerArmMotor.set(TalonFXControlMode.PercentOutput, 0);
   }
 
   public boolean checkState()
