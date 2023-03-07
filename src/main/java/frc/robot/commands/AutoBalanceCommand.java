@@ -32,7 +32,7 @@ public class AutoBalanceCommand extends CommandBase {
   @Override
   public void execute() {
     double yaw = pigeon.getYaw();
-    if (Math.abs(yaw) > AutoConstants.balanceToleranceDegrees){
+    if (Math.abs(yaw) > AutoConstants.toleranceDegrees){
       double speed = -Math.signum(yaw)*AutoConstants.balanceSensitivity*AutoConstants.balanceSpeed;
       s_swerve.drive(speed, 0, 0, true);
       timer.stop();

@@ -159,7 +159,8 @@ public final class Constants {
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
          */
         public static final double balanceSensitivity = 0.1;
-        public static final double balanceToleranceDegrees = 5;
+        public static final double toleranceDegrees = 5;
+        public static final double tolerancePosition = 0.1;
         public static final double balanceTime = 2;
         public static final double balanceSpeed = 3;
         public static final double maxDriveSpeed = 3;
