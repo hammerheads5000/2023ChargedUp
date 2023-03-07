@@ -18,14 +18,13 @@ public class AutoPathFollowCommand extends CommandBase {
   /** Creates a new AutoPathFollowCommand. */
   public AutoPathFollowCommand(Pose2d[] poses, Swerve s_swerve) {
     this.poses = poses;
-    this.targetPoseIndex = 1;
+    this.targetPoseIndex = 0;
     this.s_swerve = s_swerve;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    s_swerve.resetOdometry(poses[0]);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
