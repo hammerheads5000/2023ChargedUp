@@ -10,12 +10,13 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
-import frc.robot.autos.*;
 import frc.robot.commands.*;
+import frc.robot.commands.Arm_Commands.ManualLowerArmDownCommand;
+import frc.robot.commands.Arm_Commands.ManualLowerArmUpCommand;
+import frc.robot.commands.Arm_Commands.ManualUpperArmDecreaseCommand;
+import frc.robot.commands.Arm_Commands.ManualUpperArmIncreaseCommand;
 import frc.robot.subsystems.*;
 
 /**
@@ -67,18 +68,18 @@ public class RobotContainer {
   private final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
 
   /* Commands */
-  //private final ArmSet cmd_ArmSet = new ArmSet(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint);
   private final ClawCommand cmd_ClawCommand = new ClawCommand(sub_ClawSubsystem);
-  private final MoveArmManualCommand cmd_MoveArmManualCommand = new MoveArmManualCommand(sub_UpperArmManual,sub_LowerArmSubsystem);
-  //private final ArmAtLimit cmd_ArmAtLimit = new ArmAtLimit(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint, Upper_BringArmUpSafetySwitch, Upper_AtStowSwitch, Lower_ArmForwardsSwitch, Lower_ArmBackwardsSwitch)
-  //private final ArmAtLimit cmd_ArmAtSwitch = new ArmAtLimit(sub_UpperArmToSetpoint,sub_LowerArmToSetpoint, UpperArmLowerSwitch, UpperArmUpperSwitch, LowerArmLowerSwitch, LowerArmUpperSwitch);
+  private final ManualLowerArmDownCommand cmd_ManualLowerArmDownCommand = new ManualLowerArmDownCommand(sub_LowerArmSubsystem);
+  private final ManualLowerArmUpCommand cmd_ManualLowerArmUpCommand = new ManualLowerArmUpCommand(sub_LowerArmSubsystem);
+  private final ManualUpperArmDecreaseCommand cmd_ManualUpperArmDecreaseCommand = new ManualUpperArmDecreaseCommand(sub_UpperArmManual);
+  private final ManualUpperArmIncreaseCommand cmd_UpperArmIncreaseCommand = new ManualUpperArmIncreaseCommand(sub_UpperArmManual);
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     boolean fieldRelative = true;
     boolean openLoop = true;
     s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-   // sub_LowerArmToSetpoint.setDefaultCommand(cmd_ArmAtLimit);
-   // sub_UpperArmToSetpoint.setDefaultCommand(cmd_ArmAtSwitch);
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -94,29 +95,15 @@ public class RobotContainer {
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     zeroWheels.onTrue(new InstantCommand(() -> s_Swerve.zeroWheels()));
     
-   // ArmSetButton.whileTrue(cmd_ArmSet);
-    UpperArmDecreaseButton.onTrue(cmd_MoveArmManualCommand);
-    UpperArmIncreaseButton.onTrue(cmd_MoveArmManualCommand);
+    UpperArmDecreaseButton.onTrue(cmd_ManualUpperArmDecreaseCommand);
+    UpperArmIncreaseButton.onTrue(cmd_UpperArmIncreaseCommand);
+    lowerArmDecreaseButton.onTrue(cmd_ManualLowerArmDownCommand);
+    lowerArmIncreaseButton.onTrue(cmd_ManualLowerArmUpCommand);
     UpperArmDecreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
     UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
     
     
     clawButton.onTrue(cmd_ClawCommand);
     clawRotation.onTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate()));
-
-    lowerArmIncreaseButton.onTrue(cmd_MoveArmManualCommand);
-    lowerArmDecreaseButton.onTrue(cmd_MoveArmManualCommand);
   }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return new MaxCommandGroup(s_Swerve);
-  }
-
-
 }
