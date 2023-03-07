@@ -162,6 +162,8 @@ public final class Constants {
         public static final double balanceToleranceDegrees = 5;
         public static final double balanceTime = 2;
         public static final double balanceSpeed = 3;
+        public static final double maxDriveSpeed = 3;
+        public static final double maxAngularVelocityRadians = Math.PI;
         public static final SwerveModuleState[] driveModuleStates = 
             Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(2.0, 0.0, 0.0));
         public static final SwerveModuleState[] stopModuleStates  = 
