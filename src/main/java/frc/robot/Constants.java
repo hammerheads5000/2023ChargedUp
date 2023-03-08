@@ -158,19 +158,20 @@ public final class Constants {
             new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
          */
-        public static final double balanceSensitivity = 0.1;
         public static final double toleranceDegrees = 5;
         public static final double tolerancePosition = 0.1;
         public static final double balanceTime = 2;
         public static final double balanceSpeed = 3;
         public static final double maxDriveSpeed = 3;
+        public static final double minDriveSpeed = 0.3;
         public static final double maxAngularVelocityRadians = Math.PI;
-        public static final SwerveModuleState[] driveModuleStates = 
-            Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(2.0, 0.0, 0.0));
-        public static final SwerveModuleState[] stopModuleStates  = 
-            Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0.0, 0.0, 0.0));
-        public static final SwerveModuleState[] rotateModuleStates = 
-            Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0.0, 0.0, Math.PI)); // half rotation every second
+        public static final double minAngularVelocityRadians = Math.PI/6;
+        // public static final SwerveModuleState[] driveModuleStates = 
+        //     Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(2.0, 0.0, 0.0));
+        // public static final SwerveModuleState[] stopModuleStates  = 
+        //     Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0.0, 0.0, 0.0));
+        // public static final SwerveModuleState[] rotateModuleStates = 
+        //     Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0.0, 0.0, Math.PI)); // half rotation every second
         public static final double upparArmPlacementAngle = 135.0;
     }
 

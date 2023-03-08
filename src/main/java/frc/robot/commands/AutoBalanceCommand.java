@@ -31,9 +31,9 @@ public class AutoBalanceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double yaw = pigeon.getYaw();
-    if (Math.abs(yaw) > AutoConstants.toleranceDegrees){
-      double speed = -Math.signum(yaw)*AutoConstants.balanceSensitivity*AutoConstants.balanceSpeed;
+    double pitch = pigeon.getPitch();
+    if (Math.abs(pitch) > AutoConstants.toleranceDegrees){
+      double speed = -Math.signum(pitch)*AutoConstants.balanceSpeed;
       s_swerve.drive(speed, 0, 0, true);
       timer.stop();
       timer.reset();
