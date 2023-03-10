@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.Swerve;
@@ -27,7 +28,7 @@ public class AutoPathFollowCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    s_swerve.resetOdometry(poses[1]);
+    s_swerve.resetOdometry(poses[0]);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,7 +56,6 @@ public class AutoPathFollowCommand extends CommandBase {
           AutoConstants.maxDriveSpeed);
     
     velocity = velocity.times(speed); // set to speed
-
     // calculate angular velocity
     double angularVelocity = targetPose.getRotation().minus(currentPose.getRotation()).getRadians(); // angle difference
     angularVelocity = MathUtil.angleModulus(angularVelocity); // mod the angle
@@ -67,8 +67,7 @@ public class AutoPathFollowCommand extends CommandBase {
           AutoConstants.maxAngularVelocityRadians);
 
     angularVelocity = Math.signum(angularVelocity) * velocityMultiplier; // set velocity
-    
-    s_swerve.drive(velocity.getX(), velocity.getY(), angularVelocity, true); // DRIVE
+    s_swerve.drive(velocity, angularVelocity, true, true); // DRIVE
   }
 
   // Called once the command ends or is interrupted.
@@ -103,6 +102,9 @@ public class AutoPathFollowCommand extends CommandBase {
     double totalDist = end.minus(start).getRotation().getRadians();
     distanceRotated = MathUtil.angleModulus(distanceRotated);
     totalDist = MathUtil.angleModulus(totalDist);
+    if (totalDist == 0) {
+      return 0;
+    }
     return distanceRotated / totalDist;
   }
 
