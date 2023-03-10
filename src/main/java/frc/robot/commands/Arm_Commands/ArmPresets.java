@@ -11,6 +11,7 @@ import frc.robot.subsystems.UpperArmToSetpoint;
 public class ArmPresets extends CommandBase {
   /** Creates a new ArmPresets. */
   UpperArmToSetpoint m_UpperArmToSetpoint;
+  boolean isFinished = false;
   public ArmPresets(UpperArmToSetpoint UpperArmToSetpoint) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_UpperArmToSetpoint = UpperArmToSetpoint;
@@ -24,7 +25,17 @@ public class ArmPresets extends CommandBase {
   @Override
   public void execute() 
   {
-    m_UpperArmToSetpoint.MoveArm(40);
+    m_UpperArmToSetpoint.Refresh(75);
+    if(Math.abs(m_UpperArmToSetpoint.Refresh(75)) > 2) 
+    {
+      m_UpperArmToSetpoint.SetArm(75);
+    }
+    else
+    {
+      isFinished = true;
+      return;
+    } 
+
   }
 
   // Called once the command ends or is interrupted.
@@ -34,6 +45,6 @@ public class ArmPresets extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return isFinished;
   }
 }

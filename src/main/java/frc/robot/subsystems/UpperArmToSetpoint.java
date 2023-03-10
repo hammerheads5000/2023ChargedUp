@@ -4,26 +4,28 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RegularConstants;
 
 public class UpperArmToSetpoint extends SubsystemBase {
   /** Creates a new UpperSrmToSetpoint. */
+  double LastAngle, LastError;
+  double offset = 90;
+  double integral;
+  double Error = 0;
+  DutyCycleEncoder ArmEncoder = new DutyCycleEncoder(9);
   TalonFX ArmMotor = new TalonFX(3, "Bobby");
-    public double angle = 0.0;
-    public double StartEncoderTicks;
-    public double AngleDif;
-    double ArmKI;
-    double ArmRatio;
-    double ArmMax;
-    double ArmMin;
-    double HomeAngle;
-    double UpperAngle; 
-  public UpperArmToSetpoint() {}
+  double Angle = ((ArmEncoder.getAbsolutePosition() * 360) + offset) % 360;
+  public UpperArmToSetpoint() 
+  {
+    LastAngle = (ArmEncoder.getAbsolutePosition() * 360 - offset) % 360 ;
+  }
 
   @Override
   public void periodic() {
@@ -31,66 +33,42 @@ public class UpperArmToSetpoint extends SubsystemBase {
   }
    //Moves arm to a desired angle
     
-    public void MoveArm (double DesiredAngle)
+    public double SetArm(double DesiredAngle)
     {
-
-      double tempOutput;
-        ArmKI = RegularConstants.UpperArmKI;
-        ArmRatio = RegularConstants.UpperArmRatio;
-        ArmMax = RegularConstants.UpperArmMax;
-        ArmMin = RegularConstants.UpperArmMin;
-
-      double TempEncoderTicks = ArmMotor.getSensorCollection().getIntegratedSensorPosition();
-      
-      //Calculates angle based on last angle and difference in encoder ticks  
-      angle = -(TempEncoderTicks- StartEncoderTicks) / ArmRatio;
-
-      //finds distance from current angle to desired angle
-      AngleDif = angle - DesiredAngle;
-      double AngleDifAbsolute = Math.abs(AngleDif);
-        //Acounts for distance
-        if(AngleDifAbsolute > 15)
-        {
-          tempOutput = ArmMax;
-        }
-        else
-        {
-          if(AngleDifAbsolute * ArmMax * ArmKI < ArmMin)
-          {
-            tempOutput = ArmMin;
-            if(AngleDifAbsolute == 0)
-            {
-              tempOutput = 0;
-            }
-          }
-          else
-          {
-            tempOutput = AngleDifAbsolute * ArmMax * ArmKI;
-          }
-        }
-  
-      //moves arm motor in the direction it should go in
-      if((AngleDif)>0)
+      Angle = ((ArmEncoder.getAbsolutePosition() * 360) + offset) % 360; 
+      Error = DesiredAngle - Angle;
+      while(Math.abs(Error) > 2)
       {
-        ArmMotor.set(TalonFXControlMode.PercentOutput, tempOutput);
+        double Angle = ((ArmEncoder.getAbsolutePosition() * 360) + offset) % 360;
+        Error = DesiredAngle - Angle;
+        double Derivative = FindDerivative(LastError, Error);
+        double Proportional = Error;
+        integral += Error + LastAngle;
+        double output = (Proportional *.01) + (Derivative * .05) +(integral *.004) ;
+        SmartDashboard.putNumber("percentOutput", output);
+        SmartDashboard.putNumber("armAngle", Angle);
+        SmartDashboard.putNumber("Derivative", Derivative * .05);
+        SmartDashboard.putNumber("Intergral", integral * .003 );
+        LastError = Error;
+        LastAngle = Angle;
+        ArmMotor.set(ControlMode.PercentOutput,output);
       }
-      else if (AngleDif < 0)
-      {
-        ArmMotor.set(TalonFXControlMode.PercentOutput, -tempOutput);
-      }
-      else
-      {
-        //yay
-      }
-      
-      //Makes my variables beholdable
-      SmartDashboard.putNumber("encoder Ticks", TempEncoderTicks);
-      SmartDashboard.putNumber("AngleDif", AngleDif);
-      SmartDashboard.putNumber("Angle", angle);
+        ArmMotor.set(ControlMode.Disabled, 0);
+        return Error;
     }
 
-    public void AngleSet(double angle)
+    //not the real derivative but like it works
+    public double FindDerivative(double LastError,double CurrentError)
+    { 
+      return (LastError - CurrentError)/.2;
+    }
+
+    public double Refresh(double angle)
     {
-      this.angle = angle;
-    } 
+      integral = 0;
+      LastAngle = ((ArmEncoder.getAbsolutePosition() * 360) + offset) % 360;
+      LastError = angle - LastAngle;
+      return LastError;
+    }
+
 }

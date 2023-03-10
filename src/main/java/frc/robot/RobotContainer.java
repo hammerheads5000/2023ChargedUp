@@ -10,9 +10,11 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
+import frc.robot.commands.Arm_Commands.ArmPresets;
 import frc.robot.commands.Arm_Commands.ManualLowerArmDownCommand;
 import frc.robot.commands.Arm_Commands.ManualLowerArmUpCommand;
 import frc.robot.commands.Arm_Commands.ManualUpperArmDecreaseCommand;
@@ -43,7 +45,7 @@ public class RobotContainer {
 
   /* Arm Buttons */
   private final JoystickButton clawRotation = new JoystickButton(arm, XboxController.Button.kY.value);
-  //public final JoystickButton ArmSetButton = new JoystickButton(arm, XboxController.Button.kX.value); //works (probably)
+  public final JoystickButton ArmSetButton = new JoystickButton(arm, XboxController.Button.kX.value); //works (probably)
   public final JoystickButton clawButton = new JoystickButton(arm, XboxController.Button.kA.value); //works
   public final JoystickButton UpperArmIncreaseButton = new JoystickButton(arm, XboxController.Button.kLeftBumper.value); //works
   public final JoystickButton UpperArmDecreaseButton = new JoystickButton(arm, XboxController.Button.kRightBumper.value); //works
@@ -66,14 +68,14 @@ public class RobotContainer {
   private final UpperArmManual sub_UpperArmManual = new UpperArmManual();
   private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
   private final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
-
+  private final UpperArmToSetpoint sub_ArmToSetpoint = new UpperArmToSetpoint();
   /* Commands */
   private final ClawCommand cmd_ClawCommand = new ClawCommand(sub_ClawSubsystem);
   private final ManualLowerArmDownCommand cmd_ManualLowerArmDownCommand = new ManualLowerArmDownCommand(sub_LowerArmSubsystem);
   private final ManualLowerArmUpCommand cmd_ManualLowerArmUpCommand = new ManualLowerArmUpCommand(sub_LowerArmSubsystem);
   private final ManualUpperArmDecreaseCommand cmd_ManualUpperArmDecreaseCommand = new ManualUpperArmDecreaseCommand(sub_UpperArmManual);
   private final ManualUpperArmIncreaseCommand cmd_UpperArmIncreaseCommand = new ManualUpperArmIncreaseCommand(sub_UpperArmManual);
-  
+  private final ArmPresets cmd_ArmPresets = new ArmPresets(sub_ArmToSetpoint);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     boolean fieldRelative = true;
@@ -95,10 +97,11 @@ public class RobotContainer {
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     zeroWheels.onTrue(new InstantCommand(() -> s_Swerve.zeroWheels()));
     
-    UpperArmDecreaseButton.onTrue(cmd_ManualUpperArmDecreaseCommand);
-    UpperArmIncreaseButton.onTrue(cmd_UpperArmIncreaseCommand);
+    UpperArmDecreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmManual.moveUp(0.3)));
+    UpperArmIncreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmManual.moveDown(0.3)));
     lowerArmDecreaseButton.onTrue(cmd_ManualLowerArmDownCommand);
     lowerArmIncreaseButton.onTrue(cmd_ManualLowerArmUpCommand);
+    ArmSetButton.onTrue(cmd_ArmPresets);
     UpperArmDecreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
     UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
     
