@@ -164,8 +164,8 @@ public final class Constants {
         public static final double balanceSpeed = 0.3;
         public static final double maxDriveSpeed = 3;
         public static final double minDriveSpeed = 0.3;
-        public static final double maxAngularVelocityRadians = Math.PI;
-        public static final double minAngularVelocityRadians = Math.PI/6;
+        public static final double maxAngularVelocityRadians = 2*Math.PI;
+        public static final double minAngularVelocityRadians = Math.PI/2;
         // public static final SwerveModuleState[] driveModuleStates = 
         //     Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(2.0, 0.0, 0.0));
         // public static final SwerveModuleState[] stopModuleStates  = 
