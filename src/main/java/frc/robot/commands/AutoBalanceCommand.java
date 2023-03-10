@@ -34,11 +34,11 @@ public class AutoBalanceCommand extends CommandBase {
   @Override
   public void execute() {
     double pitch = pigeon.getPitch();
-    SmartDashboard.putNumber("Pitch", pitch);
-    SmartDashboard.putNumber("Roll", pigeon.getRoll());
+    // SmartDashboard.putNumber("Pitch", pitch);
+    // SmartDashboard.putNumber("Roll", pigeon.getRoll());
     if (Math.abs(pitch) > Math.toRadians(AutoConstants.toleranceDegrees)){
       double speed = Math.signum(pitch)*AutoConstants.balanceSpeed;
-      SmartDashboard.putNumber("Balance speed", speed);
+      // SmartDashboard.putNumber("Balance speed", speed);
       s_swerve.drive(speed, 0, 0, true);
       timer.stop();
       timer.reset();
@@ -55,7 +55,6 @@ public class AutoBalanceCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
-    // return timer.hasElapsed(AutoConstants.balanceTime);
+    return timer.hasElapsed(AutoConstants.balanceTime);
   }
 }
