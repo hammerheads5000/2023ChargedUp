@@ -161,7 +161,7 @@ public final class Constants {
         public static final double toleranceDegrees = 5;
         public static final double tolerancePosition = 0.1;
         public static final double balanceTime = 2;
-        public static final double balanceSpeed = 3;
+        public static final double balanceSpeed = 0.3;
         public static final double maxDriveSpeed = 3;
         public static final double minDriveSpeed = 0.3;
         public static final double maxAngularVelocityRadians = Math.PI;
