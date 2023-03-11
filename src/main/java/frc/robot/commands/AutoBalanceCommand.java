@@ -18,12 +18,10 @@ public class AutoBalanceCommand extends CommandBase {
   /** Creates a new AutoBalanceCommand. */
   Swerve s_swerve;
   WPI_Pigeon2 pigeon;
-  Timer timer;
 
   public AutoBalanceCommand(Swerve s_swerve, WPI_Pigeon2 pigeon) {
     this.s_swerve = s_swerve;
     this.pigeon = pigeon;
-    timer = new Timer();
   }
 
   // Called when the command is initially scheduled.
@@ -39,11 +37,9 @@ public class AutoBalanceCommand extends CommandBase {
     if (Math.abs(pitch) > Math.toRadians(AutoConstants.toleranceDegrees)){
       double speed = Math.signum(pitch)*AutoConstants.balanceSpeed;
       s_swerve.drive(speed, 0, 0, true);
-      timer.stop();
-      timer.reset();
     }
     else {
-      timer.start();
+      s_swerve.drive(0, 0, 0, true);
     }
   }
 
