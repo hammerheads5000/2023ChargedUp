@@ -145,36 +145,16 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-        /*
-         *public static final double kMaxSpeedMetersPerSecond = 1.6;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-        public static final double kPXController = 0.4;
-        public static final double kPYController = 0.4;
-        public static final double kPThetaController = 0.1;
-        // Constraint for the motion profilied robot angle controller
-        public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
-            new TrapezoidProfile.Constraints(
-                kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
-         */
         public static final double toleranceDegrees = 5;
-        public static final double balanceAngleToleranceDegrees = 15;
         public static final double tolerancePosition = 0.1;
-        public static final double balanceTime = 0.2;
-        public static final double balanceSpeed = 0.5;
-        public static final double balanceSensitivity = 2;
         public static final double maxDriveSpeed = 2;
         public static final double minDriveSpeed = 0.3;
         public static final double maxAngularVelocityRadians = 2*Math.PI;
         public static final double minAngularVelocityRadians = Math.PI/2;
-        // public static final SwerveModuleState[] driveModuleStates = 
-        //     Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(2.0, 0.0, 0.0));
-        // public static final SwerveModuleState[] stopModuleStates  = 
-        //     Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0.0, 0.0, 0.0));
-        // public static final SwerveModuleState[] rotateModuleStates = 
-        //     Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0.0, 0.0, Math.PI)); // half rotation every second
-        public static final double upparArmPlacementAngle = 135.0;
+
+        public static final double balanceZeroTolerance = 5; // level to stop balancing
+        public static final double balanceSpeed = 0.5; // max speed to balance at
+        public static final double balanceSensitivity = 0.3/Math.toRadians(15); // speed to go / at angle
     }
 
 }
