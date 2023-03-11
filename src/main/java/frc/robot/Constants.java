@@ -147,7 +147,7 @@ public final class Constants {
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-    public static final int autoArmSetTime = 3;
+        public static final int autoArmSetTime = 3;
         public static final double kPXController = 0.4;
         public static final double kPYController = 0.4;
         public static final double kPThetaController = 0.1;
@@ -158,4 +158,14 @@ public final class Constants {
                 
       }
 
+    public static final class ArmPresets
+    {
+        public static final double toleranceDegrees = 3;
+        public static final ArmPreset resting = new ArmPreset(30, true);
+        public static final ArmPreset upperPlatform = new ArmPreset(190, false);
+        public static final ArmPreset midPlatform = new ArmPreset(70, false);
+        public static final ArmPreset ground = new ArmPreset(40, false);
+        public static final ArmPreset portal = new ArmPreset(90, true);
+        public static final ArmPreset[] presets = {resting, ground, midPlatform, upperPlatform, portal};
+    }
 }

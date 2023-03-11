@@ -16,15 +16,15 @@ import frc.robot.Constants.RegularConstants;
 public class UpperArmToSetpoint extends SubsystemBase {
   /** Creates a new UpperSrmToSetpoint. */
   double LastAngle, LastError;
-  double offset = 90;
+  double offset = 110;
   double integral;
   double Error = 0;
   DutyCycleEncoder ArmEncoder = new DutyCycleEncoder(9);
   TalonFX ArmMotor = new TalonFX(3, "Bobby");
-  double Angle = ((ArmEncoder.getAbsolutePosition() * 360) + offset) % 360;
+  double Angle = getAngle();
   public UpperArmToSetpoint() 
   {
-    LastAngle = (ArmEncoder.getAbsolutePosition() * 360 - offset) % 360 ;
+    LastAngle = getAngle();
   }
 
   @Override
@@ -35,11 +35,11 @@ public class UpperArmToSetpoint extends SubsystemBase {
     
     public double SetArm(double DesiredAngle)
     {
-      Angle = ((ArmEncoder.getAbsolutePosition() * 360) + offset) % 360; 
+      Angle = getAngle(); 
       Error = DesiredAngle - Angle;
       while(Math.abs(Error) > 2)
       {
-        double Angle = ((ArmEncoder.getAbsolutePosition() * 360) + offset) % 360;
+        double Angle = getAngle();
         Error = DesiredAngle - Angle;
         double Derivative = FindDerivative(LastError, Error);
         double Proportional = Error;
@@ -66,9 +66,13 @@ public class UpperArmToSetpoint extends SubsystemBase {
     public double Refresh(double angle)
     {
       integral = 0;
-      LastAngle = ((ArmEncoder.getAbsolutePosition() * 360) + offset) % 360;
+      LastAngle = getAngle();
       LastError = angle - LastAngle;
       return LastError;
+    }
+
+    public double getAngle() {
+      return ((ArmEncoder.getAbsolutePosition() * 360) + offset) % 360;
     }
 
 }
