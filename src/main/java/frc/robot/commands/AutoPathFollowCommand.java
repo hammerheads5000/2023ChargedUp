@@ -67,7 +67,7 @@ public class AutoPathFollowCommand extends CommandBase {
           AutoConstants.maxAngularVelocityRadians);
 
     angularVelocity = Math.signum(angularVelocity) * velocityMultiplier; // set velocity
-    s_swerve.drive(velocity, angularVelocity, true, true); // DRIVE
+    s_swerve.drive(velocity, angularVelocity, true, false); // DRIVE
   }
 
   // Called once the command ends or is interrupted.

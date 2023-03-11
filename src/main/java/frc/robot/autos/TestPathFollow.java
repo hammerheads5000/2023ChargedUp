@@ -24,7 +24,7 @@ public class TestPathFollow extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     Pose2d[] poses = new Pose2d[]{ 
       new Pose2d(0, 0, new Rotation2d(0)), 
-      new Pose2d(1, 0, new Rotation2d(Math.PI/2))}; 
+      new Pose2d(2, 0, new Rotation2d(0))}; 
     addCommands(
         new AutoPathFollowCommand(poses, s_swerve)
     );

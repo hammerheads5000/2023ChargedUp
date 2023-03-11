@@ -7,6 +7,7 @@ package frc.robot.commands;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -34,11 +35,9 @@ public class AutoBalanceCommand extends CommandBase {
   @Override
   public void execute() {
     double pitch = pigeon.getPitch();
-    // SmartDashboard.putNumber("Pitch", pitch);
-    // SmartDashboard.putNumber("Roll", pigeon.getRoll());
+    SmartDashboard.putNumber("Pitch", Math.toDegrees(pitch));
     if (Math.abs(pitch) > Math.toRadians(AutoConstants.toleranceDegrees)){
       double speed = Math.signum(pitch)*AutoConstants.balanceSpeed;
-      // SmartDashboard.putNumber("Balance speed", speed);
       s_swerve.drive(speed, 0, 0, true);
       timer.stop();
       timer.reset();
@@ -50,11 +49,13 @@ public class AutoBalanceCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    s_swerve.drive(0, 0, 0, true);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(AutoConstants.balanceTime);
+    return false;
   }
 }
