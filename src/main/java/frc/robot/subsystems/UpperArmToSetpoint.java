@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
@@ -17,6 +18,7 @@ import frc.robot.Constants.RegularConstants;
 public class UpperArmToSetpoint extends SubsystemBase {
   /** Creates a new UpperSrmToSetpoint. */
   double lastAngle, lastError;
+  Timer deltaTimer;
   double offset = 110;
   double error = 0;
   DutyCycleEncoder armEncoder = new DutyCycleEncoder(9);
@@ -25,6 +27,8 @@ public class UpperArmToSetpoint extends SubsystemBase {
   public UpperArmToSetpoint() 
   {
     lastAngle = getAngle();
+    deltaTimer = new Timer();
+    deltaTimer.start();
   }
 
   @Override
@@ -52,10 +56,11 @@ public class UpperArmToSetpoint extends SubsystemBase {
       return error;
   }
 
-  //not the real derivative but like it works
-  public double FindDerivative(double LastError,double CurrentError)
+  public double FindDerivative(double lastError,double currentError)
   { 
-    return (LastError - CurrentError)/.2;
+    double derivative = (lastError - currentError) / deltaTimer.get();
+    deltaTimer.reset();
+    return derivative;
   }
 
   public double Refresh(double angle)
