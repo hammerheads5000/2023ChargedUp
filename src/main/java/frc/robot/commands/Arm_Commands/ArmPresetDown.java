@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LowerArmSubsystem;
 import frc.robot.subsystems.UpperArmToSetpoint;
 import frc.robot.ArmPreset;
-import frc.robot.Constants.ArmPresets; 
+import frc.robot.Constants.ArmConstants; 
 
 public class ArmPresetDown extends CommandBase {
   /** Creates a new ArmPresets. */
@@ -31,7 +31,7 @@ public class ArmPresetDown extends CommandBase {
   {
     int current = currentPreset();
     int newIndex = (current == -1) ? 0 : Math.max(current-1, 0);
-    ArmPreset desired = ArmPresets.presets[newIndex];
+    ArmPreset desired = ArmConstants.presets[newIndex];
     sub_LowerArmSubsystem.setIsUp(desired.getLowerArmUp());
     sub_UpperArmToSetpoint.SetArm(desired.getAngle());
   }
@@ -39,8 +39,8 @@ public class ArmPresetDown extends CommandBase {
   // returns index of current preset in presets array, -1 if not found
   private int currentPreset() {
     ArmPreset measured = new ArmPreset(sub_UpperArmToSetpoint.getAngle(), sub_LowerArmSubsystem.checkState());
-    for (int i = 0; i < ArmPresets.presets.length; i++) {
-      if (measured.equals(ArmPresets.presets[i])) {
+    for (int i = 0; i < ArmConstants.presets.length; i++) {
+      if (measured.equals(ArmConstants.presets[i])) {
         return i;
       }
     }

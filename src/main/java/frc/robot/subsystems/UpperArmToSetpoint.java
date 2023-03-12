@@ -11,20 +11,20 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.RegularConstants;
 
 public class UpperArmToSetpoint extends SubsystemBase {
   /** Creates a new UpperSrmToSetpoint. */
-  double LastAngle, LastError;
+  double lastAngle, lastError;
   double offset = 110;
-  double integral;
-  double Error = 0;
-  DutyCycleEncoder ArmEncoder = new DutyCycleEncoder(9);
-  TalonFX ArmMotor = new TalonFX(3, "Bobby");
-  double Angle = getAngle();
+  double error = 0;
+  DutyCycleEncoder armEncoder = new DutyCycleEncoder(9);
+  TalonFX armMotor = new TalonFX(3, "Bobby");
+  double angle = getAngle();
   public UpperArmToSetpoint() 
   {
-    LastAngle = getAngle();
+    lastAngle = getAngle();
   }
 
   @Override
@@ -33,46 +33,40 @@ public class UpperArmToSetpoint extends SubsystemBase {
   }
    //Moves arm to a desired angle
     
-    public double SetArm(double DesiredAngle)
+  public double SetArm(double desiredAngle)
+  {
+    angle = getAngle(); 
+    error = desiredAngle - angle;
+    while(Math.abs(error) > ArmConstants.setPointToleranceDegrees)
     {
-      Angle = getAngle(); 
-      Error = DesiredAngle - Angle;
-      while(Math.abs(Error) > 2)
-      {
-        double Angle = getAngle();
-        Error = DesiredAngle - Angle;
-        double Derivative = FindDerivative(LastError, Error);
-        double Proportional = Error;
-        integral += Error + LastAngle;
-        double output = (Proportional *.01) + (Derivative * .05) +(integral *.004) ;
-        SmartDashboard.putNumber("percentOutput", output);
-        SmartDashboard.putNumber("armAngle", Angle);
-        SmartDashboard.putNumber("Derivative", Derivative * .05);
-        SmartDashboard.putNumber("Intergral", integral * .003 );
-        LastError = Error;
-        LastAngle = Angle;
-        ArmMotor.set(ControlMode.PercentOutput,output);
-      }
-        ArmMotor.set(ControlMode.Disabled, 0);
-        return Error;
+      angle = getAngle();
+      error = desiredAngle - angle;
+      double derivative = FindDerivative(lastError, error);
+      double proportional = error;
+      double output = (proportional *ArmConstants.kP) + (derivative *ArmConstants.kD);
+      lastError = error;
+      lastAngle = angle;
+      armMotor.set(ControlMode.PercentOutput, output);
     }
+      armMotor.set(ControlMode.Disabled, 0);
+      return error;
+  }
 
-    //not the real derivative but like it works
-    public double FindDerivative(double LastError,double CurrentError)
-    { 
-      return (LastError - CurrentError)/.2;
-    }
+  //not the real derivative but like it works
+  public double FindDerivative(double LastError,double CurrentError)
+  { 
+    return (LastError - CurrentError)/.2;
+  }
 
-    public double Refresh(double angle)
-    {
-      integral = 0;
-      LastAngle = getAngle();
-      LastError = angle - LastAngle;
-      return LastError;
-    }
+  public double Refresh(double angle)
+  {
+    lastAngle = getAngle();
+    lastError = angle - lastAngle;
+    return lastError;
+  }
 
-    public double getAngle() {
-      return ((ArmEncoder.getAbsolutePosition() * 360) + offset) % 360;
-    }
+  public double getAngle() {
+    return ((armEncoder.getAbsolutePosition() * 360) + offset) % 360;
+  }
 
 }
