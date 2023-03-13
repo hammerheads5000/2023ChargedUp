@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.platform.can.AutocacheState;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -12,6 +13,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -82,6 +84,9 @@ public class RobotContainer {
   private final IntakeClawCommand cmd_IntakeClawCommand = new IntakeClawCommand(sub_IntakeSubsystem);
   private final MoveArmManualCommand cmd_MoveArmManualCommand = new MoveArmManualCommand(sub_UpperArmManual,sub_LowerArmSubsystem,sub_EncoderCheck);
   private final AutoBalanceCommand cmd_AutoBalanceCommand = new AutoBalanceCommand(s_Swerve, s_Swerve.gyro);
+  
+  private final BalanceAutoCommandGroup auto_balance = new BalanceAutoCommandGroup(s_Swerve, cmd_AutoBalanceCommand);
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
   //private final ArmAtLimit cmd_ArmAtLimit = new ArmAtLimit(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint, Upper_BringArmUpSafetySwitch, Upper_AtStowSwitch, Lower_ArmForwardsSwitch, Lower_ArmBackwardsSwitch)
   //private final ArmAtLimit cmd_ArmAtSwitch = new ArmAtLimit(sub_UpperArmToSetpoint,sub_LowerArmToSetpoint, UpperArmLowerSwitch, UpperArmUpperSwitch, LowerArmLowerSwitch, LowerArmUpperSwitch);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -90,6 +95,7 @@ public class RobotContainer {
    // sub_UpperArmToSetpoint.setDefaultCommand(cmd_ArmAtSwitch);
     // Configure the button bindings
     configureButtonBindings();
+    configureAutoOptions();
   }
 
   /**
@@ -127,6 +133,12 @@ public class RobotContainer {
 
   }
 
+  private void configureAutoOptions() {
+    autoChooser.setDefaultOption("Auto balance", auto_balance);
+    
+    SmartDashboard.putData(autoChooser);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -134,7 +146,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new TestPathFollow(s_Swerve);
+    return autoChooser.getSelected();
   }
 
   public void swerveInit(boolean fieldRelative, boolean openLoop) {
