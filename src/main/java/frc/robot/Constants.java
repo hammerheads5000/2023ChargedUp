@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.pathplanner.lib.auto.PIDConstants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -71,12 +72,16 @@ public final class Constants {
         public static final double angleKI = 0.0;
         public static final double angleKD = 0.01;
         public static final double angleKF = 0.0;
+        public static final PIDConstants anglePID =
+                new PIDConstants(angleKP, angleKI, angleKD);
 
         /* Drive Motor PID Values */
         public static final double driveKP = 0.9;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
+        public static final PIDConstants drivePID =
+                new PIDConstants(driveKP, driveKI, driveKD);
 
         /* Drive Motor Characterization Values */
         public static final double driveKS = (0.667 / 12); //divide by 12 to convert from volts to percent output for CTRE
@@ -145,6 +150,10 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
+        // path following
+        public static final double maxVel = 4;
+        public static final double maxAcc = 3;
+
         public static final double toleranceDegrees = 5;
         public static final double tolerancePosition = 0.1;
         public static final double maxDriveSpeed = 2;
@@ -152,6 +161,7 @@ public final class Constants {
         public static final double maxAngularVelocityRadians = 2*Math.PI;
         public static final double minAngularVelocityRadians = Math.PI/2;
 
+        // balancing
         public static final double balanceZeroTolerance = 5; // level to stop balancing
         public static final double balanceSpeed = 0.5; // max speed to balance at
         public static final double balanceSensitivity = 0.3/Math.toRadians(15); // speed to go / at angle

@@ -86,6 +86,7 @@ public class RobotContainer {
   private final AutoBalanceCommand cmd_AutoBalanceCommand = new AutoBalanceCommand(s_Swerve, s_Swerve.gyro);
   
   private final BalanceAutoCommandGroup auto_balance = new BalanceAutoCommandGroup(s_Swerve, cmd_AutoBalanceCommand);
+  private final PathAuto auto_pathFollowTest = new PathAuto(s_Swerve, cmd_AutoBalanceCommand, "Test path");
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
   //private final ArmAtLimit cmd_ArmAtLimit = new ArmAtLimit(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint, Upper_BringArmUpSafetySwitch, Upper_AtStowSwitch, Lower_ArmForwardsSwitch, Lower_ArmBackwardsSwitch)
   //private final ArmAtLimit cmd_ArmAtSwitch = new ArmAtLimit(sub_UpperArmToSetpoint,sub_LowerArmToSetpoint, UpperArmLowerSwitch, UpperArmUpperSwitch, LowerArmLowerSwitch, LowerArmUpperSwitch);
@@ -135,7 +136,8 @@ public class RobotContainer {
 
   private void configureAutoOptions() {
     autoChooser.setDefaultOption("Auto balance", auto_balance);
-    
+    autoChooser.addOption("Path follow test", auto_pathFollowTest);
+
     SmartDashboard.putData(autoChooser);
   }
 
