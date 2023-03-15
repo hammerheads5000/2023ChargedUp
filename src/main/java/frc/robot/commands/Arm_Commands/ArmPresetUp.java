@@ -32,8 +32,7 @@ public class ArmPresetUp extends CommandBase {
     int current = currentPreset();
     int newIndex = (current == -1) ? 0 : Math.min(current+1, ArmConstants.presets.length-1);
     ArmPreset desired = ArmConstants.presets[newIndex];
-    sub_LowerArmSubsystem.setIsUp(desired.getLowerArmUp());
-    sub_UpperArmToSetpoint.SetArm(desired.getAngle());
+    MoveArmPath(desired);
   }
   
   // returns index of current preset in presets array, -1 if not found
@@ -55,5 +54,43 @@ public class ArmPresetUp extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+  }
+  private void MoveArmPath(ArmPreset desired)
+  {
+    if(sub_LowerArmSubsystem.checkState() == desired.getLowerArmUp())
+    {
+      sub_UpperArmToSetpoint.SetArm(desired.getAngle());
+    }
+    else 
+    {
+      if(sub_LowerArmSubsystem.checkState())
+      {
+        if((desired.getAngle() > ArmConstants.MaxAngleWhileUp))
+        {
+          sub_UpperArmToSetpoint.SetArm(ArmConstants.MinAngleWhileDown);
+          sub_LowerArmSubsystem.m_contract();
+          sub_UpperArmToSetpoint.SetArm(desired.getAngle());
+        }
+        else 
+        {
+          sub_UpperArmToSetpoint.SetArm(desired.getAngle());
+          sub_LowerArmSubsystem.m_contract();
+        }
+      }
+      else
+      {
+        if(desired.getAngle() < ArmConstants.MinAngleWhileDown)
+        {
+          sub_UpperArmToSetpoint.SetArm(ArmConstants.MinAngleWhileDown);
+          sub_LowerArmSubsystem.m_extend();
+          sub_UpperArmToSetpoint.SetArm(desired.getAngle());
+        }
+        else
+        {
+          sub_UpperArmToSetpoint.SetArm(desired.getAngle());
+          sub_LowerArmSubsystem.m_extend();
+        } 
+      }
+    }
   }
 }

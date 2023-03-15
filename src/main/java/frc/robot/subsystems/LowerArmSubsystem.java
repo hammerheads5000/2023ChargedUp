@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
+
+import java.util.Set;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -38,6 +41,7 @@ public class LowerArmSubsystem extends SubsystemBase {
 
   public void m_initializeSolenoid() {
     doubleSolenoid.set(kForward);
+    isUp = true;
   }
 
   public void m_disableCompressor() {
@@ -46,14 +50,17 @@ public class LowerArmSubsystem extends SubsystemBase {
 
   public void m_toggle() {
     doubleSolenoid.toggle();
+    isUp = !isUp;
   }
 
   public void m_extend() {
     doubleSolenoid.set(kForward);
+    isUp = true;
   }
 
   public void m_contract() {
     doubleSolenoid.set(kReverse);
+    isUp = false;
   }
 
   public double currentPressure() {
