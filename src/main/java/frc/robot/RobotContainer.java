@@ -18,7 +18,6 @@ import frc.robot.commands.*;
 import frc.robot.commands.Arm_Commands.ArmPresetDown;
 import frc.robot.commands.Arm_Commands.ArmPresetUp;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.Arm_Commands.ArmPresets;
 import frc.robot.commands.Arm_Commands.ManualLowerArmDownCommand;
 import frc.robot.commands.Arm_Commands.ManualLowerArmUpCommand;
 import frc.robot.commands.Arm_Commands.ManualUpperArmDecreaseCommand;
@@ -83,7 +82,6 @@ public class RobotContainer {
   private final ManualLowerArmUpCommand cmd_ManualLowerArmUpCommand = new ManualLowerArmUpCommand(sub_LowerArmSubsystem);
   private final ManualUpperArmDecreaseCommand cmd_ManualUpperArmDecreaseCommand = new ManualUpperArmDecreaseCommand(sub_UpperArmManual);
   private final ManualUpperArmIncreaseCommand cmd_UpperArmIncreaseCommand = new ManualUpperArmIncreaseCommand(sub_UpperArmManual);
-  private final ArmPresets cmd_ArmPresets = new ArmPresets(sub_ArmToSetpoint);
   private final ArmPresetUp cmd_ArmPresetUp = new ArmPresetUp(sub_ArmToSetpoint, sub_LowerArmSubsystem);
   private final ArmPresetDown cmd_ArmPresetDown = new ArmPresetDown(sub_ArmToSetpoint, sub_LowerArmSubsystem);
 
@@ -112,7 +110,6 @@ public class RobotContainer {
     UpperArmIncreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmManual.moveDown(0.3)));
     lowerArmDecreaseButton.onTrue(cmd_ManualLowerArmDownCommand);
     lowerArmIncreaseButton.onTrue(cmd_ManualLowerArmUpCommand);
-    ArmSetButton.onTrue(cmd_ArmPresets);
     UpperArmDecreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
     UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
 
