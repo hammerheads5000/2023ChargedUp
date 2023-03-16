@@ -19,7 +19,7 @@ public class UpperArmToSetpoint extends SubsystemBase {
   /** Creates a new UpperSrmToSetpoint. */
   double lastAngle, lastError;
   Timer deltaTimer;
-  double offset = 110;
+  double offset = 48;
   double error = 0;
   DutyCycleEncoder armEncoder = new DutyCycleEncoder(9);
   TalonFX armMotor = new TalonFX(3, "Bobby");
