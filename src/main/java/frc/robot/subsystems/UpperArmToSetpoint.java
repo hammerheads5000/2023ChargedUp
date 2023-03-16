@@ -19,6 +19,8 @@ public class UpperArmToSetpoint extends SubsystemBase {
   /** Creates a new UpperSrmToSetpoint. */
   double lastAngle, lastError;
   Timer deltaTimer;
+  Timer errorTimer;
+  double errorChangeCheck;
   double offset = 48;
   double error = 0;
   DutyCycleEncoder armEncoder = new DutyCycleEncoder(9);
@@ -29,6 +31,7 @@ public class UpperArmToSetpoint extends SubsystemBase {
     lastAngle = getAngle();
     deltaTimer = new Timer();
     deltaTimer.start();
+    errorTimer = new Timer();
   }
 
   @Override
@@ -41,10 +44,18 @@ public class UpperArmToSetpoint extends SubsystemBase {
   {
     angle = getAngle(); 
     error = desiredAngle - angle;
-    while(Math.abs(error) > ArmConstants.setPointToleranceDegrees)
+    while(Math.abs(error) > ArmConstants.setPointToleranceDegrees && !errorTimer.hasElapsed(ArmConstants.errorChangeTime))
     {
       angle = getAngle();
       error = desiredAngle - angle;
+      if (Math.abs(error - errorChangeCheck) > 1) {
+        errorChangeCheck = error;
+        errorTimer.reset();
+        errorTimer.stop();
+      }
+      else {
+        errorTimer.start();
+      }
       double derivative = FindDerivative(lastError, error);
       double proportional = error;
       double output = (proportional *ArmConstants.kP) + (derivative *ArmConstants.kD);

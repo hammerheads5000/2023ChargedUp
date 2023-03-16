@@ -23,17 +23,18 @@ public class ArmPresetDown extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() 
-  {
+  public void initialize() {
     int current = currentPreset();
     int newIndex = (current == -1) ? 0 : Math.max(current-1, 0);
     ArmPreset desired = ArmConstants.presets[newIndex];
     sub_UpperArmToSetpoint.SetArm(desired.getAngle());
     sub_LowerArmSubsystem.setIsUp(desired.getLowerArmUp());
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() 
+  {
   }
 
   // returns index of current preset in presets array, -1 if not found

@@ -161,6 +161,7 @@ public final class Constants {
     public static final class ArmConstants
     {
         public static final double setPointToleranceDegrees = 5;
+        public static final double errorChangeTime = 1;
         public static final double kP = 0.015;
         public static final double kD = 0.00;   
         public static final double MinAngleWhileDown = 40; // placeholder value 

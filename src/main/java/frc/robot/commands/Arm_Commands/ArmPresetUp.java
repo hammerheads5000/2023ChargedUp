@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Arm_Commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LowerArmSubsystem;
 import frc.robot.subsystems.UpperArmToSetpoint;
@@ -23,16 +24,18 @@ public class ArmPresetUp extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    int current = currentPreset();
+    int newIndex = (current == -1) ? 0 : Math.min(current+1, ArmConstants.presets.length-1);
+    ArmPreset desired = ArmConstants.presets[newIndex];
+    sub_UpperArmToSetpoint.SetArm(desired.getAngle());
+    sub_LowerArmSubsystem.setIsUp(desired.getLowerArmUp());
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-    int current = currentPreset();
-    int newIndex = (current == -1) ? 0 : Math.min(current+1, ArmConstants.presets.length-1);
-    ArmPreset desired = ArmConstants.presets[newIndex];
-    MoveArmPath(desired);
   }
   
   // returns index of current preset in presets array, -1 if not found
