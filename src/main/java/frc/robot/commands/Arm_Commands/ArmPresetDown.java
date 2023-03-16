@@ -32,7 +32,8 @@ public class ArmPresetDown extends CommandBase {
     int current = currentPreset();
     int newIndex = (current == -1) ? 0 : Math.max(current-1, 0);
     ArmPreset desired = ArmConstants.presets[newIndex];
-    MoveArmPath(desired);
+    sub_UpperArmToSetpoint.SetArm(desired.getAngle());
+    sub_LowerArmSubsystem.setIsUp(desired.getLowerArmUp());
   }
 
   // returns index of current preset in presets array, -1 if not found
