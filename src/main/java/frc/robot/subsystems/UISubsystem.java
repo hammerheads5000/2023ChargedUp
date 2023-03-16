@@ -13,18 +13,20 @@ public class UISubsystem extends SubsystemBase {
   UpperArmManual s_UpperArm;
   LowerArmSubsystem s_LowerArm;
   ClawSubsystem s_claw;
+  UpperArmToSetpoint s_UpperArmToSetpoint;
 
   /** Creates a new UISubsystem. */
-  public UISubsystem(UpperArmManual s_UpperArm, LowerArmSubsystem s_LowerArm, ClawSubsystem s_claw) {
+  public UISubsystem(UpperArmManual s_UpperArm, LowerArmSubsystem s_LowerArm, ClawSubsystem s_claw, UpperArmToSetpoint s_UpperArmToSetpoint) {
     this.s_UpperArm = s_UpperArm;
     this.s_LowerArm = s_LowerArm;
+    this.s_UpperArmToSetpoint = s_UpperArmToSetpoint;
     this.s_claw = s_claw;
     //Swerve module info
   }
 
   public void UpdateValues() {
     //Arm
-    
+    SmartDashboard.putNumber("Arm Encoder", s_UpperArmToSetpoint.getAngle());
 
     // SmartDashboard.putNumber("Upper arm angle", s_UpperArm.);
     SmartDashboard.putBoolean("Lower arm is up", s_LowerArm.checkState());
