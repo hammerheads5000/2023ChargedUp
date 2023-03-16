@@ -162,7 +162,7 @@ public final class Constants {
     {
         public static final double setPointToleranceDegrees = 2;
         public static final double kP = 0.01;
-        public static final double kD = 0.05;   
+        public static final double kD = 0.00;   
 
         public static final double presetToleranceDegrees = 3;
         public static final ArmPreset resting = new ArmPreset(30, true);

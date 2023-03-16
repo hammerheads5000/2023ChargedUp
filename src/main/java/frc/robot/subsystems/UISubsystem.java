@@ -10,28 +10,26 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class UISubsystem extends SubsystemBase {
 
-  UpperArmManual s_UpperArm;
+  UpperArmToSetpoint s_UpperArm;
   LowerArmSubsystem s_LowerArm;
   ClawSubsystem s_claw;
 
   /** Creates a new UISubsystem. */
-  public UISubsystem(UpperArmManual s_UpperArm, LowerArmSubsystem s_LowerArm, ClawSubsystem s_claw) {
+  public UISubsystem(UpperArmToSetpoint s_UpperArm, LowerArmSubsystem s_LowerArm, ClawSubsystem s_claw) {
     this.s_UpperArm = s_UpperArm;
     this.s_LowerArm = s_LowerArm;
     this.s_claw = s_claw;
-    //Swerve module info
   }
 
-  public void UpdateValues() {
-    //Arm
-    
+  public void update() {
+    //Swerve module info
 
-    // SmartDashboard.putNumber("Upper arm angle", s_UpperArm.);
+    //Arm
+    SmartDashboard.putNumber("Upper arm angle", s_UpperArm.getAngle());
     SmartDashboard.putBoolean("Lower arm is up", s_LowerArm.checkState());
 
     //Claw
     SmartDashboard.putBoolean("Claw is open", s_claw.isOpen);
-
   }
 
   @Override
