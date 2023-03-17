@@ -33,19 +33,15 @@ public class ArmPresetUp extends CommandBase {
   public void execute() 
   {
     int current = currentPreset();
-    SmartDashboard.putNumber("Current measured", current);
     int newIndex = (current == -1) ? 0 : Math.min(current+1, ArmConstants.presets.length-1);
     ArmPreset desired = ArmConstants.presets[newIndex];
-    sub_UpperArmToSetpoint.SetArm(desired.getAngle());
-    SmartDashboard.putNumber("Desired angle", desired.getAngle());
-    sub_LowerArmSubsystem.setIsUp(desired.getLowerArmUp());
+    sub_UpperArmToSetpoint.MoveArmPath(desired, sub_LowerArmSubsystem);
   }
   
   // returns index of current preset in presets array, -1 if not found
   private int currentPreset() {
     ArmPreset measured = new ArmPreset(sub_UpperArmToSetpoint.getAngle(), sub_LowerArmSubsystem.checkState());
     for (int i = 0; i < ArmConstants.presets.length; i++) {
-      SmartDashboard.putBoolean("Equals" + i, measured.equals(ArmConstants.presets[i]));
       if (measured.equals(ArmConstants.presets[i])) {
         return i;
       }
@@ -60,44 +56,6 @@ public class ArmPresetUp extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
-  }
-  private void MoveArmPath(ArmPreset desired)
-  {
-    if(sub_LowerArmSubsystem.checkState() == desired.getLowerArmUp())
-    {
-      sub_UpperArmToSetpoint.SetArm(desired.getAngle());
-    }
-    else 
-    {
-      if(sub_LowerArmSubsystem.checkState())
-      {
-        if((desired.getAngle() > ArmConstants.MaxAngleWhileUp))
-        {
-          sub_UpperArmToSetpoint.SetArm(ArmConstants.MinAngleWhileDown);
-          sub_LowerArmSubsystem.m_contract();
-          sub_UpperArmToSetpoint.SetArm(desired.getAngle());
-        }
-        else 
-        {
-          sub_UpperArmToSetpoint.SetArm(desired.getAngle());
-          sub_LowerArmSubsystem.m_contract();
-        }
-      }
-      else
-      {
-        if(desired.getAngle() < ArmConstants.MinAngleWhileDown)
-        {
-          sub_UpperArmToSetpoint.SetArm(ArmConstants.MinAngleWhileDown);
-          sub_LowerArmSubsystem.m_extend();
-          sub_UpperArmToSetpoint.SetArm(desired.getAngle());
-        }
-        else
-        {
-          sub_UpperArmToSetpoint.SetArm(desired.getAngle());
-          sub_LowerArmSubsystem.m_extend();
-        } 
-      }
-    }
+    return true;
   }
 }

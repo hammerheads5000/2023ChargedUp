@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ArmPreset;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.RegularConstants;
 
@@ -83,6 +84,29 @@ public class UpperArmToSetpoint extends SubsystemBase {
 
   public double getAngle() {
     return ((armEncoder.getAbsolutePosition() * 360) + offset) % 360;
+  }
+
+  public void MoveArmPath(ArmPreset desired, LowerArmSubsystem sub_LowerArmSubsystem)
+  {
+    if(sub_LowerArmSubsystem.checkState() && 
+        desired.getAngle() > ArmConstants.MaxAngleWhileUp)
+    {
+      SetArm(ArmConstants.armLoweringAngle);
+      sub_LowerArmSubsystem.m_contract();
+      SetArm(desired.getAngle());
+    }
+    else if(!sub_LowerArmSubsystem.checkState() && 
+            desired.getAngle() < ArmConstants.MinAngleWhileDown)
+    {
+      SetArm(ArmConstants.MinAngleWhileDown);
+      sub_LowerArmSubsystem.m_extend();
+      SetArm(desired.getAngle());
+    }
+    else
+    {
+      SetArm(desired.getAngle());
+      sub_LowerArmSubsystem.setIsUp(desired.getLowerArmUp());
+    } 
   }
 
 }
