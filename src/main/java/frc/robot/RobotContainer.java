@@ -76,7 +76,7 @@ public class RobotContainer {
   private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
   public final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
   public final UpperArmToSetpoint sub_ArmToSetpoint = new UpperArmToSetpoint();
-  public final UISubsystem sub_UiSubsystem = new UISubsystem(sub_UpperArmManual, sub_LowerArmSubsystem, sub_ClawSubsystem, sub_ArmToSetpoint);
+  public final UISubsystem sub_UISubsystem = new UISubsystem(sub_LowerArmSubsystem, sub_ClawSubsystem, sub_ArmToSetpoint);
   /* Commands */
   private final ClawCommand cmd_ClawCommand = new ClawCommand(sub_ClawSubsystem);
   private final ManualLowerArmDownCommand cmd_ManualLowerArmDownCommand = new ManualLowerArmDownCommand(sub_LowerArmSubsystem);
