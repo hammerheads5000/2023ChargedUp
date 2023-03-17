@@ -19,9 +19,8 @@ public class UISubsystem extends SubsystemBase {
     this.s_LowerArm = s_LowerArm;
     this.s_UpperArmToSetpoint = s_UpperArmToSetpoint;
     this.s_claw = s_claw;
-    //Swerve module info
   }
-
+  
   @Override
   public void periodic() {
     //Arm
