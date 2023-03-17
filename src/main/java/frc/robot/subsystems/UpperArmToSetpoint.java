@@ -86,6 +86,17 @@ public class UpperArmToSetpoint extends SubsystemBase {
     return ((armEncoder.getAbsolutePosition() * 360) + offset) % 360;
   }
 
+  // returns index of current preset in presets array, -1 if not found
+  public int currentPreset(boolean lowerArm) {
+    ArmPreset measured = new ArmPreset(angle, lowerArm);
+    for (int i = 0; i < ArmConstants.presets.length; i++) {
+      if (measured.equals(ArmConstants.presets[i])) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   public void MoveArmPath(ArmPreset desired, LowerArmSubsystem sub_LowerArmSubsystem)
   {
     if(sub_LowerArmSubsystem.checkState() && 

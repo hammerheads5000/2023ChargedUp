@@ -32,23 +32,14 @@ public class ArmPresetUp extends CommandBase {
   @Override
   public void execute() 
   {
-    int current = currentPreset();
-    int newIndex = (current == -1) ? 0 : Math.min(current+1, ArmConstants.presets.length-1);
-    ArmPreset desired = ArmConstants.presets[newIndex];
-    sub_UpperArmToSetpoint.MoveArmPath(desired, sub_LowerArmSubsystem);
+    int current = sub_UpperArmToSetpoint.currentPreset(sub_LowerArmSubsystem.checkState());
+    if (current != -1) {
+      int newIndex =  Math.min(current+1, ArmConstants.presets.length-1);
+      ArmPreset desired = ArmConstants.presets[newIndex];
+      sub_UpperArmToSetpoint.MoveArmPath(desired, sub_LowerArmSubsystem);
+    }
   }
   
-  // returns index of current preset in presets array, -1 if not found
-  private int currentPreset() {
-    ArmPreset measured = new ArmPreset(sub_UpperArmToSetpoint.getAngle(), sub_LowerArmSubsystem.checkState());
-    for (int i = 0; i < ArmConstants.presets.length; i++) {
-      if (measured.equals(ArmConstants.presets[i])) {
-        return i;
-      }
-    }
-    return -1;
-  }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}

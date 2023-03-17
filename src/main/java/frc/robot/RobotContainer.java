@@ -107,8 +107,7 @@ public class RobotContainer {
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     zeroWheels.onTrue(new InstantCommand(() -> s_Swerve.zeroWheels()));
     
-    UpperArmDecreaseButton.onTrue(new InstantCommand(() -> System.out.println("HI")));
-    // UpperArmDecreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmManual.moveUp(0.3)));
+    UpperArmDecreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmManual.moveUp(0.3)));
     UpperArmIncreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmManual.moveDown(0.3)));
     lowerArmDecreaseButton.onTrue(cmd_ManualLowerArmDownCommand);
     lowerArmIncreaseButton.onTrue(cmd_ManualLowerArmUpCommand);

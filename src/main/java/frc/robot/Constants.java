@@ -160,14 +160,14 @@ public final class Constants {
 
     public static final class ArmConstants
     {
-        public static final double setPointToleranceDegrees = 5;
+        public static final double setPointToleranceDegrees = 3;
         public static final double errorChangeTime = 1;
         public static final double kP = 0.015;
         public static final double kD = 0.00;   
         public static final double MinAngleWhileDown = 40; // placeholder value 
         public static final double MaxAngleWhileUp = 140; //also placeholder
         public static final double armLoweringAngle = 90;
-        public static final double presetToleranceDegrees = 3;
+        public static final double presetToleranceDegrees = 10;
         public static final ArmPreset resting = new ArmPreset(30, true);
         public static final ArmPreset upperPlatform = new ArmPreset(190, false);
         public static final ArmPreset midPlatform = new ArmPreset(70, false);

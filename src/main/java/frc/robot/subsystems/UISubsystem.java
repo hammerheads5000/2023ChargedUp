@@ -26,7 +26,7 @@ public class UISubsystem extends SubsystemBase {
     //Arm
     SmartDashboard.putNumber("Arm Encoder", s_UpperArmToSetpoint.getAngle());
     SmartDashboard.putBoolean("Lower arm is up", s_LowerArm.checkState());
-
+    SmartDashboard.putNumber("Detected preset", s_UpperArmToSetpoint.currentPreset(s_LowerArm.checkState()));
     //Claw
     SmartDashboard.putBoolean("Claw is open", s_claw.isOpen);
   }
