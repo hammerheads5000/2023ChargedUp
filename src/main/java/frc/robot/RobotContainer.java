@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.*;
 import frc.robot.commands.Arm_Commands.ArmPresetDown;
 import frc.robot.commands.Arm_Commands.ArmPresetUp;
@@ -58,6 +59,11 @@ public class RobotContainer {
   
   private final Trigger armPresetUpButton = arm.rightTrigger();
   private final Trigger armPresetDownButton = arm.leftTrigger();
+
+  private final Trigger armTopButton = arm.povUp();
+  private final Trigger armMidButton = arm.povDown();
+  private final Trigger armStowButton = arm.povLeft();
+  private final Trigger armPortalButton = arm.povRight();
 
   // limit switches 
   DigitalInput Lower_ArmBackwardsSwitch = new DigitalInput(2);
@@ -115,7 +121,12 @@ public class RobotContainer {
     UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
 
     armPresetUpButton.onTrue(cmd_ArmPresetUp);
-    armPresetDownButton.onTrue(cmd_ArmPresetDown);    
+    armPresetDownButton.onTrue(cmd_ArmPresetDown);   
+
+    armTopButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.upperPlatform, sub_LowerArmSubsystem))); 
+    armMidButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.midPlatform, sub_LowerArmSubsystem))); 
+    armStowButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.resting, sub_LowerArmSubsystem))); 
+    armPortalButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.portal, sub_LowerArmSubsystem))); 
     
     clawButton.onTrue(cmd_ClawCommand);
     clawRotation.onTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate()));

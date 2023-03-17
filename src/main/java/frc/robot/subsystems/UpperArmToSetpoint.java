@@ -45,18 +45,10 @@ public class UpperArmToSetpoint extends SubsystemBase {
   {
     angle = getAngle(); 
     error = desiredAngle - angle;
-    while(Math.abs(error) > ArmConstants.setPointToleranceDegrees && !errorTimer.hasElapsed(ArmConstants.errorChangeTime))
+    while(Math.abs(error) > ArmConstants.setPointToleranceDegrees)
     {
       angle = getAngle();
       error = desiredAngle - angle;
-      if (Math.abs(error - errorChangeCheck) > 1) {
-        errorChangeCheck = error;
-        errorTimer.reset();
-        errorTimer.stop();
-      }
-      else {
-        errorTimer.start();
-      }
       double derivative = FindDerivative(lastError, error);
       double proportional = error;
       double output = (proportional *ArmConstants.kP) + (derivative *ArmConstants.kD);
@@ -99,25 +91,25 @@ public class UpperArmToSetpoint extends SubsystemBase {
 
   public void MoveArmPath(ArmPreset desired, LowerArmSubsystem sub_LowerArmSubsystem)
   {
-    if(sub_LowerArmSubsystem.checkState() && 
-        desired.getAngle() > ArmConstants.MaxAngleWhileUp)
-    {
+    if (desired.getLowerArmUp() == sub_LowerArmSubsystem.checkState()) {
+      SetArm(desired.getAngle());
+    }
+    else if (desired.getLowerArmUp()) {
+      if (desired.getAngle() < ArmConstants.MinAngleWhileDown) {
+        SetArm(ArmConstants.MinAngleWhileDown);
+        sub_LowerArmSubsystem.m_extend();;
+        SetArm(desired.getAngle());
+      }
+      else {
+        SetArm(desired.getAngle());
+        sub_LowerArmSubsystem.m_extend();;
+      }
+    }
+    else {
       SetArm(ArmConstants.armLoweringAngle);
-      sub_LowerArmSubsystem.m_contract();
+      sub_LowerArmSubsystem.m_contract();;
       SetArm(desired.getAngle());
     }
-    else if(!sub_LowerArmSubsystem.checkState() && 
-            desired.getAngle() < ArmConstants.MinAngleWhileDown)
-    {
-      SetArm(ArmConstants.MinAngleWhileDown);
-      sub_LowerArmSubsystem.m_extend();
-      SetArm(desired.getAngle());
-    }
-    else
-    {
-      SetArm(desired.getAngle());
-      sub_LowerArmSubsystem.setIsUp(desired.getLowerArmUp());
-    } 
   }
 
 }
