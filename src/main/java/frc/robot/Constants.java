@@ -72,16 +72,12 @@ public final class Constants {
         public static final double angleKI = 0.0;
         public static final double angleKD = 0.01;
         public static final double angleKF = 0.0;
-        public static final PIDConstants anglePID =
-                new PIDConstants(angleKP, angleKI, angleKD);
 
         /* Drive Motor PID Values */
         public static final double driveKP = 0.9;
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
-        public static final PIDConstants drivePID =
-                new PIDConstants(driveKP, driveKI, driveKD);
 
         /* Drive Motor Characterization Values */
         public static final double driveKS = (0.667 / 12); //divide by 12 to convert from volts to percent output for CTRE
@@ -150,6 +146,13 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
+        public static final PIDConstants anglePID =
+            new PIDConstants(0.0, 0.00, 0.00);
+        
+        public static final PIDConstants drivePID =
+            new PIDConstants(0.00, 0.0, 0.0);
+
+
         // path following
         public static final double maxVel = 4;
         public static final double maxAcc = 3;

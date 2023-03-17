@@ -38,8 +38,8 @@ public class PathAuto extends SequentialCommandGroup {
       s_swerve::getPose, // Pose2d supplier
       s_swerve::resetOdometry, // Pose2d consumer to reset odometry
       Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
-      Constants.Swerve.drivePID, // PID constants for translation
-      Constants.Swerve.anglePID, // PID constants for rotation
+      Constants.AutoConstants.drivePID, // PID constants for translation
+      Constants.AutoConstants.anglePID, // PID constants for rotation
       s_swerve::setModuleStates, // Module states consumer used to drive
       eventMap, // Mapping of Strings to Commands
       s_swerve // Drive subsystem
