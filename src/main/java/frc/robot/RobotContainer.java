@@ -5,16 +5,22 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.platform.can.AutocacheState;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.autos.BalanceAutoCommandGroup;
+import frc.robot.autos.PathAuto;
 import frc.robot.commands.*;
 import frc.robot.commands.Arm_Commands.ArmPresetDown;
 import frc.robot.commands.Arm_Commands.ArmPresetUp;
@@ -84,22 +90,30 @@ public class RobotContainer {
   public final UpperArmToSetpoint sub_ArmToSetpoint = new UpperArmToSetpoint();
   public final UISubsystem sub_UISubsystem = new UISubsystem(sub_LowerArmSubsystem, sub_ClawSubsystem, sub_ArmToSetpoint);
   /* Commands */
+  public final Initialize init = new Initialize(sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem);
   private final ClawCommand cmd_ClawCommand = new ClawCommand(sub_ClawSubsystem);
   private final ManualLowerArmDownCommand cmd_ManualLowerArmDownCommand = new ManualLowerArmDownCommand(sub_LowerArmSubsystem);
   private final ManualLowerArmUpCommand cmd_ManualLowerArmUpCommand = new ManualLowerArmUpCommand(sub_LowerArmSubsystem);
   private final ManualUpperArmDecreaseCommand cmd_ManualUpperArmDecreaseCommand = new ManualUpperArmDecreaseCommand(sub_UpperArmManual);
+  private final AutoBalanceCommand cmd_AutoBalanceCommand = new AutoBalanceCommand(s_Swerve, s_Swerve.gyro);
+  
+  private final BalanceAutoCommandGroup auto_balance = new BalanceAutoCommandGroup(s_Swerve, cmd_AutoBalanceCommand);
+  private final PathAuto auto_fullAuto = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Full Auto");
+  private final PathAuto auto_longAuto = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Long Auto");
+  private final PathAuto auto_shortAuto = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Short Auto");
+  private final PathAuto auto_testAutoCone = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Test cone");
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
   private final ManualUpperArmIncreaseCommand cmd_UpperArmIncreaseCommand = new ManualUpperArmIncreaseCommand(sub_UpperArmManual);
   private final ArmPresetUp cmd_ArmPresetUp = new ArmPresetUp(sub_ArmToSetpoint, sub_LowerArmSubsystem);
   private final ArmPresetDown cmd_ArmPresetDown = new ArmPresetDown(sub_ArmToSetpoint, sub_LowerArmSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    boolean fieldRelative = true;
-    boolean openLoop = true;
-    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driveJoystick, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-
+   // sub_LowerArmToSetpoint.setDefaultCommand(cmd_ArmAtLimit);
+   // sub_UpperArmToSetpoint.setDefaultCommand(cmd_ArmAtSwitch);
     // Configure the button bindings
     configureButtonBindings();
+    configureAutoOptions();
   }
 
   /**
@@ -130,5 +144,30 @@ public class RobotContainer {
     
     clawButton.onTrue(cmd_ClawCommand);
     clawRotation.onTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate()));
+
+
+  }
+
+  private void configureAutoOptions() {
+    autoChooser.setDefaultOption("Full Auto", auto_fullAuto);
+    autoChooser.addOption("Long Auto", auto_longAuto);
+    autoChooser.addOption("Short Auto", auto_shortAuto);
+    autoChooser.addOption("Test cone drop", auto_testAutoCone);
+
+    SmartDashboard.putData(autoChooser);
+  }
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    // An ExampleCommand will run in autonomous
+    return autoChooser.getSelected();
+  }
+
+  public void swerveInit(boolean fieldRelative, boolean openLoop) {
+    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driveJoystick, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
   }
 }

@@ -2,10 +2,13 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.pathplanner.lib.auto.PIDConstants;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -102,7 +105,7 @@ public final class Constants {
             public static final int driveMotorID = 22;
             public static final int angleMotorID = 7;
             public static final int canCoderID = 2;
-            public static final double angleOffset = 343.74;
+            public static final double angleOffset = 342.2;
             public static  double zeroValue = 0;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, zeroValue);
@@ -113,7 +116,7 @@ public final class Constants {
             public static final int driveMotorID = 6;
             public static final int angleMotorID = 1;
             public static final int canCoderID = 0;
-            public static final double angleOffset = 309.2;
+            public static final double angleOffset = 308.4;
             public static  double zeroValue = 0;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, zeroValue);
@@ -124,7 +127,7 @@ public final class Constants {
             public static final int driveMotorID = 0;
             public static final int angleMotorID = 21;
             public static final int canCoderID = 1;
-            public static final double angleOffset = 357.63;
+            public static final double angleOffset = 357.28;
             public static  double zeroValue = .0;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, zeroValue);
@@ -135,7 +138,7 @@ public final class Constants {
             public static final int driveMotorID = 20;
             public static final int angleMotorID = 24;
             public static final int canCoderID = 3;
-            public static final double angleOffset = 148.36;
+            public static final double angleOffset = 144.67;
             public static  double zeroValue = 0;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, zeroValue);
@@ -143,20 +146,29 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 1.6;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-        public static final int autoArmSetTime = 3;
-        public static final double kPXController = 0.4;
-        public static final double kPYController = 0.4;
-        public static final double kPThetaController = 0.1;
-        // Constraint for the motion profilied robot angle controller
-        public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
-            new TrapezoidProfile.Constraints(
-                kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
-                
-      }
+        public static final PIDConstants anglePID =
+            new PIDConstants(0.0, 0.00, 0.00);
+        
+        public static final PIDConstants drivePID =
+            new PIDConstants(0.00, 0.0, 0.0);
+
+
+        // path following
+        public static final double maxVel = 4;
+        public static final double maxAcc = 3;
+
+        public static final double toleranceDegrees = 5;
+        public static final double tolerancePosition = 0.1;
+        public static final double maxDriveSpeed = 2;
+        public static final double minDriveSpeed = 0.3;
+        public static final double maxAngularVelocityRadians = 2*Math.PI;
+        public static final double minAngularVelocityRadians = Math.PI/2;
+
+        // balancing
+        public static final double balanceZeroTolerance = 5; // level to stop balancing
+        public static final double balanceSpeed = 0.5; // max speed to balance at
+        public static final double balanceSensitivity = 0.3/Math.toRadians(15); // speed to go / at angle
+    }
 
     public static final class ArmConstants
     {
@@ -166,7 +178,7 @@ public final class Constants {
         public static final double kD = 0.00;   
         public static final double MinAngleWhileDown = 60; // placeholder value 
         public static final double MaxAngleWhileUp = 110; //also placeholder
-        public static final double armLoweringAngle = 90;
+        public static final double armLoweringAngle = 80;
         public static final double presetToleranceDegrees = 10;
         public static final ArmPreset resting = new ArmPreset(30, true);
         public static final ArmPreset upperPlatform = new ArmPreset(150, false);
