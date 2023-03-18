@@ -58,10 +58,12 @@ public class ClawSubsystem extends SubsystemBase {
 
   public void m_extend() {
     doubleSolenoid.set(kForward);
+    isOpen = true;
   }
 
   public void m_contract() {
     doubleSolenoid.set(kReverse);
+    isOpen = false;
   }
 
   public double currentPressure() {

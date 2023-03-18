@@ -15,9 +15,11 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.AutoBalanceCommand;
 import frc.robot.commands.ClawCommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.LowerArmSubsystem;
@@ -29,7 +31,7 @@ import frc.robot.subsystems.UpperArmToSetpoint;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PathAuto extends SequentialCommandGroup {
   /** Creates a new PathAuto. */
-  public PathAuto(Swerve s_swerve, UpperArmToSetpoint s_arm, LowerArmSubsystem s_lowerArm, ClawCommand cmd_claw, Command cmd_autoBalance, String path) {
+  public PathAuto(Swerve s_swerve, UpperArmToSetpoint s_arm, LowerArmSubsystem s_lowerArm, ClawSubsystem sub_ClawSubsystem, Command cmd_autoBalance, String path) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     List<PathPlannerTrajectory> pathGroup = 
@@ -38,10 +40,10 @@ public class PathAuto extends SequentialCommandGroup {
     // hashmap mapping strings set in PathPlanner to commands to execute
     HashMap<String, Command> eventMap = new HashMap<>();
     eventMap.put("Auto balance", cmd_autoBalance);
-    eventMap.put("Drop", cmd_claw);
+    eventMap.put("Drop", new InstantCommand(() -> sub_ClawSubsystem.m_extend()));
     eventMap.put("Extend arm", new InstantCommand(() -> s_arm.MoveArmPath(ArmConstants.upperPlatform, s_lowerArm)));
     eventMap.put("Arm back", new InstantCommand(() -> s_arm.MoveArmPath(ArmConstants.resting, s_lowerArm)));
-    
+
     // Will make auto command automatically
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
       s_swerve::getPose, // Pose2d supplier

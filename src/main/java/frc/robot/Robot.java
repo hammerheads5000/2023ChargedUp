@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(CommandScheduler.getInstance());
     CameraServer.startAutomaticCapture();
     m_robotContainer = new RobotContainer();
+    m_robotContainer.init.schedule();
   }
 
   /**
@@ -66,6 +67,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    m_robotContainer.init.schedule();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.s_Swerve.zeroGyro();
     // schedule the autonomous command (example)

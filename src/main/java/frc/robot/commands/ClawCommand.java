@@ -27,14 +27,12 @@ public class ClawCommand extends CommandBase {
     if (clawSubsystem.getState())
     {
       clawSubsystem.m_contract();
-      clawSubsystem.setState(false);
       isFinished = true;
       return;
     }
     else if (!clawSubsystem.getState())
     {
       clawSubsystem.m_extend();
-      clawSubsystem.setState(true);
       isFinished = true;
       return;
     }

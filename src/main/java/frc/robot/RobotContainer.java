@@ -90,6 +90,7 @@ public class RobotContainer {
   public final UpperArmToSetpoint sub_ArmToSetpoint = new UpperArmToSetpoint();
   public final UISubsystem sub_UISubsystem = new UISubsystem(sub_LowerArmSubsystem, sub_ClawSubsystem, sub_ArmToSetpoint);
   /* Commands */
+  public final Initialize init = new Initialize(sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem);
   private final ClawCommand cmd_ClawCommand = new ClawCommand(sub_ClawSubsystem);
   private final ManualLowerArmDownCommand cmd_ManualLowerArmDownCommand = new ManualLowerArmDownCommand(sub_LowerArmSubsystem);
   private final ManualLowerArmUpCommand cmd_ManualLowerArmUpCommand = new ManualLowerArmUpCommand(sub_LowerArmSubsystem);
@@ -97,8 +98,10 @@ public class RobotContainer {
   private final AutoBalanceCommand cmd_AutoBalanceCommand = new AutoBalanceCommand(s_Swerve, s_Swerve.gyro);
   
   private final BalanceAutoCommandGroup auto_balance = new BalanceAutoCommandGroup(s_Swerve, cmd_AutoBalanceCommand);
-  private final PathAuto auto_pathFollowTest = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, cmd_ClawCommand, cmd_AutoBalanceCommand, "Test Path");
-  private final PathAuto auto_fullAuto = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, cmd_ClawCommand, cmd_AutoBalanceCommand, "Full Auto");
+  private final PathAuto auto_fullAuto = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Full Auto");
+  private final PathAuto auto_longAuto = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Long Auto");
+  private final PathAuto auto_shortAuto = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Short Auto");
+  private final PathAuto auto_testAutoCone = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Test cone");
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
   private final ManualUpperArmIncreaseCommand cmd_UpperArmIncreaseCommand = new ManualUpperArmIncreaseCommand(sub_UpperArmManual);
   private final ArmPresetUp cmd_ArmPresetUp = new ArmPresetUp(sub_ArmToSetpoint, sub_LowerArmSubsystem);
@@ -146,9 +149,10 @@ public class RobotContainer {
   }
 
   private void configureAutoOptions() {
-    autoChooser.setDefaultOption("Auto balance", auto_balance);
-    autoChooser.addOption("Path follow test", auto_pathFollowTest);
-    autoChooser.addOption("Full Auto", auto_fullAuto);
+    autoChooser.setDefaultOption("Full Auto", auto_fullAuto);
+    autoChooser.addOption("Long Auto", auto_longAuto);
+    autoChooser.addOption("Short Auto", auto_shortAuto);
+    autoChooser.addOption("Test cone drop", auto_testAutoCone);
 
     SmartDashboard.putData(autoChooser);
   }
