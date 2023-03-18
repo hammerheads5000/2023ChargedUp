@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.autos.BalanceAutoCommandGroup;
 import frc.robot.autos.PathAuto;
-import frc.robot.autos.TestPathFollow;
 import frc.robot.commands.*;
 import frc.robot.commands.Arm_Commands.ArmPresetDown;
 import frc.robot.commands.Arm_Commands.ArmPresetUp;
@@ -98,8 +97,8 @@ public class RobotContainer {
   private final AutoBalanceCommand cmd_AutoBalanceCommand = new AutoBalanceCommand(s_Swerve, s_Swerve.gyro);
   
   private final BalanceAutoCommandGroup auto_balance = new BalanceAutoCommandGroup(s_Swerve, cmd_AutoBalanceCommand);
-  private final PathAuto auto_pathFollowTest = new PathAuto(s_Swerve, cmd_AutoBalanceCommand, "Test Path");
-  private final TestPathFollow auto_PathFollowSwerve = new TestPathFollow(s_Swerve);
+  private final PathAuto auto_pathFollowTest = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, cmd_ClawCommand, cmd_AutoBalanceCommand, "Test Path");
+  private final PathAuto auto_fullAuto = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, cmd_ClawCommand, cmd_AutoBalanceCommand, "Full Auto");
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
   private final ManualUpperArmIncreaseCommand cmd_UpperArmIncreaseCommand = new ManualUpperArmIncreaseCommand(sub_UpperArmManual);
   private final ArmPresetUp cmd_ArmPresetUp = new ArmPresetUp(sub_ArmToSetpoint, sub_LowerArmSubsystem);
@@ -149,7 +148,7 @@ public class RobotContainer {
   private void configureAutoOptions() {
     autoChooser.setDefaultOption("Auto balance", auto_balance);
     autoChooser.addOption("Path follow test", auto_pathFollowTest);
-    autoChooser.addOption("Swerve path follow", auto_PathFollowSwerve);
+    autoChooser.addOption("Full Auto", auto_fullAuto);
 
     SmartDashboard.putData(autoChooser);
   }
