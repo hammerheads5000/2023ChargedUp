@@ -10,45 +10,24 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class UISubsystem extends SubsystemBase {
 
-  UpperArmManual s_UpperArm;
   LowerArmSubsystem s_LowerArm;
-  EncoderCheck s_encoderCheck;
   ClawSubsystem s_claw;
-  IntakeSubsystem s_intake;
-
-
+  UpperArmToSetpoint s_UpperArmToSetpoint;
 
   /** Creates a new UISubsystem. */
-  public UISubsystem(UpperArmManual s_UpperArm, LowerArmSubsystem s_LowerArm, EncoderCheck s_encoderCheck, ClawSubsystem s_claw, IntakeSubsystem s_intake) {
-    this.s_UpperArm = s_UpperArm;
+  public UISubsystem(LowerArmSubsystem s_LowerArm, ClawSubsystem s_claw, UpperArmToSetpoint s_UpperArmToSetpoint) {
     this.s_LowerArm = s_LowerArm;
-    this.s_encoderCheck = s_encoderCheck;
+    this.s_UpperArmToSetpoint = s_UpperArmToSetpoint;
     this.s_claw = s_claw;
-    this.s_intake = s_intake;
-
-    //Swerve module info
   }
-
-  public void UpdateValues() {
-    //Arm
-    SmartDashboard.putBoolean("Lower arm is back", s_encoderCheck.Lower_ArmBackwardsSwitch.get());
-    SmartDashboard.putBoolean("Lower arm is forward", s_encoderCheck.Lower_ArmForwardsSwitch.get());
-    SmartDashboard.putBoolean("Upper arm will break height limit if lower arm is forward", s_encoderCheck.Upper_MaxWhileForwardsSwitch.get());
-    SmartDashboard.putBoolean("Upper arm will break height limit if lower arm is backward", s_encoderCheck.Upper_MaxWhileBackwardsSwitch.get());
-    SmartDashboard.putBoolean("Safe to bring lower arm back w/o breaking height limit", s_encoderCheck.Upper_BringArmUpSafetySwitch.get());
-    SmartDashboard.putBoolean("Upper arm is at goalpost if lower arm is forawrd", s_encoderCheck.Upper_AtStowSwitch.get());
-    // SmartDashboard.putNumber("Upper arm angle", s_UpperArm.);
-    SmartDashboard.putBoolean("Lower arm is up", s_LowerArm.checkState());
-
-    //Claw
-    SmartDashboard.putBoolean("Claw is open", s_claw.isOpen);
-
-    //Intake
-    SmartDashboard.putBoolean("Intake is open", s_intake.isGrabberOpen);
-
-  }
-
+  
   @Override
   public void periodic() {
+    //Arm
+    SmartDashboard.putNumber("Arm Encoder", s_UpperArmToSetpoint.getAngle());
+    SmartDashboard.putBoolean("Lower arm is up", s_LowerArm.checkState());
+    SmartDashboard.putNumber("Detected preset", s_UpperArmToSetpoint.currentPreset(s_LowerArm.checkState()));
+    //Claw
+    SmartDashboard.putBoolean("Claw is open", s_claw.isOpen);
   }
 }

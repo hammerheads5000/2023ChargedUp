@@ -4,26 +4,36 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ArmPreset;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.RegularConstants;
 
 public class UpperArmToSetpoint extends SubsystemBase {
   /** Creates a new UpperSrmToSetpoint. */
-  TalonFX ArmMotor = new TalonFX(3, "Bobby");
-    public double angle = 0.0;
-    public double StartEncoderTicks;
-    public double AngleDif;
-    double ArmKI;
-    double ArmRatio;
-    double ArmMax;
-    double ArmMin;
-    double HomeAngle;
-    double UpperAngle; 
-  public UpperArmToSetpoint() {}
+  double lastAngle, lastError;
+  Timer deltaTimer;
+  Timer errorTimer;
+  double errorChangeCheck;
+  double offset = 48;
+  double error = 0;
+  DutyCycleEncoder armEncoder = new DutyCycleEncoder(9);
+  TalonFX armMotor = new TalonFX(3, "Bobby");
+  double angle = getAngle();
+  public UpperArmToSetpoint() 
+  {
+    lastAngle = getAngle();
+    deltaTimer = new Timer();
+    deltaTimer.start();
+    errorTimer = new Timer();
+  }
 
   @Override
   public void periodic() {
@@ -31,66 +41,75 @@ public class UpperArmToSetpoint extends SubsystemBase {
   }
    //Moves arm to a desired angle
     
-    public void MoveArm (double DesiredAngle)
+  public double SetArm(double desiredAngle)
+  {
+    angle = getAngle(); 
+    error = desiredAngle - angle;
+    while(Math.abs(error) > ArmConstants.setPointToleranceDegrees)
     {
-
-      double tempOutput;
-        ArmKI = RegularConstants.UpperArmKI;
-        ArmRatio = RegularConstants.UpperArmRatio;
-        ArmMax = RegularConstants.UpperArmMax;
-        ArmMin = RegularConstants.UpperArmMin;
-
-      double TempEncoderTicks = ArmMotor.getSensorCollection().getIntegratedSensorPosition();
-      
-      //Calculates angle based on last angle and difference in encoder ticks  
-      angle = -(TempEncoderTicks- StartEncoderTicks) / ArmRatio;
-
-      //finds distance from current angle to desired angle
-      AngleDif = angle - DesiredAngle;
-      double AngleDifAbsolute = Math.abs(AngleDif);
-        //Acounts for distance
-        if(AngleDifAbsolute > 15)
-        {
-          tempOutput = ArmMax;
-        }
-        else
-        {
-          if(AngleDifAbsolute * ArmMax * ArmKI < ArmMin)
-          {
-            tempOutput = ArmMin;
-            if(AngleDifAbsolute == 0)
-            {
-              tempOutput = 0;
-            }
-          }
-          else
-          {
-            tempOutput = AngleDifAbsolute * ArmMax * ArmKI;
-          }
-        }
-  
-      //moves arm motor in the direction it should go in
-      if((AngleDif)>0)
-      {
-        ArmMotor.set(TalonFXControlMode.PercentOutput, tempOutput);
-      }
-      else if (AngleDif < 0)
-      {
-        ArmMotor.set(TalonFXControlMode.PercentOutput, -tempOutput);
-      }
-      else
-      {
-        //yay
-      }
-      
-      //Makes my variables beholdable
-      SmartDashboard.putNumber("encoder Ticks", TempEncoderTicks);
-      SmartDashboard.putNumber("AngleDif", AngleDif);
-      SmartDashboard.putNumber("Angle", angle);
+      angle = getAngle();
+      error = desiredAngle - angle;
+      double derivative = FindDerivative(lastError, error);
+      double proportional = error;
+      double output = (proportional *ArmConstants.kP) + (derivative *ArmConstants.kD);
+      lastError = error;
+      lastAngle = angle;
+      armMotor.set(ControlMode.PercentOutput, output);
     }
+      armMotor.set(ControlMode.Disabled, 0);
+      return error;
+  }
 
-    public void AngleSet(double angle)
-    {
-      this.angle = angle;
-    } 
+  public double FindDerivative(double lastError,double currentError)
+  { 
+    double derivative = (lastError - currentError) / deltaTimer.get();
+    deltaTimer.reset();
+    return derivative;
+  }
+
+  public double Refresh(double angle)
+  {
+    lastAngle = getAngle();
+    lastError = angle - lastAngle;
+    return lastError;
+  }
+
+  public double getAngle() {
+    return ((armEncoder.getAbsolutePosition() * 360) + offset) % 360;
+  }
+
+  // returns index of current preset in presets array, -1 if not found
+  public int currentPreset(boolean lowerArm) {
+    ArmPreset measured = new ArmPreset(angle, lowerArm);
+    for (int i = 0; i < ArmConstants.presets.length; i++) {
+      if (measured.equals(ArmConstants.presets[i])) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  public void MoveArmPath(ArmPreset desired, LowerArmSubsystem sub_LowerArmSubsystem)
+  {
+    if (desired.getLowerArmUp() == sub_LowerArmSubsystem.checkState()) {
+      SetArm(desired.getAngle());
+    }
+    else if (desired.getLowerArmUp()) {
+      if (desired.getAngle() < ArmConstants.MinAngleWhileDown) {
+        SetArm(ArmConstants.MinAngleWhileDown);
+        sub_LowerArmSubsystem.m_extend();;
+        SetArm(desired.getAngle());
+      }
+      else {
+        SetArm(desired.getAngle());
+        sub_LowerArmSubsystem.m_extend();;
+      }
+    }
+    else {
+      SetArm(ArmConstants.armLoweringAngle);
+      sub_LowerArmSubsystem.m_contract();;
+      SetArm(desired.getAngle());
+    }
+  }
+
 }

@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
+
+import java.util.Set;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -24,8 +27,6 @@ public class LowerArmSubsystem extends SubsystemBase {
   
   private static DoubleSolenoid doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 0);
 
-  private final TalonFX lowerArmMotor = new TalonFX(26, "Bobby");
-
   /** Creates a new LowerArmSubsystem. */
   public LowerArmSubsystem() {}
 
@@ -40,6 +41,7 @@ public class LowerArmSubsystem extends SubsystemBase {
 
   public void m_initializeSolenoid() {
     doubleSolenoid.set(kForward);
+    isUp = true;
   }
 
   public void m_disableCompressor() {
@@ -48,33 +50,21 @@ public class LowerArmSubsystem extends SubsystemBase {
 
   public void m_toggle() {
     doubleSolenoid.toggle();
+    isUp = !isUp;
   }
 
   public void m_extend() {
     doubleSolenoid.set(kForward);
+    isUp = true;
   }
 
   public void m_contract() {
     doubleSolenoid.set(kReverse);
+    isUp = false;
   }
 
   public double currentPressure() {
     return phCompressor.getPressure();
-  }
-
-  public void m_increaseMotor(double percentOutput)
-  {
-    lowerArmMotor.set(TalonFXControlMode.PercentOutput, percentOutput);
-  }
-
-  public void m_decreaseMotor(double percentOutput)
-  {
-    m_increaseMotor(-percentOutput);
-  }
-
-  public void m_stopMotor()
-  {
-    lowerArmMotor.set(TalonFXControlMode.PercentOutput, 0);
   }
 
   public boolean checkState()

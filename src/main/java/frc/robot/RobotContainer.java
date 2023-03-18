@@ -7,7 +7,6 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.platform.can.AutocacheState;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -18,9 +17,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
-import frc.robot.autos.*;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.autos.BalanceAutoCommandGroup;
+import frc.robot.autos.PathAuto;
+import frc.robot.autos.TestPathFollow;
 import frc.robot.commands.*;
+import frc.robot.commands.Arm_Commands.ArmPresetDown;
+import frc.robot.commands.Arm_Commands.ArmPresetUp;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.Arm_Commands.ManualLowerArmDownCommand;
+import frc.robot.commands.Arm_Commands.ManualLowerArmUpCommand;
+import frc.robot.commands.Arm_Commands.ManualUpperArmDecreaseCommand;
+import frc.robot.commands.Arm_Commands.ManualUpperArmIncreaseCommand;
 import frc.robot.subsystems.*;
 
 /**
@@ -33,8 +42,9 @@ public class RobotContainer {
 
 
   /* Controllers */
-  private final Joystick driver = new Joystick(0);
-  private final Joystick arm = new Joystick(1);
+  private final CommandXboxController driver =new CommandXboxController(0);
+  private final Joystick driveJoystick = new Joystick(0);
+  private final CommandXboxController arm = new CommandXboxController(1);
 
   /* Drive Controls */
   private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -42,22 +52,26 @@ public class RobotContainer {
   private final int rotationAxis = XboxController.Axis.kRightX.value;
 
   /* Driver Buttons */
-  private final JoystickButton zeroWheels = new JoystickButton(driver, XboxController.Button.kB.value);
-  private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value); //Basically useless but probably works
-  private final JoystickButton intakeRaiseButton = new JoystickButton(driver, XboxController.Button.kRightBumper.value); //?
-  private final JoystickButton intakeClawButton = new JoystickButton(driver, XboxController.Button.kLeftBumper.value); //?
-  private final JoystickButton intakeMotorButton = new JoystickButton(driver, XboxController.Button.kA.value); //?
+  private final Trigger zeroWheels = driver.b();
+  private final Trigger zeroGyro = driver.y(); //Basically useless but probably works
 
   /* Arm Buttons */
-  private final JoystickButton clawRotation = new JoystickButton(arm, XboxController.Button.kY.value);
-  private final JoystickButton lowerArmButton = new JoystickButton(arm, XboxController.Button.kB.value); //works
-  //public final JoystickButton ArmSetButton = new JoystickButton(arm, XboxController.Button.kX.value); //works (probably)
-  public final JoystickButton clawButton = new JoystickButton(arm, XboxController.Button.kA.value); //works
-  public final JoystickButton UpperArmIncreaseButton = new JoystickButton(arm, XboxController.Button.kLeftBumper.value); //works
-  public final JoystickButton UpperArmDecreaseButton = new JoystickButton(arm, XboxController.Button.kRightBumper.value); //works
-  private final JoystickButton lowerArmIncreaseButton = new JoystickButton(arm, XboxController.Button.kBack.value); //works
-  private final JoystickButton lowerArmDecreaseButton = new JoystickButton(arm, XboxController.Button.kStart.value); //works
+  private final Trigger clawRotation = arm.y();
+  public final Trigger ArmSetButton = arm.x(); //works (probably)
+  public final Trigger clawButton = arm.a(); //works
+  public final Trigger UpperArmIncreaseButton = arm.leftBumper(); //works
+  public final Trigger UpperArmDecreaseButton = arm.rightBumper(); //works
+  private final Trigger lowerArmIncreaseButton = arm.back(); //works
+  private final Trigger lowerArmDecreaseButton = arm.start(); //works
   
+  private final Trigger armPresetUpButton = arm.rightTrigger();
+  private final Trigger armPresetDownButton = arm.leftTrigger();
+
+  private final Trigger armTopButton = arm.povUp();
+  private final Trigger armMidButton = arm.povDown();
+  private final Trigger armStowButton = arm.povLeft();
+  private final Trigger armPortalButton = arm.povRight();
+
   // limit switches 
   DigitalInput Lower_ArmBackwardsSwitch = new DigitalInput(2);
   DigitalInput Lower_ArmForwardsSwitch  = new DigitalInput(3);
@@ -73,24 +87,24 @@ public class RobotContainer {
   public final Swerve s_Swerve = new Swerve();
   private final UpperArmManual sub_UpperArmManual = new UpperArmManual();
   private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
-  private final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
-  private final IntakeSubsystem sub_IntakeSubsystem = new IntakeSubsystem();
-  private final EncoderCheck sub_EncoderCheck = new EncoderCheck(Lower_ArmBackwardsSwitch, Lower_ArmForwardsSwitch, Upper_MaxWhileForwardsSwitch, Upper_MaxWhileBackwardsSwitch, Upper_BringArmUpSafetySwitch, Upper_AtStowSwitch);
+  public final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
+  public final UpperArmToSetpoint sub_ArmToSetpoint = new UpperArmToSetpoint();
+  public final UISubsystem sub_UISubsystem = new UISubsystem(sub_LowerArmSubsystem, sub_ClawSubsystem, sub_ArmToSetpoint);
   /* Commands */
-  //private final ArmSet cmd_ArmSet = new ArmSet(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint);
-  private final LowerArmCommand cmd_LowerArmCommand = new LowerArmCommand(sub_LowerArmSubsystem);
   private final ClawCommand cmd_ClawCommand = new ClawCommand(sub_ClawSubsystem);
-  private final IntakeLiftCommand cmd_IntakeLiftCommand = new IntakeLiftCommand(sub_IntakeSubsystem);
-  private final IntakeClawCommand cmd_IntakeClawCommand = new IntakeClawCommand(sub_IntakeSubsystem);
-  private final MoveArmManualCommand cmd_MoveArmManualCommand = new MoveArmManualCommand(sub_UpperArmManual,sub_LowerArmSubsystem,sub_EncoderCheck);
+  private final ManualLowerArmDownCommand cmd_ManualLowerArmDownCommand = new ManualLowerArmDownCommand(sub_LowerArmSubsystem);
+  private final ManualLowerArmUpCommand cmd_ManualLowerArmUpCommand = new ManualLowerArmUpCommand(sub_LowerArmSubsystem);
+  private final ManualUpperArmDecreaseCommand cmd_ManualUpperArmDecreaseCommand = new ManualUpperArmDecreaseCommand(sub_UpperArmManual);
   private final AutoBalanceCommand cmd_AutoBalanceCommand = new AutoBalanceCommand(s_Swerve, s_Swerve.gyro);
   
   private final BalanceAutoCommandGroup auto_balance = new BalanceAutoCommandGroup(s_Swerve, cmd_AutoBalanceCommand);
   private final PathAuto auto_pathFollowTest = new PathAuto(s_Swerve, cmd_AutoBalanceCommand, "Test Path");
   private final TestPathFollow auto_PathFollowSwerve = new TestPathFollow(s_Swerve);
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
-  //private final ArmAtLimit cmd_ArmAtLimit = new ArmAtLimit(sub_UpperArmToSetpoint, sub_LowerArmToSetpoint, Upper_BringArmUpSafetySwitch, Upper_AtStowSwitch, Lower_ArmForwardsSwitch, Lower_ArmBackwardsSwitch)
-  //private final ArmAtLimit cmd_ArmAtSwitch = new ArmAtLimit(sub_UpperArmToSetpoint,sub_LowerArmToSetpoint, UpperArmLowerSwitch, UpperArmUpperSwitch, LowerArmLowerSwitch, LowerArmUpperSwitch);
+  private final ManualUpperArmIncreaseCommand cmd_UpperArmIncreaseCommand = new ManualUpperArmIncreaseCommand(sub_UpperArmManual);
+  private final ArmPresetUp cmd_ArmPresetUp = new ArmPresetUp(sub_ArmToSetpoint, sub_LowerArmSubsystem);
+  private final ArmPresetDown cmd_ArmPresetDown = new ArmPresetDown(sub_ArmToSetpoint, sub_LowerArmSubsystem);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
    // sub_LowerArmToSetpoint.setDefaultCommand(cmd_ArmAtLimit);
@@ -111,27 +125,24 @@ public class RobotContainer {
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     zeroWheels.onTrue(new InstantCommand(() -> s_Swerve.zeroWheels()));
     
-   // ArmSetButton.whileTrue(cmd_ArmSet);
-    UpperArmDecreaseButton.onTrue(cmd_MoveArmManualCommand);
-    UpperArmIncreaseButton.onTrue(cmd_MoveArmManualCommand);
+    UpperArmDecreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmManual.moveUp(0.3)));
+    UpperArmIncreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmManual.moveDown(0.3)));
+    lowerArmDecreaseButton.onTrue(cmd_ManualLowerArmDownCommand);
+    lowerArmIncreaseButton.onTrue(cmd_ManualLowerArmUpCommand);
     UpperArmDecreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
     UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
-    
+
+    armPresetUpButton.onTrue(cmd_ArmPresetUp);
+    armPresetDownButton.onTrue(cmd_ArmPresetDown);   
+
+    armTopButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.upperPlatform, sub_LowerArmSubsystem))); 
+    armMidButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.midPlatform, sub_LowerArmSubsystem))); 
+    armStowButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.resting, sub_LowerArmSubsystem))); 
+    armPortalButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.portal, sub_LowerArmSubsystem))); 
     
     clawButton.onTrue(cmd_ClawCommand);
     clawRotation.onTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate()));
 
-    double lowerArmMotorPercentOutput = 0.15;
-    lowerArmIncreaseButton.onTrue(cmd_MoveArmManualCommand);
-    lowerArmDecreaseButton.onTrue(cmd_MoveArmManualCommand);
-    lowerArmIncreaseButton.onFalse(new InstantCommand(() -> sub_LowerArmSubsystem.m_stopMotor()));
-    lowerArmDecreaseButton.onFalse(new InstantCommand(() -> sub_LowerArmSubsystem.m_stopMotor()));
-
-    intakeRaiseButton.whileTrue(cmd_IntakeLiftCommand);
-    intakeClawButton.onTrue(new InstantCommand(() -> sub_IntakeSubsystem.m_extendGrabber()));
-    intakeClawButton.onFalse(new InstantCommand(() -> sub_IntakeSubsystem.m_contractGrabber()));
-    intakeMotorButton.whileTrue(new InstantCommand(() -> sub_IntakeSubsystem.m_activateIntakeMotor(1)));
-    intakeMotorButton.whileFalse(new InstantCommand(() -> sub_IntakeSubsystem.m_stopIntakeMotor()));
 
   }
 
@@ -154,8 +165,6 @@ public class RobotContainer {
   }
 
   public void swerveInit(boolean fieldRelative, boolean openLoop) {
-    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driveJoystick, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
   }
-
-
 }
