@@ -166,7 +166,7 @@ public final class Constants {
         public static final double kD = 0.00;   
         public static final double MinAngleWhileDown = 60; // placeholder value 
         public static final double MaxAngleWhileUp = 110; //also placeholder
-        public static final double armLoweringAngle = 90;
+        public static final double armLoweringAngle = 80;
         public static final double presetToleranceDegrees = 10;
         public static final ArmPreset resting = new ArmPreset(30, true);
         public static final ArmPreset upperPlatform = new ArmPreset(150, false);
