@@ -4,13 +4,17 @@
 
 package frc.robot.commands.Arm_Commands;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.UpperArmManual;
 
 public class ManualUpperArmIncreaseCommand extends CommandBase {
 
   private final UpperArmManual m_UpperArmManual;
-  
+  Joystick Controller = new Joystick(1);
+  JoystickButton increase = new JoystickButton(Controller, XboxController.Button.kLeftBumper.value);
   public ManualUpperArmIncreaseCommand(UpperArmManual m_UpperArmManual) 
   {
     this.m_UpperArmManual = m_UpperArmManual;
@@ -26,13 +30,13 @@ public class ManualUpperArmIncreaseCommand extends CommandBase {
   @Override
   public void execute() 
   {
-    m_UpperArmManual.moveDown(.3);
+    m_UpperArmManual.moveUp(.3);
   }
 
   @Override
   public void end(boolean interrupted) 
   {
-
+    m_UpperArmManual.stop();
   }
 
   @Override

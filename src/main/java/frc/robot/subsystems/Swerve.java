@@ -136,7 +136,7 @@ public class Swerve extends SubsystemBase {
 
     public void zeroWheels(){
         for (SwerveModule mod : mSwerveMods){
-            mod.resetToZero();
+            mod.resetToAbsolute();
         }
     }
 

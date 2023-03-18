@@ -45,7 +45,7 @@ public final class Constants {
         public static final double closedLoopRamp = 0.0;
 
         public static final double driveGearRatio = (8.14 / 1.0); //8.14:1
-        public static final double angleGearRatio = (150 / 7 / 1.0); //7:1
+        public static final double angleGearRatio = (150.0 / 7.0 / 1.0); //7:1
 
         public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
                 new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
@@ -147,7 +147,7 @@ public final class Constants {
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-    public static final int autoArmSetTime = 3;
+        public static final int autoArmSetTime = 3;
         public static final double kPXController = 0.4;
         public static final double kPYController = 0.4;
         public static final double kPThetaController = 0.1;
@@ -158,4 +158,21 @@ public final class Constants {
                 
       }
 
+    public static final class ArmConstants
+    {
+        public static final double setPointToleranceDegrees = 5;
+        public static final double errorChangeTime = 3;
+        public static final double kP = 0.015;
+        public static final double kD = 0.00;   
+        public static final double MinAngleWhileDown = 60; // placeholder value 
+        public static final double MaxAngleWhileUp = 110; //also placeholder
+        public static final double armLoweringAngle = 90;
+        public static final double presetToleranceDegrees = 10;
+        public static final ArmPreset resting = new ArmPreset(30, true);
+        public static final ArmPreset upperPlatform = new ArmPreset(150, false);
+        public static final ArmPreset midPlatform = new ArmPreset(120, false);
+        public static final ArmPreset ground = new ArmPreset(60, false);
+        public static final ArmPreset portal = new ArmPreset(90, true);
+        public static final ArmPreset[] presets = {resting, portal};
+    }
 }
