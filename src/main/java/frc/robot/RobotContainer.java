@@ -83,7 +83,7 @@ public class RobotContainer {
   TalonFX UpperMotor = new TalonFX(3, "Bobby");
   TalonFX LowerMotor = new TalonFX(26, "Bobby");
   /* Subsystems */
-  public final Swerve s_Swerve = new Swerve();
+  public final Swerve s_Swerve = new Swerve(driveJoystick, translationAxis, strafeAxis, rotationAxis, true, true);
   private final UpperArmManual sub_UpperArmManual = new UpperArmManual();
   private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
   public final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
@@ -168,6 +168,6 @@ public class RobotContainer {
   }
 
   public void swerveInit(boolean fieldRelative, boolean openLoop) {
-    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driveJoystick, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    //s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driveJoystick, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
   }
 }
