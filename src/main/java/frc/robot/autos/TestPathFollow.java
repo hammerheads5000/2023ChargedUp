@@ -6,11 +6,19 @@ package frc.robot.autos;
 
 import java.time.Instant;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.AutoPathFollowCommand;
 import frc.robot.subsystems.Swerve;
 
@@ -22,11 +30,22 @@ public class TestPathFollow extends SequentialCommandGroup {
   public TestPathFollow(Swerve s_swerve) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    Pose2d[] poses = new Pose2d[]{ 
-      new Pose2d(0, 0, new Rotation2d(0)), 
-      new Pose2d(2, 0, new Rotation2d(0))}; 
+    PathPlannerTrajectory traj = 
+        PathPlanner.loadPath("Test Path", new PathConstraints(AutoConstants.maxVel, AutoConstants.maxAcc));
+    PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+      traj, 
+      s_swerve::getPose, 
+      Constants.Swerve.swerveKinematics,
+      new PIDController(0, 0, 0), 
+      new PIDController(0, 0, 0), 
+      new PIDController(0, 0, 0), 
+      s_swerve::setModuleStates,
+      true,
+      s_swerve
+    );
+
     addCommands(
-        new AutoPathFollowCommand(poses, s_swerve)
+      swerveCommand
     );
   }
 }
