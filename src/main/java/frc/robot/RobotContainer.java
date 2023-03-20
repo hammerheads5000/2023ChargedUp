@@ -22,8 +22,6 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.autos.BalanceAutoCommandGroup;
 import frc.robot.autos.PathAuto;
 import frc.robot.commands.*;
-import frc.robot.commands.Arm_Commands.ArmPresetDown;
-import frc.robot.commands.Arm_Commands.ArmPresetUp;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Arm_Commands.ManualLowerArmDownCommand;
 import frc.robot.commands.Arm_Commands.ManualLowerArmUpCommand;
@@ -104,8 +102,6 @@ public class RobotContainer {
   private final PathAuto auto_testAutoCone = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Test cone");
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
   private final ManualUpperArmIncreaseCommand cmd_UpperArmIncreaseCommand = new ManualUpperArmIncreaseCommand(sub_UpperArmManual);
-  private final ArmPresetUp cmd_ArmPresetUp = new ArmPresetUp(sub_ArmToSetpoint, sub_LowerArmSubsystem);
-  private final ArmPresetDown cmd_ArmPresetDown = new ArmPresetDown(sub_ArmToSetpoint, sub_LowerArmSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -134,18 +130,17 @@ public class RobotContainer {
     UpperArmDecreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
     UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
 
-    armPresetUpButton.onTrue(cmd_ArmPresetUp);
-    armPresetDownButton.onTrue(cmd_ArmPresetDown);   
-
-    armTopButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.upperPlatform, sub_LowerArmSubsystem))); 
-    armMidButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.midPlatform, sub_LowerArmSubsystem))); 
-    armStowButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.resting, sub_LowerArmSubsystem))); 
-    armPortalButton.onTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.portal, sub_LowerArmSubsystem))); 
+    armTopButton.whileTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.upperPlatform, sub_LowerArmSubsystem))); 
+    armMidButton.whileTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.midPlatform, sub_LowerArmSubsystem))); 
+    armStowButton.whileTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.resting, sub_LowerArmSubsystem))); 
+    armPortalButton.whileTrue(new InstantCommand(() -> sub_ArmToSetpoint.MoveArmPath(ArmConstants.portal, sub_LowerArmSubsystem))); 
     
     clawButton.onTrue(cmd_ClawCommand);
     clawRotation.onTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate()));
-
-
+    if(!armTopButton.getAsBoolean()&& !armMidButton.getAsBoolean() && !armStowButton.getAsBoolean() && !armPortalButton.getAsBoolean() && !UpperArmDecreaseButton.getAsBoolean() && !UpperArmIncreaseButton.getAsBoolean())
+    {
+      sub_UpperArmManual.stop();
+    }
   }
 
   private void configureAutoOptions() {

@@ -45,24 +45,30 @@ public class UpperArmToSetpoint extends SubsystemBase {
   {
     angle = getAngle(); 
     error = desiredAngle - angle;
-    while(Math.abs(error) > ArmConstants.setPointToleranceDegrees)
+    if(Math.abs(error) > ArmConstants.setPointToleranceDegrees)
     {
       angle = getAngle();
       error = desiredAngle - angle;
       double derivative = FindDerivative(lastError, error);
       double proportional = error;
-      double output = (proportional *ArmConstants.kP) + (derivative *ArmConstants.kD);
+      double output = (proportional * ArmConstants.kP) + (derivative * ArmConstants.kD);
       lastError = error;
       lastAngle = angle;
-      armMotor.set(ControlMode.PercentOutput, output);
+      armMotor.set(ControlMode.PercentOutput, output/2);
+      SmartDashboard.putNumber("output", output/2);
+      SmartDashboard.putNumber("Deriv", derivative * ArmConstants.kD);
+      SmartDashboard.putNumber("Prop", proportional * ArmConstants.kP);
     }
+    else
+    {
       armMotor.set(ControlMode.Disabled, 0);
+    }  
       return error;
   }
 
   public double FindDerivative(double lastError,double currentError)
   { 
-    double derivative = (lastError - currentError) / deltaTimer.get();
+    double derivative = (currentError - currentError) / deltaTimer.get();
     deltaTimer.reset();
     return derivative;
   }
@@ -111,5 +117,4 @@ public class UpperArmToSetpoint extends SubsystemBase {
       SetArm(desired.getAngle());
     }
   }
-
 }

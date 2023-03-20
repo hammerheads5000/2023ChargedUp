@@ -33,6 +33,11 @@ public class UpperArmManual extends SubsystemBase {
     {
         ArmMotor.set(TalonFXControlMode.PercentOutput, -speed);
     }
+
+    public void Move(double speed)
+    {
+      ArmMotor.set(TalonFXControlMode.PercentOutput, speed);
+    }
     
     //keeps the arm from never decelerating
     public void stop()
