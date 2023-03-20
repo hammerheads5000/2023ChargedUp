@@ -172,6 +172,7 @@ public final class Constants {
 
     public static final class ArmConstants
     {
+        public static final double offset = 48;
         public static final double setPointToleranceDegrees = 5;
         public static final double errorChangeTime = 3;
         public static final double kP = 0.015;
@@ -180,11 +181,11 @@ public final class Constants {
         public static final double MaxAngleWhileUp = 110; //also placeholder
         public static final double armLoweringAngle = 80;
         public static final double presetToleranceDegrees = 10;
-        public static final ArmPreset resting = new ArmPreset(30, true);
-        public static final ArmPreset upperPlatform = new ArmPreset(150, false);
-        public static final ArmPreset midPlatform = new ArmPreset(120, false);
-        public static final ArmPreset ground = new ArmPreset(60, false);
-        public static final ArmPreset portal = new ArmPreset(90, true);
-        public static final ArmPreset[] presets = {resting, portal};
+        public static final ArmState stow = new ArmState(30, true);
+        public static final ArmState upperPlatform = new ArmState(150, false);
+        public static final ArmState midPlatform = new ArmState(120, false);
+        public static final ArmState ground = new ArmState(60, false);
+        public static final ArmState portal = new ArmState(90, true);
+        public static final ArmState[] presets = {stow, portal};
     }
 }

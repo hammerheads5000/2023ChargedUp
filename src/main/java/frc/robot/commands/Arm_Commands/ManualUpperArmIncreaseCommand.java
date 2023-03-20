@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.UpperArmManual;
+import frc.robot.subsystems.UpperArmSubsystem;
 
 public class ManualUpperArmIncreaseCommand extends CommandBase {
 
-  private final UpperArmManual m_UpperArmManual;
+  private final UpperArmSubsystem m_UpperArmManual;
   Joystick Controller = new Joystick(1);
   JoystickButton increase = new JoystickButton(Controller, XboxController.Button.kLeftBumper.value);
-  public ManualUpperArmIncreaseCommand(UpperArmManual m_UpperArmManual) 
+  public ManualUpperArmIncreaseCommand(UpperArmSubsystem m_UpperArmManual) 
   {
     this.m_UpperArmManual = m_UpperArmManual;
     addRequirements(m_UpperArmManual);

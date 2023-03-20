@@ -24,7 +24,6 @@ import frc.robot.commands.ClawCommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.LowerArmSubsystem;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.UpperArmToSetpoint;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
