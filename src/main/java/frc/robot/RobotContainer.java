@@ -84,11 +84,11 @@ public class RobotContainer {
   private final ManualLowerArmUpCommand cmd_ManualLowerArmUpCommand = new ManualLowerArmUpCommand(sub_LowerArmSubsystem);
   private final ManualUpperArmDecreaseCommand cmd_ManualUpperArmDecreaseCommand = new ManualUpperArmDecreaseCommand(sub_UpperArmSubsystem);
   private final AutoBalanceCommand cmd_AutoBalanceCommand = new AutoBalanceCommand(s_Swerve, s_Swerve.gyro);
-  private final ArmPresetCommand cmd_GroundPresetCommand = new ArmPresetCommand(ArmConstants.ground);
-  private final ArmPresetCommand cmd_MidPlatformPresetCommand = new ArmPresetCommand(ArmConstants.midPlatform);
-  private final ArmPresetCommand cmd_PortalPresetCommand = new ArmPresetCommand(ArmConstants.portal);
-  private final ArmPresetCommand cmd_StowPresetCommand = new ArmPresetCommand(ArmConstants.stow);
-  private final ArmPresetCommand cmd_UpperPlatformPresetCommand = new ArmPresetCommand(ArmConstants.upperPlatform);
+  private final ArmPresetCommand cmd_GroundPresetCommand = new ArmPresetCommand(ArmConstants.ground,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
+  private final ArmPresetCommand cmd_MidPlatformPresetCommand = new ArmPresetCommand(ArmConstants.midPlatform,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
+  private final ArmPresetCommand cmd_PortalPresetCommand = new ArmPresetCommand(ArmConstants.portal,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
+  private final ArmPresetCommand cmd_StowPresetCommand = new ArmPresetCommand(ArmConstants.stow,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
+  private final ArmPresetCommand cmd_UpperPlatformPresetCommand = new ArmPresetCommand(ArmConstants.upperPlatform,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
   public final Initialize init = new Initialize(cmd_GroundPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem);
 
   private final BalanceAutoCommandGroup auto_balance = new BalanceAutoCommandGroup(s_Swerve, cmd_AutoBalanceCommand);
@@ -126,10 +126,10 @@ public class RobotContainer {
     UpperArmDecreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmSubsystem.stop()));
     UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmSubsystem.stop()));
 
-    armTopButton.onTrue(cmd_UpperPlatformPresetCommand); 
-    armMidButton.onTrue(cmd_MidPlatformPresetCommand); 
-    armStowButton.onTrue(cmd_StowPresetCommand); 
-    armPortalButton.onTrue(cmd_PortalPresetCommand); 
+    armTopButton.whileTrue(cmd_UpperPlatformPresetCommand); 
+    armMidButton.whileTrue(cmd_MidPlatformPresetCommand); 
+    armStowButton.whileTrue(cmd_StowPresetCommand); 
+    armPortalButton.whileTrue(cmd_PortalPresetCommand); 
     
     clawButton.onTrue(cmd_ClawCommand);
     clawRotation.onTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate()));

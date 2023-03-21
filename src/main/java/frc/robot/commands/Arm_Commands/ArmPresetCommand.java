@@ -10,6 +10,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.LowerArmSubsystem;
 import frc.robot.subsystems.UpperArmSubsystem;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArmPresetCommand extends CommandBase {
   /** Creates a new ArmToPortalPresetCommand. */
@@ -20,10 +21,14 @@ public class ArmPresetCommand extends CommandBase {
   ArmState LastDesiredArmState;
   boolean SamePIDInstance;
   Timer deltaTimer = new Timer();
-  public ArmPresetCommand(ArmState Preset) {
+
+  boolean finished = false;
+  public ArmPresetCommand(ArmState Preset, UpperArmSubsystem sub_UpperArmSubsystem,LowerArmSubsystem sub_LowerArmSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.Preset = Preset;
     deltaTimer.start();
+    this.sub_LowerArmSubsystem = sub_LowerArmSubsystem;
+    this.sub_UpperArmSubsystem = sub_UpperArmSubsystem;
   }
 
   // Called when the command is initially scheduled.
@@ -31,6 +36,7 @@ public class ArmPresetCommand extends CommandBase {
   public void initialize() {
     deltaTimer.reset();
     SamePIDInstance = false;
+    LastDesiredArmState = new ArmState(0, true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,18 +45,21 @@ public class ArmPresetCommand extends CommandBase {
     ArmState current = new ArmState(sub_UpperArmSubsystem.getAngle(), sub_LowerArmSubsystem.checkState());
     ArmState desired = ArmPathfind(Preset, current);
     if(Preset.equals(current)) {
-      isFinished();
+      finished = true;
+      return;
     }
+    double output = PID(desired,current, SamePIDInstance);
+    sub_UpperArmSubsystem.Move(output);
     if(!current.getLowerArmUp() == Preset.getLowerArmUp()) {
       sub_LowerArmSubsystem.m_toggle();
     }
     SamePIDInstance = desired.equals(LastDesiredArmState);
-    double output = PID(desired,current, SamePIDInstance);
-    sub_UpperArmSubsystem.Move(output);
+   
     LastDesiredArmState = desired;
+    SmartDashboard.putNumber("ouptut", output);
   }
 
-  public double PID(ArmState desired,ArmState current,Boolean sameInstance){
+  public double PID(ArmState desired,ArmState current, boolean sameInstance){
     double derivative;
     double error = desired.getAngle() - current.getAngle();
     double proportional = error * ArmConstants.kP;
@@ -76,7 +85,7 @@ public class ArmPresetCommand extends CommandBase {
         return new ArmState(ArmConstants.MaxAngleWhileUp, current.getLowerArmUp());
       }
       else {
-        return new ArmState(current.getAngle(), true);
+        return desired;
       }
     }
     else {
@@ -84,7 +93,7 @@ public class ArmPresetCommand extends CommandBase {
         return new ArmState(ArmConstants.MinAngleWhileDown, current.getLowerArmUp());
       }
       else {
-        return new ArmState(current.getAngle(), false);
+        return desired;
       }
     }
   }
@@ -98,7 +107,6 @@ public class ArmPresetCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return finished;
   }
-  
 }

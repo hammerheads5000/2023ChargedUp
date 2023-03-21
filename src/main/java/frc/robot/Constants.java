@@ -173,10 +173,9 @@ public final class Constants {
     public static final class ArmConstants
     {
         public static final double offset = 48;
-        public static final double setPointToleranceDegrees = 5;
         public static final double errorChangeTime = 3;
         public static final double kP = 0.015;
-        public static final double kD = 0.05;   
+        public static final double kD = 0.00;   
         public static final double MinAngleWhileDown = 60; // placeholder value 
         public static final double MaxAngleWhileUp = 110; //also placeholder
         public static final double armLoweringAngle = 80;
