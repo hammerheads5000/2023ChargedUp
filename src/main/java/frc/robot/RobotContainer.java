@@ -74,30 +74,30 @@ public class RobotContainer {
   TalonFX LowerMotor = new TalonFX(26, "Bobby");
   /* Subsystems */
   public final Swerve s_Swerve = new Swerve(driveJoystick, translationAxis, strafeAxis, rotationAxis, true, true);
-  private final UpperArmSubsystem sub_UpperArmManual = new UpperArmSubsystem();
+  private final UpperArmSubsystem sub_UpperArmSubsystem = new UpperArmSubsystem();
   private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
   public final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
-  public final UISubsystem sub_UISubsystem = new UISubsystem(sub_LowerArmSubsystem, sub_ClawSubsystem, sub_ArmToSetpoint);
+  public final UISubsystem sub_UISubsystem = new UISubsystem(sub_LowerArmSubsystem, sub_ClawSubsystem, sub_UpperArmSubsystem);
   /* Commands */
-  public final Initialize init = new Initialize(sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem);
   private final ClawCommand cmd_ClawCommand = new ClawCommand(sub_ClawSubsystem);
   private final ManualLowerArmDownCommand cmd_ManualLowerArmDownCommand = new ManualLowerArmDownCommand(sub_LowerArmSubsystem);
   private final ManualLowerArmUpCommand cmd_ManualLowerArmUpCommand = new ManualLowerArmUpCommand(sub_LowerArmSubsystem);
-  private final ManualUpperArmDecreaseCommand cmd_ManualUpperArmDecreaseCommand = new ManualUpperArmDecreaseCommand(sub_UpperArmManual);
+  private final ManualUpperArmDecreaseCommand cmd_ManualUpperArmDecreaseCommand = new ManualUpperArmDecreaseCommand(sub_UpperArmSubsystem);
   private final AutoBalanceCommand cmd_AutoBalanceCommand = new AutoBalanceCommand(s_Swerve, s_Swerve.gyro);
   private final ArmPresetCommand cmd_GroundPresetCommand = new ArmPresetCommand(ArmConstants.ground);
   private final ArmPresetCommand cmd_MidPlatformPresetCommand = new ArmPresetCommand(ArmConstants.midPlatform);
   private final ArmPresetCommand cmd_PortalPresetCommand = new ArmPresetCommand(ArmConstants.portal);
   private final ArmPresetCommand cmd_StowPresetCommand = new ArmPresetCommand(ArmConstants.stow);
   private final ArmPresetCommand cmd_UpperPlatformPresetCommand = new ArmPresetCommand(ArmConstants.upperPlatform);
+  public final Initialize init = new Initialize(cmd_GroundPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem);
 
   private final BalanceAutoCommandGroup auto_balance = new BalanceAutoCommandGroup(s_Swerve, cmd_AutoBalanceCommand);
-  private final PathAuto auto_fullAuto = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Full Auto");
-  private final PathAuto auto_longAuto = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Long Auto");
-  private final PathAuto auto_shortAuto = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Short Auto");
-  private final PathAuto auto_testAutoCone = new PathAuto(s_Swerve, sub_ArmToSetpoint, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Test cone");
+  private final PathAuto auto_fullAuto = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Full Auto");
+  private final PathAuto auto_longAuto = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Long Auto");
+  private final PathAuto auto_shortAuto = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Short Auto");
+  private final PathAuto auto_testAutoCone = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Test cone");
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
-  private final ManualUpperArmIncreaseCommand cmd_UpperArmIncreaseCommand = new ManualUpperArmIncreaseCommand(sub_UpperArmManual);
+  private final ManualUpperArmIncreaseCommand cmd_UpperArmIncreaseCommand = new ManualUpperArmIncreaseCommand(sub_UpperArmSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -119,12 +119,12 @@ public class RobotContainer {
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     zeroWheels.onTrue(new InstantCommand(() -> s_Swerve.zeroWheels()));
     
-    UpperArmDecreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmManual.moveUp(0.3)));
-    UpperArmIncreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmManual.moveDown(0.3)));
+    UpperArmDecreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmSubsystem.moveUp(0.3)));
+    UpperArmIncreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmSubsystem.moveDown(0.3)));
     lowerArmDecreaseButton.onTrue(cmd_ManualLowerArmDownCommand);
     lowerArmIncreaseButton.onTrue(cmd_ManualLowerArmUpCommand);
-    UpperArmDecreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
-    UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmManual.stop()));
+    UpperArmDecreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmSubsystem.stop()));
+    UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmSubsystem.stop()));
 
     armTopButton.onTrue(cmd_UpperPlatformPresetCommand); 
     armMidButton.onTrue(cmd_MidPlatformPresetCommand); 

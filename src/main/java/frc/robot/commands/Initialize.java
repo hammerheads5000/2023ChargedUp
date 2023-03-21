@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.commands.Arm_Commands.ArmPresetCommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.LowerArmSubsystem;
 
@@ -13,9 +14,11 @@ import frc.robot.subsystems.LowerArmSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Initialize extends InstantCommand {
+  ArmPresetCommand cmd_initialArmPreset;
   LowerArmSubsystem s_lowerArm;
   ClawSubsystem s_claw;
-  public Initialize( LowerArmSubsystem s_lowerArm, ClawSubsystem s_claw) {
+  public Initialize(ArmPresetCommand cmd_initialUpperArmPreset, LowerArmSubsystem s_lowerArm, ClawSubsystem s_claw) {
+    this.cmd_initialArmPreset = cmd_initialUpperArmPreset;
     this.s_lowerArm = s_lowerArm;
     this.s_claw = s_claw;
   }
@@ -24,5 +27,7 @@ public class Initialize extends InstantCommand {
   @Override
   public void initialize() {
     s_claw.m_contract();
+    s_lowerArm.m_extend();
+    cmd_initialArmPreset.schedule();
   }
 }
