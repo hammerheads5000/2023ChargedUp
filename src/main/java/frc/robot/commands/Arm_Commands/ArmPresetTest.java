@@ -13,7 +13,7 @@ import frc.robot.subsystems.UpperArmSubsystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ArmPresetCommand extends CommandBase {
+public class ArmPresetTest extends CommandBase {
   /** Creates a new ArmToPortalPresetCommand. */
   UpperArmSubsystem sub_UpperArmSubsystem;
   LowerArmSubsystem sub_LowerArmSubsystem;
@@ -24,12 +24,13 @@ public class ArmPresetCommand extends CommandBase {
   Timer deltaTimer = new Timer();
   Test sub_Test;
   boolean finished = false;
-  public ArmPresetCommand(ArmState Preset, UpperArmSubsystem sub_UpperArmSubsystem,LowerArmSubsystem sub_LowerArmSubsystem) {
+  public ArmPresetTest(ArmState Preset, UpperArmSubsystem sub_UpperArmSubsystem,LowerArmSubsystem sub_LowerArmSubsystem, Test sub_Test) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.Preset = Preset;
     deltaTimer.start();
     this.sub_LowerArmSubsystem = sub_LowerArmSubsystem;
     this.sub_UpperArmSubsystem = sub_UpperArmSubsystem;
+    this.sub_Test = sub_Test;
   }
 
   // Called when the command is initially scheduled.
@@ -54,7 +55,7 @@ public class ArmPresetCommand extends CommandBase {
       sub_LowerArmSubsystem.m_toggle();
     }
     double output = PID(desired,current, SamePIDInstance);
-    sub_UpperArmSubsystem.Move(output);
+    sub_Test.Move(output);
     SamePIDInstance = desired.equals(LastDesiredArmState);
    
     LastDesiredArmState = desired;

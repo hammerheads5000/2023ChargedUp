@@ -78,6 +78,7 @@ public class RobotContainer {
   private final LowerArmSubsystem sub_LowerArmSubsystem = new LowerArmSubsystem();
   public final ClawSubsystem sub_ClawSubsystem = new ClawSubsystem();
   public final UISubsystem sub_UISubsystem = new UISubsystem(sub_LowerArmSubsystem, sub_ClawSubsystem, sub_UpperArmSubsystem);
+  public final Test sub_Test = new Test();
   /* Commands */
   private final ClawCommand cmd_ClawCommand = new ClawCommand(sub_ClawSubsystem);
   private final ManualLowerArmDownCommand cmd_ManualLowerArmDownCommand = new ManualLowerArmDownCommand(sub_LowerArmSubsystem);
@@ -90,6 +91,7 @@ public class RobotContainer {
   private final ArmPresetCommand cmd_StowPresetCommand = new ArmPresetCommand(ArmConstants.stow,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
   private final ArmPresetCommand cmd_UpperPlatformPresetCommand = new ArmPresetCommand(ArmConstants.upperPlatform,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
   public final Initialize init = new Initialize(cmd_GroundPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem);
+  
 
   private final BalanceAutoCommandGroup auto_balance = new BalanceAutoCommandGroup(s_Swerve, cmd_AutoBalanceCommand);
   private final PathAuto auto_fullAuto = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Full Auto");
