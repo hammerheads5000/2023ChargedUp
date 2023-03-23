@@ -44,7 +44,33 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "Drop",
+          "Drop"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "after",
+        "waitTime": 1.0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 2.5,
+        "y": 2.22
+      },
+      "prevControl": {
+        "x": 2.5342145443867494,
+        "y": 2.22
+      },
+      "nextControl": {
+        "x": 2.4657854556132506,
+        "y": 2.22
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [
           "Arm back"
         ],
         "executionBehavior": "sequential",
@@ -58,12 +84,15 @@
         "y": 2.22
       },
       "prevControl": {
-        "x": 5.534214544386749,
+        "x": 5.070024485337734,
         "y": 2.22
       },
-      "nextControl": null,
-      "holonomicAngle": 180.0,
-      "isReversal": false,
+      "nextControl": {
+        "x": 5.070024485337734,
+        "y": 2.22
+      },
+      "holonomicAngle": -180.0,
+      "isReversal": true,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
@@ -74,6 +103,30 @@
         "executionBehavior": "sequential",
         "waitBehavior": "after",
         "waitTime": 1.0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 4.3,
+        "y": 2.22
+      },
+      "prevControl": {
+        "x": 4.621331692102739,
+        "y": 2.22
+      },
+      "nextControl": null,
+      "holonomicAngle": -180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "Auto balance"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "none",
+        "waitTime": 0
       }
     }
   ],

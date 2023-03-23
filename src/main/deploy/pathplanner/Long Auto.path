@@ -3,12 +3,12 @@
     {
       "anchorPoint": {
         "x": 2.5,
-        "y": 0.5
+        "y": 0.8
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5299006253389287,
-        "y": 0.5
+        "x": 2.4527343394309433,
+        "y": 0.8
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -27,15 +27,15 @@
     {
       "anchorPoint": {
         "x": 1.8,
-        "y": 0.5
+        "y": 0.8
       },
       "prevControl": {
-        "x": 1.8344093605249745,
-        "y": 0.5
+        "x": 1.8165713807464166,
+        "y": 0.8
       },
       "nextControl": {
-        "x": 1.7655906394750256,
-        "y": 0.5
+        "x": 1.7834286192535835,
+        "y": 0.8
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -44,7 +44,33 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "Drop",
+          "Drop"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "after",
+        "waitTime": 1.0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 2.5,
+        "y": 0.8
+      },
+      "prevControl": {
+        "x": 2.5342145443867494,
+        "y": 0.8
+      },
+      "nextControl": {
+        "x": 2.4657854556132506,
+        "y": 0.8
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [
           "Arm back"
         ],
         "executionBehavior": "sequential",
@@ -55,20 +81,22 @@
     {
       "anchorPoint": {
         "x": 5.5,
-        "y": 0.5
+        "y": 0.8
       },
       "prevControl": {
-        "x": 5.540533072344502,
-        "y": 0.5
+        "x": 5.070024485337734,
+        "y": 0.8
       },
       "nextControl": null,
-      "holonomicAngle": 180.0,
+      "holonomicAngle": -180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "Auto balance"
+        ],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
         "waitTime": 1.0
