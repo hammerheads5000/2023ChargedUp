@@ -45,12 +45,15 @@ public class ArmPresetCommand extends CommandBase {
   public void execute() {
     ArmState current = new ArmState(sub_UpperArmSubsystem.getAngle(), sub_LowerArmSubsystem.checkState());
     ArmState desired = ArmPathfind(Preset, current);
-    if(equal(current,Preset)) {
+    if(current.equals(Preset)) {
       SmartDashboard.putBoolean("Yay", true);
       finished = true;
       return;
     }
-    if(!current.getLowerArmUp() == Preset.getLowerArmUp()) {
+    else {
+      finished = false;
+    }
+    if(current.getLowerArmUp() != desired.getLowerArmUp()) {
       sub_LowerArmSubsystem.m_toggle();
     }
     double output = PID(desired,current, SamePIDInstance);
@@ -58,16 +61,6 @@ public class ArmPresetCommand extends CommandBase {
     SamePIDInstance = desired.equals(LastDesiredArmState);
    
     LastDesiredArmState = desired;
-    SmartDashboard.putNumber("ouptut", output);
-    SmartDashboard.putBoolean("desiredISUP", desired.getLowerArmUp());
-    SmartDashboard.putNumber("Desired Angle", desired.getAngle());
-    SmartDashboard.putBoolean("Yay", false);
-
-    SmartDashboard.putBoolean("PresetArm", Preset.getLowerArmUp());
-    SmartDashboard.putNumber("Preset Angle", Preset.getAngle());
-    
-    SmartDashboard.putBoolean("Current Arm", current.getLowerArmUp());
-    SmartDashboard.putNumber("Current Angle", current.getAngle());
   }
 
   public double PID(ArmState desired,ArmState current, boolean sameInstance){
@@ -92,7 +85,7 @@ public class ArmPresetCommand extends CommandBase {
       return desired;
     }
     else if (desired.getLowerArmUp()) {
-      if (current.getAngle() > ArmConstants.MaxAngleWhileUp) {
+      if (current.getAngle() > ArmConstants.MaxAngleWhileUp - ArmConstants.presetToleranceDegrees) {
         return new ArmState(ArmConstants.MaxAngleWhileUp, current.getLowerArmUp());
       }
       else {
@@ -100,7 +93,7 @@ public class ArmPresetCommand extends CommandBase {
       }
     }
     else {
-      if(current.getAngle() < ArmConstants.MinAngleWhileDown){
+      if(current.getAngle() < ArmConstants.MinAngleWhileDown + ArmConstants.presetToleranceDegrees){
         return new ArmState(ArmConstants.MinAngleWhileDown, current.getLowerArmUp());
       }
       else {
@@ -120,9 +113,4 @@ public class ArmPresetCommand extends CommandBase {
   public boolean isFinished() {
     return finished;
   }
-
-  public boolean equal(ArmState FirstState,ArmState otherObject) {
-    return (Math.abs(FirstState.getAngle() - otherObject.getAngle()) < ArmConstants.presetToleranceDegrees) 
-            && (FirstState.getLowerArmUp() == otherObject.getLowerArmUp());
-}
 }

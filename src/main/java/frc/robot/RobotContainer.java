@@ -24,6 +24,7 @@ import frc.robot.autos.PathAuto;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Arm_Commands.ArmPresetCommand;
+import frc.robot.commands.Arm_Commands.ArmPresetTest;
 import frc.robot.commands.Arm_Commands.ManualLowerArmDownCommand;
 import frc.robot.commands.Arm_Commands.ManualLowerArmUpCommand;
 import frc.robot.commands.Arm_Commands.ManualUpperArmDecreaseCommand;
@@ -90,8 +91,8 @@ public class RobotContainer {
   private final ArmPresetCommand cmd_PortalPresetCommand = new ArmPresetCommand(ArmConstants.portal,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
   private final ArmPresetCommand cmd_StowPresetCommand = new ArmPresetCommand(ArmConstants.stow,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
   private final ArmPresetCommand cmd_UpperPlatformPresetCommand = new ArmPresetCommand(ArmConstants.upperPlatform,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
-  public final Initialize init = new Initialize(cmd_GroundPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem);
-  
+  public final Initialize init = new Initialize(cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem);
+
 
   private final BalanceAutoCommandGroup auto_balance = new BalanceAutoCommandGroup(s_Swerve, cmd_AutoBalanceCommand);
   private final PathAuto auto_fullAuto = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Full Auto");
@@ -128,10 +129,10 @@ public class RobotContainer {
     UpperArmDecreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmSubsystem.stop()));
     UpperArmIncreaseButton.onFalse(new InstantCommand(() -> sub_UpperArmSubsystem.stop()));
 
-    armTopButton.whileTrue(cmd_UpperPlatformPresetCommand); 
-    armMidButton.whileTrue(cmd_MidPlatformPresetCommand); 
-    armStowButton.whileTrue(cmd_StowPresetCommand); 
-    armPortalButton.whileTrue(cmd_PortalPresetCommand); 
+    armTopButton.onTrue(cmd_UpperPlatformPresetCommand); 
+    armMidButton.onTrue(cmd_MidPlatformPresetCommand); 
+    armStowButton.onTrue(cmd_StowPresetCommand); 
+    armPortalButton.onTrue(cmd_PortalPresetCommand); 
     
     clawButton.onTrue(cmd_ClawCommand);
     clawRotation.onTrue(new InstantCommand(() -> sub_ClawSubsystem.rotate()));
@@ -158,6 +159,6 @@ public class RobotContainer {
   }
 
   public void swerveInit(boolean fieldRelative, boolean openLoop) {
-    //s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driveJoystick, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driveJoystick, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
   }
 }

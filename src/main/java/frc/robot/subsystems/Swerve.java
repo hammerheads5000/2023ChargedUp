@@ -172,39 +172,39 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
-        // SmartDashboard.putNumber("getXpreUpdt",swerveOdometry.getPoseMeters().getX());
-        // SmartDashboard.putNumber("getYpreUpdt",swerveOdometry.getPoseMeters().getY());
-        // SmartDashboard.putNumber("getGyroAnglepreUpdt",gyro.getAngle());
+        // // SmartDashboard.putNumber("getXpreUpdt",swerveOdometry.getPoseMeters().getX());
+        // // SmartDashboard.putNumber("getYpreUpdt",swerveOdometry.getPoseMeters().getY());
+        // // SmartDashboard.putNumber("getGyroAnglepreUpdt",gyro.getAngle());
         swerveOdometry.update(getYaw(), getModulePositions());  
-        // SmartDashboard.putNumber("getXpostUpdt",swerveOdometry.getPoseMeters().getX());
-        // SmartDashboard.putNumber("getYpostUpdt",swerveOdometry.getPoseMeters().getY());
-        SmartDashboard.putNumber("getGyroAnglepostUpdt",gyro.getAngle());
-        for(SwerveModule mod : mSwerveMods){
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-            // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+        // // SmartDashboard.putNumber("getXpostUpdt",swerveOdometry.getPoseMeters().getX());
+        // // SmartDashboard.putNumber("getYpostUpdt",swerveOdometry.getPoseMeters().getY());
+        // SmartDashboard.putNumber("getGyroAnglepostUpdt",gyro.getAngle());
+        // for(SwerveModule mod : mSwerveMods){
+        //     SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
+        //     // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
+        //     SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
 
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + "Talon Angle Motor", mod.getTalonAngleMotor());
-        }
-        SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+        //     SmartDashboard.putNumber("Mod " + mod.moduleNumber + "Talon Angle Motor", mod.getTalonAngleMotor());
+        // }
+        // SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
 
-        double d_yAxis = -drive.getRawAxis(translationAxis);
-        double d_xAxis = -drive.getRawAxis(strafeAxis);
-        double d_rAxis = -drive.getRawAxis(rotationAxis);
+        // double d_yAxis = -drive.getRawAxis(translationAxis);
+        // double d_xAxis = -drive.getRawAxis(strafeAxis);
+        // double d_rAxis = -drive.getRawAxis(rotationAxis);
 
-        d_yAxis = MathUtil.clamp(d_yAxis, -1, 1); 
-        d_xAxis = MathUtil.clamp(d_xAxis, -1, 1);
+        // d_yAxis = MathUtil.clamp(d_yAxis, -1, 1); 
+        // d_xAxis = MathUtil.clamp(d_xAxis, -1, 1);
         
-        /* Deadbands */
-        d_yAxis = (Math.abs(d_yAxis) < Constants.stickDeadband) ? 0 : d_yAxis;
-        d_xAxis = (Math.abs(d_xAxis) < Constants.stickDeadband) ? 0 : d_xAxis;
-        d_rAxis = (Math.abs(d_rAxis) < Constants.stickDeadband) ? 0 : d_rAxis;
+        // /* Deadbands */
+        // d_yAxis = (Math.abs(d_yAxis) < Constants.stickDeadband) ? 0 : d_yAxis;
+        // d_xAxis = (Math.abs(d_xAxis) < Constants.stickDeadband) ? 0 : d_xAxis;
+        // d_rAxis = (Math.abs(d_rAxis) < Constants.stickDeadband) ? 0 : d_rAxis;
 
-        double multiplier = 0.7;
-        Translation2d translation = new Translation2d(Math.signum(d_yAxis) * d_yAxis*d_yAxis * multiplier, Math.signum(d_xAxis) * d_xAxis*d_xAxis * multiplier).times(Constants.Swerve.maxSpeed);
-        double rotation = d_rAxis * Constants.Swerve.maxAngularVelocity;
-        drive(translation, rotation, fieldRelative, openLoop);
-        SmartDashboard.updateValues();
+        // double multiplier = 0.7;
+        // Translation2d translation = new Translation2d(Math.signum(d_yAxis) * d_yAxis*d_yAxis * multiplier, Math.signum(d_xAxis) * d_xAxis*d_xAxis * multiplier).times(Constants.Swerve.maxSpeed);
+        // double rotation = d_rAxis * Constants.Swerve.maxAngularVelocity;
+        // drive(translation, rotation, fieldRelative, openLoop);
+        // SmartDashboard.updateValues();
         
     
     }
