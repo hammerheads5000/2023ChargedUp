@@ -94,7 +94,7 @@ public class RobotContainer {
   public final Initialize init = new Initialize(cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem);
 
 
-  private final BalanceAutoCommandGroup auto_balance = new BalanceAutoCommandGroup(s_Swerve, cmd_AutoBalanceCommand);
+  private final PathAuto auto_balance = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Balance Auto");
   private final PathAuto auto_fullAuto = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Full Auto");
   private final PathAuto auto_longAuto = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Long Auto");
   private final PathAuto auto_shortAuto = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Short Auto");
@@ -144,6 +144,7 @@ public class RobotContainer {
     autoChooser.addOption("Long Auto", auto_longAuto);
     autoChooser.addOption("Short Auto", auto_shortAuto);
     autoChooser.addOption("Test cone drop", auto_testAutoCone);
+    autoChooser.addOption("Auto balance only", auto_balance);
 
     SmartDashboard.putData(autoChooser);
   }

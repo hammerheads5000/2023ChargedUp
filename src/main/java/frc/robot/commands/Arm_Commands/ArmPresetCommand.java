@@ -24,6 +24,8 @@ public class ArmPresetCommand extends CommandBase {
   Timer deltaTimer = new Timer();
   Test sub_Test;
   boolean finished = false;
+  boolean goingDownSlow = false;
+
   public ArmPresetCommand(ArmState Preset, UpperArmSubsystem sub_UpperArmSubsystem,LowerArmSubsystem sub_LowerArmSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.Preset = Preset;
@@ -46,7 +48,7 @@ public class ArmPresetCommand extends CommandBase {
     ArmState current = new ArmState(sub_UpperArmSubsystem.getAngle(), sub_LowerArmSubsystem.checkState());
     ArmState desired = ArmPathfind(Preset, current);
     if(current.equals(Preset)) {
-      SmartDashboard.putBoolean("Yay", true);
+      goingDownSlow = false;
       finished = true;
       return;
     }
@@ -62,6 +64,9 @@ public class ArmPresetCommand extends CommandBase {
       }
     }
     double output = PID(desired,current, SamePIDInstance);
+    if (goingDownSlow) {
+      output *= ArmConstants.speedMultiplierOnDown;
+    }
     sub_UpperArmSubsystem.Move(output);
     SamePIDInstance = desired.equals(LastDesiredArmState);
    
@@ -94,6 +99,7 @@ public class ArmPresetCommand extends CommandBase {
         return new ArmState(ArmConstants.MaxAngleWhileUp, current.getLowerArmUp());
       }
       else {
+        goingDownSlow = true;
         return desired;
       }
     }

@@ -85,7 +85,7 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         /* Swerve Profiling Values */
-        public static double maxSpeed = 4.5; //meters per second
+        public static double maxSpeed = 4.115; //meters per second
         public static double maxAngularVelocity = 11.5;
 
         /* Neutral Modes */
@@ -154,8 +154,8 @@ public final class Constants {
 
 
         // path following
-        public static final double maxVel = 4;
-        public static final double maxAcc = 3;
+        public static final double maxVel = 3;
+        public static final double maxAcc = 2;
 
         public static final double toleranceDegrees = 5;
         public static final double tolerancePosition = 0.1;
@@ -174,10 +174,11 @@ public final class Constants {
     {
         public static final double offset = 48;
         public static final double errorChangeTime = 3;
+        public static final double speedMultiplierOnDown = 0.9;
         public static final double kP = 0.015;
         public static final double kD = 0.00;   
         public static final double MinAngleWhileDown = 60;
-        public static final double MaxAngleWhileUp = 110;
+        public static final double MaxAngleWhileUp = 130;
         public static final double armLoweringAngle = 80;
         public static final double presetToleranceDegrees = 5;
         public static final ArmState stow = new ArmState(30, true);
