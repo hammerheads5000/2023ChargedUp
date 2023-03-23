@@ -8,16 +8,19 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class UpperArmManual extends SubsystemBase {
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ArmConstants;
+
+public class UpperArmSubsystem extends SubsystemBase {
 
   /*Behold, My variables */
     TalonFX ArmMotor = new TalonFX(3, "Bobby");
-    
+    DutyCycleEncoder armEncoder = new DutyCycleEncoder(9);
 
     /* Creates a new Pneumatics subsystem */
-    public UpperArmManual() 
+    public UpperArmSubsystem() 
     {
       ArmMotor.setNeutralMode(NeutralMode.Brake);
     }
@@ -32,6 +35,16 @@ public class UpperArmManual extends SubsystemBase {
     public void moveDown(double speed)
     {
         ArmMotor.set(TalonFXControlMode.PercentOutput, -speed);
+    }
+
+    public void Move(double speed)
+    {
+      ArmMotor.set(TalonFXControlMode.PercentOutput, speed);
+    }
+
+    public double getAngle()
+    {
+      return ((armEncoder.getAbsolutePosition() * 360) + ArmConstants.offset) % 360;
     }
     
     //keeps the arm from never decelerating

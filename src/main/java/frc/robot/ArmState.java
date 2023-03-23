@@ -6,11 +6,11 @@ package frc.robot;
 
 import frc.robot.Constants.ArmConstants;
 
-public class ArmPreset {
+public class ArmState {
     private double angle;
     private boolean lowerArmUp;
 
-    public ArmPreset(double angle, boolean lowerArmUp) {
+    public ArmState(double angle, boolean lowerArmUp) {
         this.angle = angle;
         this.lowerArmUp = lowerArmUp;
     }
@@ -25,7 +25,7 @@ public class ArmPreset {
 
     @Override
     public boolean equals(Object otherObject) {
-        ArmPreset otherPreset = (ArmPreset)otherObject;
+        ArmState otherPreset = (ArmState)otherObject;
         return (Math.abs(this.getAngle() - otherPreset.getAngle()) < ArmConstants.presetToleranceDegrees) 
                 && (this.getLowerArmUp() == otherPreset.getLowerArmUp());
     }

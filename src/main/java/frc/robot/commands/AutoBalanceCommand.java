@@ -33,9 +33,9 @@ public class AutoBalanceCommand extends CommandBase {
   @Override
   public void execute() {
     double pitch = pigeon.getPitch();
-
-    if (Math.abs(pitch) > Math.toRadians(AutoConstants.balanceZeroTolerance)){
-      double speed = pitch*AutoConstants.balanceSensitivity; // speed proportional to pitch
+    SmartDashboard.putNumber("pitch", pitch);
+    if (Math.abs(pitch) > AutoConstants.balanceZeroTolerance){
+      double speed = -pitch*AutoConstants.balanceSensitivity; // speed proportional to pitch
       speed = MathUtil.clamp(speed, -AutoConstants.balanceSpeed, AutoConstants.balanceSpeed); // clamp to max speed
       s_swerve.drive(speed, 0, 0, true);
     }

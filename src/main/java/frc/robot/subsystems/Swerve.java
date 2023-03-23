@@ -10,6 +10,7 @@ import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 
 import frc.robot.SwerveModule;
@@ -20,6 +21,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -33,9 +35,22 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public WPI_Pigeon2 gyro;
+    private Joystick drive;
+    private int translationAxis;
+    private int strafeAxis;
+    private int rotationAxis;
+    private boolean fieldRelative;
+    private boolean openLoop;
     //public Field2d m_field2d = new Field2d();
 
-    public Swerve() {
+    public Swerve(Joystick drive, int translationAxis, int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop) {
+        this.drive = drive;
+        this.translationAxis = translationAxis;
+        this.strafeAxis = strafeAxis;
+        this.rotationAxis = rotationAxis;
+        this.fieldRelative = fieldRelative;
+        this.openLoop = openLoop;
+        
         gyro = new WPI_Pigeon2(Constants.Swerve.pigeonID, "Bobby");
         zeroGyro();
         
@@ -132,6 +147,7 @@ public class Swerve extends SubsystemBase {
 
     public void zeroGyro(){
         gyro.setYaw(0);
+        gyro.reset();
     }
 
     public void zeroWheels(){
@@ -157,21 +173,39 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
-        // SmartDashboard.putNumber("getXpreUpdt",swerveOdometry.getPoseMeters().getX());
-        // SmartDashboard.putNumber("getYpreUpdt",swerveOdometry.getPoseMeters().getY());
-        // SmartDashboard.putNumber("getGyroAnglepreUpdt",gyro.getAngle());
+        // // SmartDashboard.putNumber("getXpreUpdt",swerveOdometry.getPoseMeters().getX());
+        // // SmartDashboard.putNumber("getYpreUpdt",swerveOdometry.getPoseMeters().getY());
+        // // SmartDashboard.putNumber("getGyroAnglepreUpdt",gyro.getAngle());
         swerveOdometry.update(getYaw(), getModulePositions());  
-        // SmartDashboard.putNumber("getXpostUpdt",swerveOdometry.getPoseMeters().getX());
-        // SmartDashboard.putNumber("getYpostUpdt",swerveOdometry.getPoseMeters().getY());
-        SmartDashboard.putNumber("getGyroAnglepostUpdt",gyro.getAngle());
-        for(SwerveModule mod : mSwerveMods){
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-            // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+        // // SmartDashboard.putNumber("getXpostUpdt",swerveOdometry.getPoseMeters().getX());
+        // // SmartDashboard.putNumber("getYpostUpdt",swerveOdometry.getPoseMeters().getY());
+        // SmartDashboard.putNumber("getGyroAnglepostUpdt",gyro.getAngle());
+        // for(SwerveModule mod : mSwerveMods){
+        //     SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
+        //     // SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
+        //     SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
 
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + "Talon Angle Motor", mod.getTalonAngleMotor());
-        }
-        SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+        //     SmartDashboard.putNumber("Mod " + mod.moduleNumber + "Talon Angle Motor", mod.getTalonAngleMotor());
+        // }
+        // SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+
+        // double d_yAxis = -drive.getRawAxis(translationAxis);
+        // double d_xAxis = -drive.getRawAxis(strafeAxis);
+        // double d_rAxis = -drive.getRawAxis(rotationAxis);
+
+        // d_yAxis = MathUtil.clamp(d_yAxis, -1, 1); 
+        // d_xAxis = MathUtil.clamp(d_xAxis, -1, 1);
+        
+        // /* Deadbands */
+        // d_yAxis = (Math.abs(d_yAxis) < Constants.stickDeadband) ? 0 : d_yAxis;
+        // d_xAxis = (Math.abs(d_xAxis) < Constants.stickDeadband) ? 0 : d_xAxis;
+        // d_rAxis = (Math.abs(d_rAxis) < Constants.stickDeadband) ? 0 : d_rAxis;
+
+        // double multiplier = 0.7;
+        // Translation2d translation = new Translation2d(Math.signum(d_yAxis) * d_yAxis*d_yAxis * multiplier, Math.signum(d_xAxis) * d_xAxis*d_xAxis * multiplier).times(Constants.Swerve.maxSpeed);
+        // double rotation = d_rAxis * Constants.Swerve.maxAngularVelocity;
+        // drive(translation, rotation, fieldRelative, openLoop);
+        // SmartDashboard.updateValues();
         
     
     }
