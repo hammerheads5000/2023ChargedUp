@@ -176,10 +176,10 @@ public final class Constants {
         public static final double errorChangeTime = 3;
         public static final double kP = 0.015;
         public static final double kD = 0.00;   
-        public static final double MinAngleWhileDown = 60; // placeholder value 
-        public static final double MaxAngleWhileUp = 110; //also placeholder
+        public static final double MinAngleWhileDown = 60;
+        public static final double MaxAngleWhileUp = 110;
         public static final double armLoweringAngle = 80;
-        public static final double presetToleranceDegrees = 10;
+        public static final double presetToleranceDegrees = 5;
         public static final ArmState stow = new ArmState(30, true);
         public static final ArmState upperPlatform = new ArmState(150, false);
         public static final ArmState midPlatform = new ArmState(120, false);

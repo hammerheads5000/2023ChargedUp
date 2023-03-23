@@ -54,7 +54,12 @@ public class ArmPresetCommand extends CommandBase {
       finished = false;
     }
     if(current.getLowerArmUp() != desired.getLowerArmUp()) {
-      sub_LowerArmSubsystem.m_toggle();
+      if (desired.getLowerArmUp()) {
+        sub_LowerArmSubsystem.m_extend();
+      }
+      else {
+        sub_LowerArmSubsystem.m_contract();
+      }
     }
     double output = PID(desired,current, SamePIDInstance);
     sub_UpperArmSubsystem.Move(output);
@@ -85,7 +90,7 @@ public class ArmPresetCommand extends CommandBase {
       return desired;
     }
     else if (desired.getLowerArmUp()) {
-      if (current.getAngle() > ArmConstants.MaxAngleWhileUp - ArmConstants.presetToleranceDegrees) {
+      if (current.getAngle() > ArmConstants.MaxAngleWhileUp + ArmConstants.presetToleranceDegrees) {
         return new ArmState(ArmConstants.MaxAngleWhileUp, current.getLowerArmUp());
       }
       else {
@@ -93,7 +98,7 @@ public class ArmPresetCommand extends CommandBase {
       }
     }
     else {
-      if(current.getAngle() < ArmConstants.MinAngleWhileDown + ArmConstants.presetToleranceDegrees){
+      if(current.getAngle() < ArmConstants.MinAngleWhileDown - ArmConstants.presetToleranceDegrees){
         return new ArmState(ArmConstants.MinAngleWhileDown, current.getLowerArmUp());
       }
       else {
