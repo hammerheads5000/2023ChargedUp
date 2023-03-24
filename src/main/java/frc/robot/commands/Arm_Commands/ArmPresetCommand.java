@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ArmState;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.LowerArmSubsystem;
-import frc.robot.subsystems.Test;
 import frc.robot.subsystems.UpperArmSubsystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,7 +21,6 @@ public class ArmPresetCommand extends CommandBase {
   ArmState LastDesiredArmState;
   boolean SamePIDInstance;
   Timer deltaTimer = new Timer();
-  Test sub_Test;
   boolean finished = false;
   boolean goingDownSlow = false;
 

@@ -184,7 +184,7 @@ public final class Constants {
         public static final ArmState stow = new ArmState(30, true);
         public static final ArmState upperPlatform = new ArmState(150, false);
         public static final ArmState midPlatform = new ArmState(120, false);
-        public static final ArmState ground = new ArmState(60, false);
+        public static final ArmState ground = new ArmState(50, false);
         public static final ArmState portal = new ArmState(90, true);
         public static final ArmState[] presets = {stow, portal};
     }

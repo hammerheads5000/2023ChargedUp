@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants;
+import frc.robot.subsystems.ChangeSpeedSubsystem;
 import frc.robot.subsystems.Swerve;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,18 +16,19 @@ public class TeleopSwerve extends CommandBase {
     private Translation2d translation;
     public boolean fieldRelative;
     private boolean openLoop;
-    
+    private ChangeSpeedSubsystem sub_ChangeSpeedSubsystem;
     private Swerve s_Swerve;
     private Joystick drive;
     private Joystick manip;
     private int translationAxis;
     private int strafeAxis;
     private int rotationAxis;
+    private double speed;
 
     /**
      * Driver control
      */
-    public TeleopSwerve(Swerve s_Swerve, Joystick drive, int translationAxis, int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop) {
+    public TeleopSwerve(Swerve s_Swerve, Joystick drive, int translationAxis, int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop, ChangeSpeedSubsystem sub_ChangeSpeedSubsystem) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
 
@@ -37,6 +39,7 @@ public class TeleopSwerve extends CommandBase {
         this.rotationAxis = rotationAxis;
         this.fieldRelative = fieldRelative;
         this.openLoop = openLoop;
+        this.sub_ChangeSpeedSubsystem = sub_ChangeSpeedSubsystem;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class TeleopSwerve extends CommandBase {
     @Override
     public void execute() {
         //fieldRelative = !drive.getRawButton(XboxController.Button.kLeftBumper.value);
-
+        speed = sub_ChangeSpeedSubsystem.getSpeed();
         double d_yAxis = -drive.getRawAxis(translationAxis);
         double d_xAxis = -drive.getRawAxis(strafeAxis);
         double d_rAxis = -drive.getRawAxis(rotationAxis);
@@ -58,9 +61,9 @@ public class TeleopSwerve extends CommandBase {
         d_xAxis = (Math.abs(d_xAxis) < Constants.stickDeadband) ? 0 : d_xAxis;
         d_rAxis = (Math.abs(d_rAxis) < Constants.stickDeadband) ? 0 : d_rAxis;
 
-        double multiplier = 0.7;
-        translation = new Translation2d(Math.signum(d_yAxis) * d_yAxis*d_yAxis * multiplier, Math.signum(d_xAxis) * d_xAxis*d_xAxis * multiplier).times(Constants.Swerve.maxSpeed);
-        rotation = d_rAxis * Constants.Swerve.maxAngularVelocity;
+       
+        translation = new Translation2d(Math.signum(d_yAxis) * d_yAxis*d_yAxis * speed, Math.signum(d_xAxis) * d_xAxis*d_xAxis * speed).times(Constants.Swerve.maxSpeed);
+        rotation =speed * d_rAxis * d_rAxis * Constants.Swerve.maxAngularVelocity;
         s_Swerve.drive(translation, rotation, fieldRelative, openLoop);
         SmartDashboard.updateValues();
 
