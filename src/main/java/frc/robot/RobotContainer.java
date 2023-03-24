@@ -24,6 +24,7 @@ import frc.robot.autos.PathAuto;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Arm_Commands.ArmPresetCommand;
+import frc.robot.commands.Arm_Commands.ClawCommand;
 import frc.robot.commands.Arm_Commands.ManualLowerArmDownCommand;
 import frc.robot.commands.Arm_Commands.ManualLowerArmUpCommand;
 import frc.robot.commands.Arm_Commands.ManualUpperArmDecreaseCommand;
