@@ -90,6 +90,8 @@ public class RobotContainer {
   private final ArmPresetCommand cmd_StowPresetCommand = new ArmPresetCommand(ArmConstants.stow,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
   private final ArmPresetCommand cmd_UpperPlatformPresetCommand = new ArmPresetCommand(ArmConstants.upperPlatform,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
   public final Initialize init = new Initialize(cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem);
+  private final SpeedUpCommand cmd_SpeedUpCommand = new SpeedUpCommand(sub_ChangeSpeedSubsystem);
+  private final SpeedDownCommand cmd_SpeedDownCommand = new SpeedDownCommand(sub_ChangeSpeedSubsystem);
 
   /*Auto Paths */
   private final PathAuto auto_balance = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Balance Auto");
@@ -105,7 +107,7 @@ public class RobotContainer {
    // sub_UpperArmToSetpoint.setDefaultCommand(cmd_ArmAtSwitch);
     // Configure the button bindings
     configureButtonBindings();
-    configureAutoOptions();
+    configureAutoOptions(); 
   }
 
   /**
@@ -118,8 +120,9 @@ public class RobotContainer {
     /* Driver Buttons */
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     zeroWheels.onTrue(new InstantCommand(() -> s_Swerve.zeroWheels()));
-    SpeedDownButton.onTrue(new InstantCommand(() -> sub_ChangeSpeedSubsystem.SpeedDown()));
-    SpeedUpButton.onTrue(new InstantCommand(() -> sub_ChangeSpeedSubsystem.SpeedUp()));
+    SpeedDownButton.whileTrue(cmd_SpeedDownCommand);
+    SpeedUpButton.whileTrue(cmd_SpeedUpCommand);
+  
 
     /*Arm Controller Buttons */
     UpperArmDecreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmSubsystem.moveUp(0.3)));

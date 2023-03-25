@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ChangeSpeedSubsystem extends SubsystemBase {
   /** Creates a new ChangeSpeedSubsystem. */
-  public double speed = .5;
+  public double speed = .7;
   public ChangeSpeedSubsystem() {}
 
   @Override
@@ -16,12 +16,15 @@ public class ChangeSpeedSubsystem extends SubsystemBase {
   
   }
   public void SpeedUp() {
-    speed = Math.min(speed+.25, 1.0);
+    speed = 1.0;
   }
   public void SpeedDown() {
-    speed = Math.max(speed-.25, .25);
+    speed = .3;
   }
-
+  
+  public void resetSpeed() {
+    speed =.7;
+  }
   public double getSpeed() {
     return speed;
   }
