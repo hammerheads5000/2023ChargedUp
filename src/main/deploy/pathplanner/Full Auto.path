@@ -53,11 +53,11 @@
     },
     {
       "anchorPoint": {
-        "x": 4.219337121948267,
+        "x": 4.5,
         "y": 2.22
       },
       "prevControl": {
-        "x": 4.540668814051007,
+        "x": 4.82133169210274,
         "y": 2.22
       },
       "nextControl": null,
@@ -71,7 +71,7 @@
           "Arm back",
           "Auto balance"
         ],
-        "executionBehavior": "sequential",
+        "executionBehavior": "parallel",
         "waitBehavior": "after",
         "waitTime": 0
       }

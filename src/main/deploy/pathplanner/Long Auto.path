@@ -92,19 +92,14 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "Arm back"
+        ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 1.0
       }
     }
   ],
-  "markers": [
-    {
-      "position": 1.4909090909090885,
-      "names": [
-        "Arm back"
-      ]
-    }
-  ]
+  "markers": []
 }
