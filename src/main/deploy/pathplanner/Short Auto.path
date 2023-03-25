@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 2.15,
-        "y": 4.345991513633427
+        "x": 2.4447785541533817,
+        "y": 4.410007755241775
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3960309321683408,
-        "y": 4.320385016990088
+        "x": 2.2740685765311195,
+        "y": 4.388669008038993
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -21,24 +21,24 @@
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
-        "waitTime": 0.0
+        "waitTime": 1.0
       }
     },
     {
       "anchorPoint": {
-        "x": 1.8970840426108182,
-        "y": 4.345991513633172
+        "x": 1.918422789818073,
+        "y": 4.4313465024445575
       },
       "prevControl": {
-        "x": 1.7516270818657191,
-        "y": 4.185988856814297
+        "x": 2.0535681887690305,
+        "y": 4.5593789856612545
       },
       "nextControl": {
-        "x": 2.821763088069211,
-        "y": 5.3631384636327395
+        "x": 2.0535681887690305,
+        "y": 4.5593789856612545
       },
       "holonomicAngle": 180.0,
-      "isReversal": false,
+      "isReversal": true,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": true,
@@ -47,7 +47,32 @@
           "Drop"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 2.0820198517060744,
+        "y": 4.687411468877952
+      },
+      "prevControl": {
+        "x": 2.018003610097726,
+        "y": 4.488249828318645
+      },
+      "nextControl": {
+        "x": 2.1813664073471877,
+        "y": 4.996489641983635
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
         "waitTime": 0
       }
     },

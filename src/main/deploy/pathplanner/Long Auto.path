@@ -20,8 +20,8 @@
           "Extend arm"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
-        "waitTime": 0.0
+        "waitBehavior": "none",
+        "waitTime": 1.0
       }
     },
     {
@@ -47,8 +47,33 @@
           "Drop"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
-        "waitTime": 0.0
+        "waitBehavior": "none",
+        "waitTime": 1.0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.9539873684893776,
+        "y": 0.6543882475520055
+      },
+      "prevControl": {
+        "x": 1.9539873684893776,
+        "y": 1.0207837806583886
+      },
+      "nextControl": {
+        "x": 1.9539873684893776,
+        "y": 0.46233952272695955
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
       }
     },
     {
@@ -57,8 +82,8 @@
         "y": 0.8
       },
       "prevControl": {
-        "x": 3.1845217905165186,
-        "y": 0.21338747202782732
+        "x": 3.319667189467476,
+        "y": 0.7468561520973968
       },
       "nextControl": null,
       "holonomicAngle": -180.0,
@@ -67,14 +92,19 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "Arm back"
-        ],
+        "names": [],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 1.0
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 1.4909090909090885,
+      "names": [
+        "Arm back"
+      ]
+    }
+  ]
 }

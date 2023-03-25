@@ -99,6 +99,7 @@ public class RobotContainer {
   private final PathAuto auto_longAuto = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Long Auto");
   private final PathAuto auto_shortAuto = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Short Auto");
   private final PathAuto auto_testAutoCone = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Test cone");
+  private final PathAuto auto_place = new PathAuto(s_Swerve, cmd_MidPlatformPresetCommand, cmd_GroundPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Place Auto");
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -151,6 +152,7 @@ public class RobotContainer {
     autoChooser.addOption("Short Auto", auto_shortAuto);
     autoChooser.addOption("Test cone drop", auto_testAutoCone);
     autoChooser.addOption("Auto balance only", auto_balance);
+    autoChooser.addOption("Place only", auto_place);
 
     SmartDashboard.putData(autoChooser);
   }
