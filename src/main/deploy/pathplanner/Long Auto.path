@@ -20,7 +20,7 @@
           "Extend arm"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
+        "waitBehavior": "none",
         "waitTime": 1.0
       }
     },
@@ -47,22 +47,22 @@
           "Drop"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
+        "waitBehavior": "none",
         "waitTime": 1.0
       }
     },
     {
       "anchorPoint": {
-        "x": 2.45,
-        "y": 0.8
+        "x": 3.2524474209253764,
+        "y": 0.6221267404366876
       },
       "prevControl": {
-        "x": 2.4842145443867496,
-        "y": 0.8
+        "x": 3.218232876538626,
+        "y": 0.6221267404366876
       },
       "nextControl": {
-        "x": 2.4157854556132508,
-        "y": 0.8
+        "x": 3.286661965312126,
+        "y": 0.6221267404366876
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -74,17 +74,17 @@
           "Arm back"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
+        "waitBehavior": "none",
         "waitTime": 1.0
       }
     },
     {
       "anchorPoint": {
-        "x": 5.5,
+        "x": 6.25,
         "y": 0.8
       },
       "prevControl": {
-        "x": 5.070024485337734,
+        "x": 5.820024485337734,
         "y": 0.8
       },
       "nextControl": null,
@@ -94,11 +94,9 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "Auto balance"
-        ],
+        "names": [],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
+        "waitBehavior": "none",
         "waitTime": 1.0
       }
     }

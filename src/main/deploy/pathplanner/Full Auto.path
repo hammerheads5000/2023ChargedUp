@@ -20,7 +20,7 @@
           "Extend arm"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
+        "waitBehavior": "none",
         "waitTime": 0.5
       }
     },
@@ -47,7 +47,7 @@
           "Drop"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
+        "waitBehavior": "none",
         "waitTime": 0.5
       }
     },
@@ -74,21 +74,21 @@
           "Arm back"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
+        "waitBehavior": "none",
         "waitTime": 0.0
       }
     },
     {
       "anchorPoint": {
-        "x": 10.0,
+        "x": 6.0,
         "y": 2.22
       },
       "prevControl": {
-        "x": 9.570024485337733,
+        "x": 5.570024485337733,
         "y": 2.22
       },
       "nextControl": {
-        "x": 9.570024485337733,
+        "x": 5.570024485337733,
         "y": 2.22
       },
       "holonomicAngle": -180.0,
@@ -107,11 +107,11 @@
     },
     {
       "anchorPoint": {
-        "x": 8.045882961994932,
+        "x": 4.5,
         "y": 2.2233381871343907
       },
       "prevControl": {
-        "x": 8.367214654097673,
+        "x": 4.82133169210274,
         "y": 2.2233381871343907
       },
       "nextControl": null,
