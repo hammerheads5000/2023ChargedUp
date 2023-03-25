@@ -165,9 +165,9 @@ public final class Constants {
         public static final double minAngularVelocityRadians = Math.PI/2;
 
         // balancing
-        public static final double balanceZeroTolerance = 10; // level to stop balancing
-        public static final double balanceSpeed = 0.5; // max speed to balance at
-        public static final double balanceSensitivity = 0.2/Math.toRadians(15); // speed to go / at angle
+        public static final double balanceZeroTolerance = 20; // level to stop balancing
+        public static final double balanceSpeed = 0.35; // max speed to balance at
+        public static final double balanceSensitivity = 0.1; // speed to go / at angle
     }
 
     public static final class ArmConstants

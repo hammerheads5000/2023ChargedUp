@@ -18,6 +18,7 @@ public class AutoBalanceCommand extends CommandBase {
   /** Creates a new AutoBalanceCommand. */
   Swerve s_swerve;
   WPI_Pigeon2 pigeon;
+  boolean balanced = false;
 
   public AutoBalanceCommand(Swerve s_swerve, WPI_Pigeon2 pigeon) {
     this.s_swerve = s_swerve;
@@ -41,6 +42,7 @@ public class AutoBalanceCommand extends CommandBase {
     }
     else {
       s_swerve.drive(0, 0, 0, true);
+      balanced = true;
     }
   }
 
@@ -53,6 +55,6 @@ public class AutoBalanceCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return balanced;
   }
 }
