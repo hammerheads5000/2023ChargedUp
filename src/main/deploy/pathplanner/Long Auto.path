@@ -20,8 +20,8 @@
           "Extend arm"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "none",
-        "waitTime": 1.0
+        "waitBehavior": "after",
+        "waitTime": 0.0
       }
     },
     {
@@ -47,8 +47,8 @@
           "Drop"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "none",
-        "waitTime": 1.0
+        "waitBehavior": "after",
+        "waitTime": 0.0
       }
     },
     {
@@ -67,19 +67,14 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "Arm back"
+        ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 1.0
       }
     }
   ],
-  "markers": [
-    {
-      "position": 1.4909090909090885,
-      "names": [
-        "Arm back"
-      ]
-    }
-  ]
+  "markers": []
 }
