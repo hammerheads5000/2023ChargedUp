@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 2.35,
-        "y": 4.7
+        "x": 2.15,
+        "y": 4.345991513633427
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3027343394309434,
-        "y": 4.7
+        "x": 1.3960309321683408,
+        "y": 4.320385016990088
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -26,16 +26,16 @@
     },
     {
       "anchorPoint": {
-        "x": 1.85,
-        "y": 4.7
+        "x": 1.8970840426108182,
+        "y": 4.345991513633172
       },
       "prevControl": {
-        "x": 1.8665713807464166,
-        "y": 4.7
+        "x": 1.7516270818657191,
+        "y": 4.185988856814297
       },
       "nextControl": {
-        "x": 1.8334286192535836,
-        "y": 4.7
+        "x": 2.821763088069211,
+        "y": 5.3631384636327395
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -47,35 +47,8 @@
           "Drop"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
-        "waitTime": 1.0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 2.45,
-        "y": 4.7
-      },
-      "prevControl": {
-        "x": 2.4842145443867496,
-        "y": 4.7
-      },
-      "nextControl": {
-        "x": 2.4157854556132508,
-        "y": 4.7
-      },
-      "holonomicAngle": 180.0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": true,
-      "stopEvent": {
-        "names": [
-          "Arm back"
-        ],
-        "executionBehavior": "sequential",
-        "waitBehavior": "after",
-        "waitTime": 1.0
+        "waitBehavior": "none",
+        "waitTime": 0
       }
     },
     {
@@ -85,7 +58,7 @@
       },
       "prevControl": {
         "x": 6.90361747135708,
-        "y": 4.640408429170464
+        "y": 4.337427568020648
       },
       "nextControl": null,
       "holonomicAngle": -180.0,
@@ -101,5 +74,12 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 1.3363636363636364,
+      "names": [
+        "Arm back"
+      ]
+    }
+  ]
 }
