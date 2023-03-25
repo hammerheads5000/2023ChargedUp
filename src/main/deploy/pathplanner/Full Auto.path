@@ -53,11 +53,11 @@
     },
     {
       "anchorPoint": {
-        "x": 4.5,
+        "x": 4.6,
         "y": 2.22
       },
       "prevControl": {
-        "x": 4.82133169210274,
+        "x": 4.92133169210274,
         "y": 2.22
       },
       "nextControl": null,
@@ -68,7 +68,6 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "Arm back",
           "Auto balance"
         ],
         "executionBehavior": "parallel",
@@ -77,5 +76,12 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 1.6606060606060804,
+      "names": [
+        "Arm back"
+      ]
+    }
+  ]
 }
