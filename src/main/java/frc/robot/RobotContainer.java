@@ -55,6 +55,7 @@ public class RobotContainer {
   private final Trigger zeroGyro = driver.y(); //Basically useless but probably works
   private final Trigger SpeedUpButton = driver.rightBumper();
   private final Trigger SpeedDownButton = driver.leftBumper();
+  private final Trigger RegularSpeedToggleButton = driver.a();
   /* Arm Buttons */
   private final Trigger clawRotation = arm.y();
   public final Trigger ArmSetButton = arm.x(); //works (probably)
@@ -123,7 +124,7 @@ public class RobotContainer {
     zeroWheels.onTrue(new InstantCommand(() -> s_Swerve.zeroWheels()));
     SpeedDownButton.whileTrue(cmd_SpeedDownCommand);
     SpeedUpButton.whileTrue(cmd_SpeedUpCommand);
-  
+    RegularSpeedToggleButton.onTrue(new InstantCommand(() -> sub_ChangeSpeedSubsystem.ToggleRegularSpeed()));
 
     /*Arm Controller Buttons */
     UpperArmDecreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmSubsystem.moveUp(0.3)));

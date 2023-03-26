@@ -44,6 +44,11 @@ public final class Constants {
         public static final double wheelDiameter = Units.inchesToMeters(3.94);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
+        public static final double MaxSpeedMultiplier = 1.2;
+        public static final double MinspeedMultiplier = .3;
+        public static final double RegularSpeedMultiplier = .9;
+        public static final double LowRegularSpeedMultiplier = .65;
+
         public static final double openLoopRamp = 0.25;
         public static final double closedLoopRamp = 0.0;
 
@@ -63,7 +68,7 @@ public final class Constants {
         public static final boolean angleEnableCurrentLimit = true;
 
         public static final int driveContinuousCurrentLimit = 40;
-        public static final int drivePeakCurrentLimit = 60;
+        public static final int drivePeakCurrentLimit = 40;
         public static final double drivePeakCurrentDuration = 0.1;
         public static final boolean driveEnableCurrentLimit = true;
 
