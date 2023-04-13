@@ -18,6 +18,8 @@ public class AutoBalanceCommand extends CommandBase {
   /** Creates a new AutoBalanceCommand. */
   Swerve s_swerve;
   WPI_Pigeon2 pigeon;
+  boolean balanced = false;
+  Timer timer = new Timer();
 
   public AutoBalanceCommand(Swerve s_swerve, WPI_Pigeon2 pigeon) {
     this.s_swerve = s_swerve;
@@ -27,6 +29,7 @@ public class AutoBalanceCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,6 +44,7 @@ public class AutoBalanceCommand extends CommandBase {
     }
     else {
       s_swerve.drive(0, 0, 0, true);
+      balanced = true;
     }
   }
 
@@ -53,6 +57,6 @@ public class AutoBalanceCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return timer.advanceIfElapsed(AutoConstants.maxBalanceTime);
   }
 }

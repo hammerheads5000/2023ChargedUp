@@ -55,6 +55,7 @@ public class RobotContainer {
   private final Trigger zeroGyro = driver.y(); //Basically useless but probably works
   private final Trigger SpeedUpButton = driver.rightBumper();
   private final Trigger SpeedDownButton = driver.leftBumper();
+  private final Trigger RegularSpeedToggleButton = driver.a();
   /* Arm Buttons */
   private final Trigger clawRotation = arm.y();
   public final Trigger ArmSetButton = arm.x(); //works (probably)
@@ -90,6 +91,8 @@ public class RobotContainer {
   private final ArmPresetCommand cmd_StowPresetCommand = new ArmPresetCommand(ArmConstants.stow,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
   private final ArmPresetCommand cmd_UpperPlatformPresetCommand = new ArmPresetCommand(ArmConstants.upperPlatform,sub_UpperArmSubsystem,sub_LowerArmSubsystem);
   public final Initialize init = new Initialize(cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem);
+  private final SpeedUpCommand cmd_SpeedUpCommand = new SpeedUpCommand(sub_ChangeSpeedSubsystem);
+  private final SpeedDownCommand cmd_SpeedDownCommand = new SpeedDownCommand(sub_ChangeSpeedSubsystem);
 
   /*Auto Paths */
   private final PathAuto auto_balance = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Balance Auto");
@@ -97,6 +100,7 @@ public class RobotContainer {
   private final PathAuto auto_longAuto = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Long Auto");
   private final PathAuto auto_shortAuto = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Short Auto");
   private final PathAuto auto_testAutoCone = new PathAuto(s_Swerve, cmd_UpperPlatformPresetCommand, cmd_StowPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Test cone");
+  private final PathAuto auto_place = new PathAuto(s_Swerve, cmd_MidPlatformPresetCommand, cmd_GroundPresetCommand, sub_LowerArmSubsystem, sub_ClawSubsystem, cmd_AutoBalanceCommand, "Place Auto");
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -105,7 +109,7 @@ public class RobotContainer {
    // sub_UpperArmToSetpoint.setDefaultCommand(cmd_ArmAtSwitch);
     // Configure the button bindings
     configureButtonBindings();
-    configureAutoOptions();
+    configureAutoOptions(); 
   }
 
   /**
@@ -118,8 +122,9 @@ public class RobotContainer {
     /* Driver Buttons */
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     zeroWheels.onTrue(new InstantCommand(() -> s_Swerve.zeroWheels()));
-    SpeedDownButton.onTrue(new InstantCommand(() -> sub_ChangeSpeedSubsystem.SpeedDown()));
-    SpeedUpButton.onTrue(new InstantCommand(() -> sub_ChangeSpeedSubsystem.SpeedUp()));
+    SpeedDownButton.whileTrue(cmd_SpeedDownCommand);
+    SpeedUpButton.whileTrue(cmd_SpeedUpCommand);
+    RegularSpeedToggleButton.onTrue(new InstantCommand(() -> sub_ChangeSpeedSubsystem.ToggleRegularSpeed()));
 
     /*Arm Controller Buttons */
     UpperArmDecreaseButton.onTrue(new InstantCommand(() -> sub_UpperArmSubsystem.moveUp(0.3)));
@@ -148,6 +153,7 @@ public class RobotContainer {
     autoChooser.addOption("Short Auto", auto_shortAuto);
     autoChooser.addOption("Test cone drop", auto_testAutoCone);
     autoChooser.addOption("Auto balance only", auto_balance);
+    autoChooser.addOption("Place only", auto_place);
 
     SmartDashboard.putData(autoChooser);
   }

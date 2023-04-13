@@ -60,6 +60,7 @@ public class PathAuto extends SequentialCommandGroup {
     Command autoCommand = autoBuilder.fullAuto(pathGroup);
 
     addCommands(
+      new InstantCommand(() -> s_swerve.resetOdometry(pathGroup.get(0).getInitialPose())),
       autoCommand
     );
   }

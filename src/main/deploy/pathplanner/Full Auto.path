@@ -21,7 +21,7 @@
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
-        "waitTime": 1.0
+        "waitTime": 0.0
       }
     },
     {
@@ -48,70 +48,16 @@
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
-        "waitTime": 1.0
+        "waitTime": 0.0
       }
     },
     {
       "anchorPoint": {
-        "x": 2.35,
+        "x": 4.7,
         "y": 2.22
       },
       "prevControl": {
-        "x": 2.3842145443867495,
-        "y": 2.22
-      },
-      "nextControl": {
-        "x": 2.3157854556132507,
-        "y": 2.22
-      },
-      "holonomicAngle": 180.0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": true,
-      "stopEvent": {
-        "names": [
-          "Arm back"
-        ],
-        "executionBehavior": "sequential",
-        "waitBehavior": "after",
-        "waitTime": 1.0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 5.5,
-        "y": 2.22
-      },
-      "prevControl": {
-        "x": 5.070024485337734,
-        "y": 2.22
-      },
-      "nextControl": {
-        "x": 5.070024485337734,
-        "y": 2.22
-      },
-      "holonomicAngle": -180.0,
-      "isReversal": true,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [
-          "Auto balance"
-        ],
-        "executionBehavior": "sequential",
-        "waitBehavior": "after",
-        "waitTime": 1.0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 4.3,
-        "y": 2.22
-      },
-      "prevControl": {
-        "x": 4.621331692102739,
+        "x": 5.02133169210274,
         "y": 2.22
       },
       "nextControl": null,
@@ -124,11 +70,18 @@
         "names": [
           "Auto balance"
         ],
-        "executionBehavior": "sequential",
-        "waitBehavior": "none",
+        "executionBehavior": "parallel",
+        "waitBehavior": "after",
         "waitTime": 0
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 1.1636363636363636,
+      "names": [
+        "Arm back"
+      ]
+    }
+  ]
 }

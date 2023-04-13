@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
     CameraServer.startAutomaticCapture();
     m_robotContainer = new RobotContainer();
     m_robotContainer.init.schedule();
+    m_robotContainer.swerveInit(true, true);
   }
 
   /**
@@ -89,7 +90,7 @@ public class Robot extends TimedRobot {
     //m_robotContainer.sub_ArmToSetpoint.SetArm(ArmConstants.resting.getAngle());
     boolean fieldRelative = true;
     boolean isOpenLoop = true;
-    m_robotContainer.swerveInit(fieldRelative, isOpenLoop);
+   // m_robotContainer.swerveInit(fieldRelative, isOpenLoop);
     m_robotContainer.sub_ClawSubsystem.m_contract();
     m_robotContainer.s_Swerve.zeroWheels();
     if (m_autonomousCommand != null) {

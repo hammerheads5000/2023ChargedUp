@@ -44,6 +44,11 @@ public final class Constants {
         public static final double wheelDiameter = Units.inchesToMeters(3.94);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
+        public static final double MaxSpeedMultiplier = 1.2;
+        public static final double MinspeedMultiplier = .3;
+        public static final double RegularSpeedMultiplier = .9;
+        public static final double LowRegularSpeedMultiplier = .65;
+
         public static final double openLoopRamp = 0.25;
         public static final double closedLoopRamp = 0.0;
 
@@ -63,7 +68,7 @@ public final class Constants {
         public static final boolean angleEnableCurrentLimit = true;
 
         public static final int driveContinuousCurrentLimit = 40;
-        public static final int drivePeakCurrentLimit = 60;
+        public static final int drivePeakCurrentLimit = 40;
         public static final double drivePeakCurrentDuration = 0.1;
         public static final boolean driveEnableCurrentLimit = true;
 
@@ -135,7 +140,7 @@ public final class Constants {
 
         /* Back Right Module - Module 3 */
         public static final class Mod3 {
-            public static final int driveMotorID = 20;
+            public static final int driveMotorID = 23;
             public static final int angleMotorID = 24;
             public static final int canCoderID = 3;
             public static final double angleOffset = 144.67;
@@ -165,9 +170,10 @@ public final class Constants {
         public static final double minAngularVelocityRadians = Math.PI/2;
 
         // balancing
-        public static final double balanceZeroTolerance = 5; // level to stop balancing
+        public static final double balanceZeroTolerance = 7.5; // level to stop balancing
         public static final double balanceSpeed = 0.5; // max speed to balance at
-        public static final double balanceSensitivity = 0.3/Math.toRadians(15); // speed to go / at angle
+        public static final double balanceSensitivity = 0.05; // speed to go / at angle
+        public static final double maxBalanceTime = 5;
     }
 
     public static final class ArmConstants
@@ -185,7 +191,7 @@ public final class Constants {
         public static final ArmState upperPlatform = new ArmState(150, false);
         public static final ArmState midPlatform = new ArmState(120, false);
         public static final ArmState ground = new ArmState(50, false);
-        public static final ArmState portal = new ArmState(90, true);
+        public static final ArmState portal = new ArmState(80, true);
         public static final ArmState[] presets = {stow, portal};
     }
 }

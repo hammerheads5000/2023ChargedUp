@@ -5,10 +5,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ChangeSpeedSubsystem extends SubsystemBase {
   /** Creates a new ChangeSpeedSubsystem. */
-  public double speed = .5;
+  double RegularSpeed = Constants.Swerve.RegularSpeedMultiplier;
+  double speed = RegularSpeed;
+  boolean SpeedyQuick;
   public ChangeSpeedSubsystem() {}
 
   @Override
@@ -16,12 +19,26 @@ public class ChangeSpeedSubsystem extends SubsystemBase {
   
   }
   public void SpeedUp() {
-    speed = Math.min(speed+.25, 1.0);
+    speed = Constants.Swerve.MaxSpeedMultiplier;
   }
   public void SpeedDown() {
-    speed = Math.max(speed-.25, .25);
+    speed = Constants.Swerve.MinspeedMultiplier;
+  }
+  
+  public void resetSpeed() {
+    speed = RegularSpeed;
   }
 
+  public void ToggleRegularSpeed()
+  {
+    if(SpeedyQuick) {
+      RegularSpeed =  Constants.Swerve.RegularSpeedMultiplier;
+    }
+    else {
+      RegularSpeed = Constants.Swerve.LowRegularSpeedMultiplier;
+    }
+    SpeedyQuick = !SpeedyQuick;
+  }
   public double getSpeed() {
     return speed;
   }
