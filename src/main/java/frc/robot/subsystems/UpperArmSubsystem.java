@@ -4,10 +4,11 @@
 
 package frc.robot.subsystems;
 
-
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenixpro.configs.MotorOutputConfigs;
+import com.ctre.phoenixpro.controls.DutyCycleOut;
+import com.ctre.phoenixpro.controls.NeutralOut;
+import com.ctre.phoenixpro.hardware.TalonFX;
+import com.ctre.phoenixpro.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,30 +17,32 @@ import frc.robot.Constants.ArmConstants;
 public class UpperArmSubsystem extends SubsystemBase {
 
   /*Behold, My variables */
-    TalonFX ArmMotor = new TalonFX(3, "Bobby");
+    TalonFX armMotor = new TalonFX(3, "Bobby");
     DutyCycleEncoder armEncoder = new DutyCycleEncoder(9);
 
     /* Creates a new Pneumatics subsystem */
     public UpperArmSubsystem() 
     {
-      ArmMotor.setNeutralMode(NeutralMode.Brake);
+      MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
+      motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
+      armMotor.getConfigurator().apply(motorOutputConfigs);
     }
 
     //Moves arm up at a given speed
     public void moveUp(double speed)
     {
-      ArmMotor.set(TalonFXControlMode.PercentOutput, speed); 
+      armMotor.setControl(new DutyCycleOut(speed)); 
     }
 
     //Moves arm down at a given speed
     public void moveDown(double speed)
     {
-        ArmMotor.set(TalonFXControlMode.PercentOutput, -speed);
+      armMotor.setControl(new DutyCycleOut(-speed)); 
     }
 
     public void Move(double speed)
     {
-      ArmMotor.set(TalonFXControlMode.PercentOutput, speed);
+      armMotor.setControl(new DutyCycleOut(speed)); 
     }
 
     public double getAngle()
@@ -50,6 +53,6 @@ public class UpperArmSubsystem extends SubsystemBase {
     //keeps the arm from never decelerating
     public void stop()
     {
-      ArmMotor.set(TalonFXControlMode.Disabled,0);
+      armMotor.setControl(new NeutralOut());
     }
 }

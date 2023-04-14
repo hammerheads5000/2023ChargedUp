@@ -19,7 +19,6 @@ public class TeleopSwerve extends CommandBase {
     private ChangeSpeedSubsystem sub_ChangeSpeedSubsystem;
     private Swerve s_Swerve;
     private Joystick drive;
-    private Joystick manip;
     private int translationAxis;
     private int strafeAxis;
     private int rotationAxis;
@@ -33,7 +32,6 @@ public class TeleopSwerve extends CommandBase {
         addRequirements(s_Swerve);
 
         this.drive = drive;
-        this.manip = manip;
         this.translationAxis = translationAxis;
         this.strafeAxis = strafeAxis;
         this.rotationAxis = rotationAxis;

@@ -4,8 +4,7 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.platform.can.AutocacheState;
+import com.ctre.phoenixpro.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -72,7 +71,7 @@ public class RobotContainer {
   private final Trigger armGroundButton = arm.x();
   //Motors 
   TalonFX UpperMotor = new TalonFX(3, "Bobby");
-  TalonFX LowerMotor = new TalonFX(26, "Bobby");
+  
   /* Subsystems */
   public final Swerve s_Swerve = new Swerve(driveJoystick, translationAxis, strafeAxis, rotationAxis, true, true);
   private final UpperArmSubsystem sub_UpperArmSubsystem = new UpperArmSubsystem();
