@@ -12,21 +12,21 @@ public class UISubsystem extends SubsystemBase {
 
   LowerArmSubsystem s_LowerArm;
   ClawSubsystem s_claw;
-  UpperArmToSetpoint s_UpperArmToSetpoint;
+  UpperArmSubsystem s_UpperArmSubsystem;
 
   /** Creates a new UISubsystem. */
-  public UISubsystem(LowerArmSubsystem s_LowerArm, ClawSubsystem s_claw, UpperArmToSetpoint s_UpperArmToSetpoint) {
+  public UISubsystem(LowerArmSubsystem s_LowerArm, ClawSubsystem s_claw, UpperArmSubsystem s_UpperArmSubsystem) {
     this.s_LowerArm = s_LowerArm;
-    this.s_UpperArmToSetpoint = s_UpperArmToSetpoint;
+    this.s_UpperArmSubsystem = s_UpperArmSubsystem;
     this.s_claw = s_claw;
   }
   
   @Override
   public void periodic() {
     //Arm
-    SmartDashboard.putNumber("Arm Encoder", s_UpperArmToSetpoint.getAngle());
+    SmartDashboard.putNumber("Arm Encoder", s_UpperArmSubsystem.getAngle());
     SmartDashboard.putBoolean("Lower arm is up", s_LowerArm.checkState());
-    SmartDashboard.putNumber("Detected preset", s_UpperArmToSetpoint.currentPreset(s_LowerArm.checkState()));
+
     //Claw
     SmartDashboard.putBoolean("Claw is open", s_claw.isOpen);
   }

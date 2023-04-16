@@ -44,6 +44,11 @@ public final class Constants {
         public static final double wheelDiameter = Units.inchesToMeters(3.94);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
+        public static final double MaxSpeedMultiplier = 1.2;
+        public static final double MinspeedMultiplier = .3;
+        public static final double RegularSpeedMultiplier = .9;
+        public static final double LowRegularSpeedMultiplier = .65;
+
         public static final double openLoopRamp = 0.25;
         public static final double closedLoopRamp = 0.0;
 
@@ -63,7 +68,7 @@ public final class Constants {
         public static final boolean angleEnableCurrentLimit = true;
 
         public static final int driveContinuousCurrentLimit = 40;
-        public static final int drivePeakCurrentLimit = 60;
+        public static final int drivePeakCurrentLimit = 40;
         public static final double drivePeakCurrentDuration = 0.1;
         public static final boolean driveEnableCurrentLimit = true;
 
@@ -85,7 +90,7 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         /* Swerve Profiling Values */
-        public static double maxSpeed = 4.5; //meters per second
+        public static double maxSpeed = 4.115; //meters per second
         public static double maxAngularVelocity = 11.5;
 
         /* Neutral Modes */
@@ -135,7 +140,7 @@ public final class Constants {
 
         /* Back Right Module - Module 3 */
         public static final class Mod3 {
-            public static final int driveMotorID = 20;
+            public static final int driveMotorID = 23;
             public static final int angleMotorID = 24;
             public static final int canCoderID = 3;
             public static final double angleOffset = 144.67;
@@ -154,8 +159,8 @@ public final class Constants {
 
 
         // path following
-        public static final double maxVel = 4;
-        public static final double maxAcc = 3;
+        public static final double maxVel = 3;
+        public static final double maxAcc = 2;
 
         public static final double toleranceDegrees = 5;
         public static final double tolerancePosition = 0.1;
@@ -165,26 +170,28 @@ public final class Constants {
         public static final double minAngularVelocityRadians = Math.PI/2;
 
         // balancing
-        public static final double balanceZeroTolerance = 5; // level to stop balancing
+        public static final double balanceZeroTolerance = 7.5; // level to stop balancing
         public static final double balanceSpeed = 0.5; // max speed to balance at
-        public static final double balanceSensitivity = 0.3/Math.toRadians(15); // speed to go / at angle
+        public static final double balanceSensitivity = 0.05; // speed to go / at angle
+        public static final double maxBalanceTime = 5;
     }
 
     public static final class ArmConstants
     {
-        public static final double setPointToleranceDegrees = 5;
+        public static final double offset = 48;
         public static final double errorChangeTime = 3;
+        public static final double speedMultiplierOnDown = 0.9;
         public static final double kP = 0.015;
         public static final double kD = 0.00;   
-        public static final double MinAngleWhileDown = 60; // placeholder value 
-        public static final double MaxAngleWhileUp = 110; //also placeholder
+        public static final double MinAngleWhileDown = 60;
+        public static final double MaxAngleWhileUp = 130;
         public static final double armLoweringAngle = 80;
-        public static final double presetToleranceDegrees = 10;
-        public static final ArmPreset resting = new ArmPreset(30, true);
-        public static final ArmPreset upperPlatform = new ArmPreset(150, false);
-        public static final ArmPreset midPlatform = new ArmPreset(120, false);
-        public static final ArmPreset ground = new ArmPreset(60, false);
-        public static final ArmPreset portal = new ArmPreset(90, true);
-        public static final ArmPreset[] presets = {resting, portal};
+        public static final double presetToleranceDegrees = 5;
+        public static final ArmState stow = new ArmState(30, true);
+        public static final ArmState upperPlatform = new ArmState(150, false);
+        public static final ArmState midPlatform = new ArmState(120, false);
+        public static final ArmState ground = new ArmState(50, false);
+        public static final ArmState portal = new ArmState(80, true);
+        public static final ArmState[] presets = {stow, portal};
     }
 }

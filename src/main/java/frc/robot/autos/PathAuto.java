@@ -20,18 +20,18 @@ import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.AutoBalanceCommand;
-import frc.robot.commands.ClawCommand;
+import frc.robot.commands.Arm_Commands.ArmPresetCommand;
+import frc.robot.commands.Arm_Commands.ClawCommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.LowerArmSubsystem;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.UpperArmToSetpoint;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PathAuto extends SequentialCommandGroup {
   /** Creates a new PathAuto. */
-  public PathAuto(Swerve s_swerve, UpperArmToSetpoint s_arm, LowerArmSubsystem s_lowerArm, ClawSubsystem sub_ClawSubsystem, Command cmd_autoBalance, String path) {
+  public PathAuto(Swerve s_swerve, ArmPresetCommand cmd_armExtend, ArmPresetCommand cmd_armStow, LowerArmSubsystem s_lowerArm, ClawSubsystem sub_ClawSubsystem, Command cmd_autoBalance, String path) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     List<PathPlannerTrajectory> pathGroup = 
@@ -41,8 +41,8 @@ public class PathAuto extends SequentialCommandGroup {
     HashMap<String, Command> eventMap = new HashMap<>();
     eventMap.put("Auto balance", cmd_autoBalance);
     eventMap.put("Drop", new InstantCommand(() -> sub_ClawSubsystem.m_extend()));
-    eventMap.put("Extend arm", new InstantCommand(() -> s_arm.MoveArmPath(ArmConstants.upperPlatform, s_lowerArm)));
-    eventMap.put("Arm back", new InstantCommand(() -> s_arm.MoveArmPath(ArmConstants.resting, s_lowerArm)));
+    eventMap.put("Extend arm", cmd_armExtend);
+    eventMap.put("Arm back", cmd_armStow);
 
     // Will make auto command automatically
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
@@ -60,6 +60,7 @@ public class PathAuto extends SequentialCommandGroup {
     Command autoCommand = autoBuilder.fullAuto(pathGroup);
 
     addCommands(
+      new InstantCommand(() -> s_swerve.resetOdometry(pathGroup.get(0).getInitialPose())),
       autoCommand
     );
   }
