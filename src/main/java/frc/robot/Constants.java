@@ -1,7 +1,6 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenixpro.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.PIDConstants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -77,7 +76,10 @@ public final class Constants {
         public static final double angleKI = 0.0;
         public static final double angleKD = 0.01;
         public static final double angleKF = 0.0;
-
+        
+        /* Angle Motor Characterization Values */
+        public static final double angleKV = (1.0 / 12); // PLACEHOLDER
+        
         /* Drive Motor PID Values */
         public static final double driveKP = 0.9;
         public static final double driveKI = 0.0;
@@ -88,14 +90,15 @@ public final class Constants {
         public static final double driveKS = (0.667 / 12); //divide by 12 to convert from volts to percent output for CTRE
         public static final double driveKV = (2.44 / 12);
         public static final double driveKA = (0.27 / 12);
+        public static final double feedForward = 0.5; // voltage to add for feedforward
 
         /* Swerve Profiling Values */
         public static double maxSpeed = 4.115; //meters per second
         public static double maxAngularVelocity = 11.5;
 
         /* Neutral Modes */
-        public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
-        public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
+        public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
+        public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
 
         /* Motor Inverts */
         public static final boolean driveMotorInvert = true;

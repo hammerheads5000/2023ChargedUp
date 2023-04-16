@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix.sensors.WPI_Pigeon2;
+import com.ctre.phoenixpro.hardware.Pigeon2;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -17,11 +17,11 @@ import frc.robot.subsystems.Swerve;
 public class AutoBalanceCommand extends CommandBase {
   /** Creates a new AutoBalanceCommand. */
   Swerve s_swerve;
-  WPI_Pigeon2 pigeon;
+  Pigeon2 pigeon;
   boolean balanced = false;
   Timer timer = new Timer();
 
-  public AutoBalanceCommand(Swerve s_swerve, WPI_Pigeon2 pigeon) {
+  public AutoBalanceCommand(Swerve s_swerve, Pigeon2 pigeon) {
     this.s_swerve = s_swerve;
     this.pigeon = pigeon;
   }
@@ -35,7 +35,7 @@ public class AutoBalanceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double pitch = pigeon.getPitch();
+    double pitch = pigeon.getPitch().getValue();
     SmartDashboard.putNumber("pitch", pitch);
     if (Math.abs(pitch) > AutoConstants.balanceZeroTolerance){
       double speed = -pitch*AutoConstants.balanceSensitivity; // speed proportional to pitch

@@ -8,17 +8,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
-
-import java.util.Set;
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.playingwithfusion.CANVenom.BrakeCoastMode;
 
 public class LowerArmSubsystem extends SubsystemBase {
   private boolean isUp = true;
