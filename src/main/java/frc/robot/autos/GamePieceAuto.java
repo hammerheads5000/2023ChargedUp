@@ -63,16 +63,18 @@ public class GamePieceAuto extends SequentialCommandGroup {
       s_swerve // Drive subsystem
     );
 
-    Pose2d placePose = getPlacePose();
-
     // configures going to and from portal
     PathPlannerTrajectory cycleTraj = PathPlanner.loadPath(cyclePath, new PathConstraints(AutoConstants.maxVel, AutoConstants.maxAcc));
     Command cycleCommand = autoBuilder.fullAuto(cycleTraj);
 
     // configures placing of cube/cone command
     PathPlannerTrajectory placeTraj = PathPlanner.loadPath(placePath, new PathConstraints(AutoConstants.maxVel, AutoConstants.maxAcc));
-    placeTraj.transformBy(new Transform2d(placeTraj.getInitialPose(), placePose));
     Command placeCommand = autoBuilder.fullAuto(placeTraj);
+    
+    Command transformPlacePath = new InstantCommand(() -> {
+      placeTraj.transformBy(new Transform2d(placeTraj.getInitialPose(), s_swerve.getPose()));
+      autoBuilder.fullAuto(placeTraj);
+    }); // updates place path to be where the robot is
     
     // manually generated trajectories
     PathConstraints constraints = new PathConstraints(Constants.AutoConstants.maxVel, Constants.AutoConstants.maxAcc);
@@ -95,15 +97,12 @@ public class GamePieceAuto extends SequentialCommandGroup {
 
     addCommands(
       toCommand,
+      transformPlacePath,
       placeCommand,
       new InstantCommand(() -> updatePlaced()),
       fromCommand,
       cycleCommand
     );
-  }
-
-  private Pose2d getPlacePose() {
-    return Constants.AutoConstants.placePoses[(int)placedEntry.get()];
   }
 
   private void updatePlaced() {

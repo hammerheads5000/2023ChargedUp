@@ -165,6 +165,7 @@ public final class Constants {
         // path following
         public static final double maxVel = 3;
         public static final double maxAcc = 2;
+        public static final double scanVel = 1.5;
 
         public static final double toleranceDegrees = 5;
         public static final double tolerancePosition = 0.1;
