@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
 import com.pathplanner.lib.auto.PIDConstants;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -171,6 +172,8 @@ public final class Constants {
         public static final double minDriveSpeed = 0.3;
         public static final double maxAngularVelocityRadians = 2*Math.PI;
         public static final double minAngularVelocityRadians = Math.PI/2;
+
+        public static final Pose2d[] placePoses = new Pose2d[9]; // TODO: set poses to place
 
         // balancing
         public static final double balanceZeroTolerance = 7.5; // level to stop balancing
