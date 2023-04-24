@@ -30,8 +30,6 @@ import frc.robot.subsystems.Swerve;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class GamePieceAuto extends SequentialCommandGroup {
-  final IntegerEntry placedEntry; // entry to interact with network tables
-
   /** Creates a new GamePiece. */
   public GamePieceAuto(
     Swerve s_swerve, 
@@ -41,8 +39,6 @@ public class GamePieceAuto extends SequentialCommandGroup {
     ClawSubsystem sub_clawSubsystem, 
     LowerArmSubsystem sub_lowerArm,
     String cyclePath, String placePath) {
-
-    placedEntry = NetworkTableInstance.getDefault().getIntegerTopic("/SmartDashboard/piecesPlaced").getEntry(0); // entry for the number of pieces placed
     
     // maps event names in pathplanner to commands
     HashMap<String, Command> eventMap = new HashMap<>();
@@ -99,13 +95,8 @@ public class GamePieceAuto extends SequentialCommandGroup {
       toCommand,
       transformPlacePath,
       placeCommand,
-      new InstantCommand(() -> updatePlaced()),
       fromCommand,
       cycleCommand
     );
-  }
-
-  private void updatePlaced() {
-    placedEntry.set(placedEntry.get()+1);
   }
 }
