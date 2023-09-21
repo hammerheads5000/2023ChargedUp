@@ -178,7 +178,7 @@ public final class Constants {
 
     public static final class ArmConstants
     {
-        public static final double offset = 48;
+        public static final double offset = 111;
         public static final double errorChangeTime = 3;
         public static final double speedMultiplierOnDown = 0.9;
         public static final double kP = 0.015;
